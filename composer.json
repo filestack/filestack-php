@@ -1,0 +1,27 @@
+{
+    "name": "filestack/filestack-php",
+    "description": "A filestack library for PHP",
+    "require": {
+        "php": "^5.3.3 || ^7.0",
+        "another-vendor/package": "1.*"
+    },
+    "version": "dev-master",
+    "license": "ALv2",
+    "source": {
+        "url": "git://github.com/filestack/filestack-php.git",
+        "type": "git",
+        "reference": "master"
+    },
+    "require": {
+        "php" : ">=5.5.0",
+        "guzzlehttp/guzzle": ">=6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.0"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Filestack\\" : "filestack"
+        }
+    }
+}

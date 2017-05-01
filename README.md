@@ -2,7 +2,7 @@
 [![Coveralls][coveralls_badge]][coveralls]
 [![Code Climate][code_climate_badge]][code_climate]
 
-# Filestack Python SDK
+# Filestack PHP SDK
 <a href="https://www.filestack.com"><img src="https://filestack.com/themes/filestack/assets/images/press-articles/color.svg" align="left" hspace="10" vspace="6"></a>
 This is the official PHP SDK for Filestack - API and content management system that makes it easy to add powerful file uploading and transformation capabilities to any web or mobile application.
 
@@ -16,12 +16,12 @@ This is the official PHP SDK for Filestack - API and content management system t
 
 Install ``filestack`` with composer, either run
 
-    $ php composer.phar require --prefer-dist bryglen/yii2-twillio "*"
+    $ php composer.phar require --prefer-dist filestack/filestack-php "*"
 
 or add
 
 ```
-"filestack/filestack-python": "*"
+"filestack/filestack-php": "*"
 ```
 
 or download from GitHub
@@ -76,7 +76,13 @@ $file = new FilepickerFile('https://www.filepicker.io/api/file/pGj2wWfBTMuXhWe2J
 
 ## Versioning
 
-Filestack Python SDK follows the [Semantic Versioning](http://semver.org/).
+Filestack PHP SDK follows the [Semantic Versioning](http://semver.org/).
+
+## Code Standard
+
+- PSR-2 coding standard (http://www.php-fig.org/psr/psr-2/)
+- PSR-4 autoloading standard (http://www.php-fig.org/psr/psr-4/)
+- phpDoc documentation comments standard (https://www.phpdoc.org/docs/latest/getting-started/your-first-set-of-documentation.html)
 
 ## Issues
 
