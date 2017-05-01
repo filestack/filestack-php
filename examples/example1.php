@@ -17,7 +17,6 @@ $result = $flink->resize(w=100)->crop(d=[0, 0, 100, 200]);
 
 $sec = new Security('xyz');
 
-$result->download(path='/', security=sec)  # save to local drive
-$result->get_content(security=sec)
-
-result.store()  # returns Filelink object
+$filelink = $result->store();  # returns Filelink object
+$result->download('aaa_sx123', $sec);  # save to local drive
+$result->get_content('aaa_sx123', $sec);

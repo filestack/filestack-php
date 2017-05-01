@@ -8,7 +8,10 @@ use Filestack\FilestackConfig;
  */
 class Filelink
 {
-    use Filestack\Mixins\ImageConversionMixin;
+    use Mixins\CommonMixin;
+    use Mixins\ImageConversionMixin;
+
+    public $handle;
 
     /**
      * Filelink constructor
