@@ -56,4 +56,13 @@ class FilestackConfig {
 
         return $url;
     }
+
+    /**
+     * Get current version of this library (from VERSION file)
+     */
+    public static function getVersion()
+    {
+        $version = file_get_contents(__DIR__ . '/../VERSION');
+        return trim($version);
+    }
 }

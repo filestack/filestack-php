@@ -42,7 +42,7 @@ trait CommonMixin
      * @param Filetack\Security $security   Filestack security object if
      *                                      security settings is turned on
      */
-    public function get_content($handle, $security=null)
+    public function getContent($handle, $security=null)
     {
         # return bytes
     }
@@ -77,10 +77,10 @@ trait CommonMixin
 
         // build url and data to send
         $url = FilestackConfig::createUrl('store', $api_key, $options, $security);
-        $data_to_send = $this->create_upload_file_data($filepath);
+        $data_to_send = $this->createUploadFileData($filepath);
 
         // send post request
-        $response = $this->http_client->request('POST', $url, $data_to_send);
+        $response = $this->post($url, $data_to_send);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -106,7 +106,7 @@ trait CommonMixin
      *
      * @return bool
      */
-    public function is_url($url) {
+    public function isUrl($url) {
         $path = parse_url($url, PHP_URL_PATH);
         $encoded_path = array_map('urlencode', explode('/', $path));
         $url = str_replace($path, implode('/', $encoded_path), $url);
@@ -122,9 +122,10 @@ trait CommonMixin
      *
      * @return array
      */
-    protected function create_upload_file_data($filepath) {
-        $data = ['http_errors' => false];
-        if ($this->is_url($filepath)) {
+    protected function createUploadFileData($filepath) {
+        $data = [];
+
+        if ($this->isUrl($filepath)) {
             // external source (passing url instead of filepath)
             $data['form_params'] = ['url' => $filepath];
         }
@@ -133,5 +134,24 @@ trait CommonMixin
             $data['body'] = fopen($filepath, 'r');
         }
         return $data;
+    }
+
+    /**
+     * Send POST request
+     *
+     * @param string    $url            url to post to
+     * @param array     $data_to_send   data to send
+     * @param array     $headers        optional headers to
+     */
+    protected function post($url, $data_to_send, $headers=[])
+    {
+        $version = FilestackConfig::getVersion();
+        $headers['User-Agent'] = sprintf('filestack-php-%s', $version);
+
+        $data_to_send['headers'] = $headers;
+        $data_to_send['http_errors'] = false;
+
+        $response = $this->http_client->request('POST', $url, $data_to_send);
+        return $response;
     }
 }

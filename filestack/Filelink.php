@@ -69,7 +69,7 @@ class Filelink
      *
      * @return string
      */
-    public function signed_url($security)
+    public function signedUrl($security)
     {
         return sprintf('url?policy=%s&signature=%s',
             $security->policy, $security->signature);
