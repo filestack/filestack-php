@@ -26,4 +26,27 @@ class FilepickerClient
         }
         $this->http_client = $http_client; // CommonMixin
     }
+
+    /**
+     * Store a file to desired cloud service, defaults to Filestack's S3
+     * storage.  Set $extra['location'] to specify location.
+     * Possible values are: S3, gcs, azure, rackspace, dropbox
+     *
+     * @param string    $filepath   real path to file
+     * @param array     $extras     extra optional params.  Allowed params are:
+     *                              location (storage location: possible values are:
+     *                                  S3, gcs, azure, rackspace, dropbox),
+     *                              filename, mimetype, path, container,
+     *                              access (public|private), base64decode (true|false)
+     * @param Filestack\Security    $security   Filestack Security object
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return Filestack\Filelink or null
+     */
+    public function store($filepath, $extras=[], $security=null)
+    {
+        $filelink = $this->sendStore($filepath, $this->api_key, $extras, $security);
+        return $filelink;
+    }
 }
