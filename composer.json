@@ -1,11 +1,6 @@
 {
     "name": "filestack/filestack-php",
     "description": "A filestack library for PHP",
-    "require": {
-        "php": "^5.3.3 || ^7.0",
-        "another-vendor/package": "1.*",
-        "php-di/php-di": "^5.4"
-    },
     "version": "dev-master",
     "license": "ALv2",
     "source": {
@@ -23,7 +18,8 @@
     },
     "autoload": {
         "psr-4" : {
-            "Filestack\\" : "filestack"
+            "Filestack\\" : "filestack",
+            "Filestack\\Mixins\\" : "filestack/mixins"
         }
     }
 }
