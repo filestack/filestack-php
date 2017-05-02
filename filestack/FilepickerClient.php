@@ -26,9 +26,4 @@ class FilepickerClient
         }
         $this->http_client = $http_client; // CommonMixin
     }
-
-    public function testTrait()
-    {
-      return $this->dep->foo();
-    }
 }
