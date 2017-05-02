@@ -4,8 +4,6 @@ namespace Filestack\Mixins;
 use Filestack\FilestackConfig;
 use Filestack\Filelink;
 use Filestack\FilestackException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * Mixin for common functionalities used by most Filestack objects
@@ -51,41 +49,89 @@ trait CommonMixin
 
     /**
      * store a file to desired cloud service, defaults to Filestack's S3
-     * storage.
+     * storage.  Set $options['location'] to specify location, possible values are:
+     *                                      S3, gcs, azure, rackspace, dropbox
      *
-     * @param string    $filepath   real path to file
+     * @param string                $filepath   url or filepath
+     * @param string                $api_key    Filestack API Key
+     * @param array                 $options     extra optional params. e.g.
+     *                                  location (string, storage location),
+     *                                  filename (string, custom filename),
+     *                                  mimetype (string, file mimetype),
+     *                                  path (string, path in cloud container),
+     *                                  container (string, container in bucket),
+     *                                  access (string, public|private),
+     *                                  base64decode (bool, true|false)
+     * @param Filestack\Security    $security   Filestack Security object
      *
      * @throws FilestackException   if API call fails
      *
      * @return Filestack\Filelink or null
      */
-    public function store($filepath)
+    public function sendStore($filepath, $api_key, $options=[], $security=null)
     {
+        // set filename to original file if one does not exists
+        if (!array_key_exists('filename', $options)) {
+            $options['filename'] = basename($filepath);
+        }
 
-        $url = sprintf('%s/store/S3?key=%s',
-            FilestackConfig::API_URL, $this->api_key);
+        // build url and data to send
+        $url = FilestackConfig::createUrl('store', $api_key, $options, $security);
+        $data_to_send = $this->create_upload_file_data($filepath);
 
-        $body = fopen($filepath, 'r');
-
-        /*
-         * Make http requests, if exception encountered catch it and
-         * throw FilestackException instead
-         */
-
-        $response = $this->http_client->request('POST', $url, ['body'=>$body, 'http_errors'=>false]);
+        // send post request
+        $response = $this->http_client->request('POST', $url, $data_to_send);
         $status_code = $response->getStatusCode();
 
+        // handle response
         if ($status_code == 200) {
             $json_response = json_decode($response->getBody(), $status_code);
 
             $url = $json_response['url'];
             $file_handle = substr($url, strrpos($url, '/') + 1);
-            return new Filelink($file_handle);
+            $filelink = new Filelink($file_handle);
+            return $filelink;
         }
         else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
         return null;
+    }
+
+    /**
+     * Check if a string is a valid url.
+     *
+     * @param   string  $url    url string to check
+     *
+     * @return bool
+     */
+    public function is_url($url) {
+        $path = parse_url($url, PHP_URL_PATH);
+        $encoded_path = array_map('urlencode', explode('/', $path));
+        $url = str_replace($path, implode('/', $encoded_path), $url);
+
+        return filter_var($url, FILTER_VALIDATE_URL) ? true : false;
+    }
+
+    /**
+     * Creates data array to send to request based on if filepath is
+     * real filepath or url
+     *
+     * @param   string  $filepath    filepath or url
+     *
+     * @return array
+     */
+    protected function create_upload_file_data($filepath) {
+        $data = ['http_errors' => false];
+        if ($this->is_url($filepath)) {
+            // external source (passing url instead of filepath)
+            $data['form_params'] = ['url' => $filepath];
+        }
+        else {
+            // local file
+            $data['body'] = fopen($filepath, 'r');
+        }
+        return $data;
     }
 }
