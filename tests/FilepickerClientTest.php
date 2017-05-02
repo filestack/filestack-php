@@ -1,9 +1,6 @@
 <?php
-namespace Filestack\Tests;
-
 use Filestack\FilepickerClient;
 use Filestack\FilestackException;
-use Filestack\Tests\MockHttpResponse;
 
 class FilepickerClientTest extends \PHPUnit_Framework_TestCase
 {

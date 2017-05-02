@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4" : {
-            "Filestack\\" : "filestack"
+            "Filestack\\" : "filestack",
+            "Filestack\\Mixins\\" : "filestack/mixins"
         }
     }
 }

@@ -1,6 +1,4 @@
 <?php
-namespace Filestack\Tests;
-
 /**
  * A mock Http response with getStatusCode and getBody functions.
  */
