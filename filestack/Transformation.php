@@ -40,7 +40,7 @@ class Transformation
     public function url()
     {
         # build url based on conversion tasks
-        $url = "";
+        $url = '';
 
         return $url;
     }
