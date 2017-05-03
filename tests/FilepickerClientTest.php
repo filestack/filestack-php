@@ -11,7 +11,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->test_filepath = __DIR__ . '/calvinandhobbes.jpg';
+        $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
         $this->test_file_url = 'https://cdn.filestackcontent.com/6mpd6Vs6TOOQ1Xny1owS';
     }
 
@@ -85,7 +85,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $destination = __DIR__ . '/my-custom-filename.jpg';
+        $destination = __DIR__ . '/testfiles/my-custom-filename.jpg';
 
         $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
         $result = $client->download($this->test_file_url, $destination);
@@ -110,7 +110,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $destination = __DIR__ . '/my-custom-filename.jpg';
+        $destination = __DIR__ . '/testfiles/my-custom-filename.jpg';
 
         $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
         $result = $client->download('some-bad-file-handle-testing', $destination);

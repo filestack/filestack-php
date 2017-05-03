@@ -91,7 +91,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
 
         $filelink = new Filelink($this->test_file_handle,
                         self::TEST_API_KEY, $stub_http_client);
-        $destination = __DIR__ . "/my-custom-filenamed.jpg";
+        $destination = __DIR__ . "/testfiles/my-custom-filenamed.jpg";
 
         $result = $filelink->download($destination);
         $this->assertTrue($result);
@@ -116,7 +116,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
 
         $filelink = new Filelink("some-bad-file-handle",
                         self::TEST_API_KEY, $stub_http_client);
-        $destination = __DIR__ . "/testfile.jpg";
+        $destination = __DIR__ . "/testfiles/test.jpg";
 
         $result = $filelink->download($destination);
     }
