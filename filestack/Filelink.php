@@ -14,6 +14,7 @@ class Filelink
 
     public $api_key;
     public $handle;
+    public $metadata;
 
     /**
      * Filelink constructor
@@ -25,6 +26,7 @@ class Filelink
     {
         $this->handle = $handle;
         $this->api_key = $api_key;
+        $this->metadata = [];
 
         if (is_null($http_client)) {
             $http_client = new Client();
@@ -64,12 +66,34 @@ class Filelink
      *
      * @throws FilestackException   if API call fails
      *
-     * @return json
+     * @return array
      */
     public function getMetaData($fields=[], $security=null)
     {
         // call CommonMixin function
         $result = $this->sendGetMetaData($this->url(), $fields);
+
+        foreach ($result as $key => $value) {
+            $this->metadata[$key] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Delete this filelink from cloud storage
+     *
+     * @param FilestackSecurity $security       Filestack security object is
+     *                                          required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function delete($security)
+    {
+        // call CommonMixin function
+        $result = $this->sendDelete($this->handle, $this->api_key, $security);
         return $result;
     }
 
@@ -118,6 +142,30 @@ class Filelink
     }
 
     /**
+     * Overwrite this filelink in cloud storage
+     *
+     * @param string            $filepath   real path to file
+     * @param FilestackSecurity $security   Filestack security object is
+     *                                      required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return boolean
+     */
+    public function overwrite($filepath, $security)
+    {
+        $result = $this->sendOverwrite($filepath,
+            $this->handle, $this->api_key, $security);
+
+        // update metadata
+        $this->metadata['filename'] = $result->metadata['filename'];
+        $this->metadata['mimetype'] = $result->metadata['mimetype'];
+        $this->metadata['size'] = $result->metadata['size'];
+
+        return true;
+    }
+
+    /**
      * return the URL (cdn) of this filelink
      *
      * @return string
@@ -136,7 +184,9 @@ class Filelink
      */
     public function signedUrl($security)
     {
-        return sprintf('url?policy=%s&signature=%s',
-            $security->policy, $security->signature);
+        return sprintf('%s?policy=%s&signature=%s',
+            $this->url(),
+            $security->policy,
+            $security->signature);
     }
 }

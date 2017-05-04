@@ -75,7 +75,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails
      *
-     * @return json
+     * @return array
      */
     public function getMetaData($url, $fields=[], $security=null)
     {
@@ -86,6 +86,24 @@ class FilestackClient
         // call CommonMixin function
         $result = $this->sendGetMetaData($url, $fields);
 
+        return $result;
+    }
+
+    /**
+     * Delete a file from cloud storage
+     *
+     * @param string            $handle         Filestack file handle to delete
+     * @param FilestackSecurity $security       Filestack security object is
+     *                                          required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function delete($handle, $security)
+    {
+        // call CommonMixin function
+        $result = $this->sendDelete($handle, $this->api_key, $security);
         return $result;
     }
 
@@ -136,6 +154,24 @@ class FilestackClient
         // call CommonMixin function
         $filelink = $this->sendStore($filepath, $this->api_key, $extras, $security);
 
+        return $filelink;
+    }
+
+    /**
+     * Overwrite a file in cloud storage
+     *
+     * @param string            $filepath   real path to file
+     * @param string            $handle     Filestack file handle to overwrite
+     * @param FilestackSecurity $security   Filestack security object is
+     *                                      required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink
+     */
+    public function overwrite($filepath, $handle, $security)
+    {
+        $filelink = $this->sendOverwrite($filepath, $handle, $this->api_key, $security);
         return $filelink;
     }
 }

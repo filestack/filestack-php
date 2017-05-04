@@ -1,27 +1,12 @@
 <?php
+namespace Filestack\Test;
+
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
 
-class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
+class FilestackSecurityTest extends BaseTest
 {
-    const TEST_API_KEY = 'A5lEN6zU8SemSBWiwcGJhz';
-    const TEST_SECRET = '3UAQ64UWMNCCRF36CY2NSRSPSU';
-
-    protected $test_filepath;
-    protected $test_file_url;
-
-    protected function setUp()
-    {
-        $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
-        $this->test_file_url = 'https://cdn.filestackcontent.com/IIkUk9D8TWKHldxmMVRt';
-    }
-
-    public function tearDown()
-    {
-        // teardown calls
-    }
-
     /*
      * Test security intialization with valid options
      */
@@ -36,7 +21,7 @@ class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
             'path'      => '/some/example/path',
             'url'       => 'http://someurl.com'
         ];
-        $security = new FilestackSecurity(self::TEST_SECRET, $options);
+        $security = new FilestackSecurity($this->test_secret, $options);
 
         $this->assertNotNull($security->policy);
         $this->assertNotNull($security->signature);
@@ -51,7 +36,7 @@ class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
         $this->expectExceptionCode(400);
 
         $options = ['some-invalid-option' => 'some-value'];
-        $security = new FilestackSecurity(self::TEST_SECRET, $options);
+        $security = new FilestackSecurity($this->test_secret, $options);
     }
 
     /*
@@ -76,8 +61,8 @@ class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
             'maxSize'   => 1024,
             'minSize'   => 100
         ];
-        $security = new FilestackSecurity(self::TEST_SECRET, $options);
-        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
+        $security = new FilestackSecurity($this->test_secret, $options);
+        $client = new FilestackClient($this->test_api_key, $stub_http_client);
         $result = $client->download($this->test_file_url, $destination, $security);
 
         $this->assertTrue($result);
@@ -102,7 +87,7 @@ class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(403);
 
-        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient($this->test_api_key, $stub_http_client);
         $result = $client->download($this->test_file_url, $destination);
     }
 
@@ -126,7 +111,7 @@ class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
         $this->expectExceptionCode(403);
 
         $security = new FilestackSecurity('some-invalid-secret-test');
-        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient($this->test_api_key, $stub_http_client);
         $result = $client->download($this->test_file_url, $destination, $security);
     }
 
@@ -143,8 +128,8 @@ class FilestackSecurityTest extends \PHPUnit_Framework_TestCase
             'handle'    => 'some-file-handle'
         ];
 
-        $security = new FilestackSecurity(self::TEST_SECRET, $options);
-        $result = $security->verify($options, $security->signature, self::TEST_SECRET);
+        $security = new FilestackSecurity($this->test_secret, $options);
+        $result = $security->verify($options, $security->signature, $this->test_secret);
 
         $this->assertTrue($result);
     }

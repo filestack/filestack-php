@@ -50,6 +50,15 @@ class FilestackConfig {
                 }
                 break;
 
+            case 'delete':
+            case 'overwrite':
+                $url = sprintf('%s/file/%s?key=%s',
+                    self::API_URL,
+                    $options['handle'],
+                    $api_key
+                );
+                break;
+
             default:
                 break;
         }
