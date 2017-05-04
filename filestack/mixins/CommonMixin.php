@@ -42,6 +42,37 @@ trait CommonMixin
     }
 
     /**
+     * Delete a file from cloud storage
+     *
+     * @param string            $handle         Filestack file handle to delete
+     * @param string                $api_key    Filestack API Key
+     * @param FilestackSecurity $security       Filestack security object is
+     *                                          required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function sendDelete($handle, $api_key, $security)
+    {
+        $options = ['handle' => $handle];
+        $url = FilestackConfig::createUrl('delete', $api_key, $options, $security);
+        $response = $this->requestDelete($url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            return true;
+        }
+        else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        // failed if reached
+        return false;
+    }
+
+    /**
      * Download a file to specified destination given a url
      *
      * @param string            $url            Filestack file url
@@ -72,7 +103,7 @@ trait CommonMixin
         $headers = [];
         $options = ["sink" => $destination];
 
-        $response = $this->get($url, ["dl" => "true"], $headers, $options);
+        $response = $this->requestGet($url, ["dl" => "true"], $headers, $options);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -105,7 +136,7 @@ trait CommonMixin
             $url = $security->signUrl($url);
         }
 
-        $response = $this->get($url);
+        $response = $this->requestGet($url);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -152,7 +183,7 @@ trait CommonMixin
             $url = $security->signUrl($url);
         }
 
-        $response = $this->get($url, $params);
+        $response = $this->requestGet($url, $params);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -201,7 +232,7 @@ trait CommonMixin
         $data_to_send = $this->createUploadFileData($filepath);
 
         // send post request
-        $response = $this->post($url, $data_to_send);
+        $response = $this->requestPost($url, $data_to_send);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -210,7 +241,7 @@ trait CommonMixin
 
             $url = $json_response['url'];
             $file_handle = substr($url, strrpos($url, '/') + 1);
-            $filelink = new Filelink($file_handle);
+            $filelink = new Filelink($file_handle, $api_key);
             return $filelink;
         }
         else {
@@ -249,7 +280,7 @@ trait CommonMixin
      * @param array     $data_to_send   data to send
      * @param array     $headers        optional headers to send
      */
-    protected function post($url, $data_to_send, $headers=[])
+    protected function requestPost($url, $data_to_send, $headers=[])
     {
 
         $headers['User-Agent'] = $this->user_agent_header;
@@ -268,7 +299,7 @@ trait CommonMixin
      * @param array     $params     optional params to send
      * @param array     $headers    optional headers to send
      */
-    protected function get($url, $params=[], $headers=[], $options=[])
+    protected function requestGet($url, $params=[], $headers=[], $options=[])
     {
         $headers['User-Agent'] = $this->user_agent_header;
         $options['http_errors'] = false;
@@ -284,6 +315,32 @@ trait CommonMixin
         }
 
         $response = $this->http_client->request('GET', $url, $options);
+        return $response;
+    }
+
+    /**
+     * Send DELETE request
+     *
+     * @param string    $url        url to post to
+     * @param array     $params     optional params to send
+     * @param array     $headers    optional headers to send
+     */
+    protected function requestDelete($url, $params=[], $headers=[], $options=[])
+    {
+        $headers['User-Agent'] = $this->user_agent_header;
+        $options['http_errors'] = false;
+        $options['headers'] = $headers;
+
+        // append question mark if there are optional params and ? doesn't exist
+        if (count($params) > 0 && strrpos($url, '?') === false) {
+            $url .= "?";
+        }
+
+        foreach ($params as $key => $value) {
+            $url .= "&$key=$value";
+        }
+
+        $response = $this->http_client->request('DELETE', $url, $options);
         return $response;
     }
 }

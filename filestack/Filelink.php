@@ -74,6 +74,23 @@ class Filelink
     }
 
     /**
+     * Delete this filelink from cloud storage
+     *
+     * @param FilestackSecurity $security       Filestack security object is
+     *                                          required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function delete($security)
+    {
+        // call CommonMixin function
+        $result = $this->sendDelete($this->handle, $this->api_key, $security);
+        return $result;
+    }
+
+    /**
      * Download filelink as a file, saving it to specified destination
      *
      * @param string            $handle         Filestack file handle

@@ -90,6 +90,24 @@ class FilestackClient
     }
 
     /**
+     * Delete a file from cloud storage
+     *
+     * @param string            $handle         Filestack file handle to delete
+     * @param FilestackSecurity $security       Filestack security object is
+     *                                          required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function delete($handle, $security)
+    {
+        // call CommonMixin function
+        $result = $this->sendDelete($handle, $this->api_key, $security);
+        return $result;
+    }
+
+    /**
      * Download a file, saving it to specified destination
      *
      * @param string            $url            Filestack file url or handle

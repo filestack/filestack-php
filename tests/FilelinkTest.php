@@ -1,10 +1,12 @@
 <?php
 use Filestack\Filelink;
+use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
 
 class FilelinkTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_API_KEY = 'A5lEN6zU8SemSBWiwcGJhz';
+    const TEST_SECRET = '3UAQ64UWMNCCRF36CY2NSRSPSU';
 
     protected $test_file_url;
     protected $test_file_handle;
@@ -20,7 +22,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         // teardown calls
     }
 
-    /*
+    /**
      * Test initializing Filelink intialized with handle and API Key
      */
     public function testFilelinkInitialized()
@@ -30,7 +32,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($filelink->api_key, self::TEST_API_KEY);
     }
 
-    /*
+    /**
      * Test filelink get content
      */
     public function testFilelinkGetContent()
@@ -52,7 +54,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($result);
     }
 
-    /*
+    /**
      * Test filelink get content throws exception for invalid file
      */
     public function testFilelinkGetContentNotFound()
@@ -75,7 +77,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $result = $filelink->getContent();
     }
 
-    /*
+    /**
      * Test downloading a filelink
      */
     public function testFilelinkDownload()
@@ -97,7 +99,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-    /*
+    /**
      * Test downloading exception with file not found
      */
     public function testFilelinkDownloadNotFound()
@@ -121,7 +123,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $result = $filelink->download($destination);
     }
 
-    /*
+    /**
      * Test getting meta data of a filelink
      */
     public function testFilelinkGetMetadata()
@@ -142,7 +144,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($result['filename']);
     }
 
-    /*
+    /**
      * Test getMetaData throws exception for invalid file
      */
     public function testFilelinkGetMetadataException()
@@ -165,7 +167,46 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
         $result = $filelink->getMetaData();
     }
 
-    /*
+    /**
+     * Test deleting a filelink
+     */
+    public function testFilelinkDelete()
+    {
+        $mock_response = new MockHttpResponse(200);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $security = new FilestackSecurity(self::TEST_SECRET);
+        $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU',
+                        self::TEST_API_KEY, $stub_http_client);
+        $result = $filelink->delete($security);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test deleting a filelink throws exception on error
+     */
+    public function testFilelinkDeleteException()
+    {
+        $mock_response = new MockHttpResponse(404);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $security = new FilestackSecurity(self::TEST_SECRET);
+        $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU',
+                        self::TEST_API_KEY, $stub_http_client);
+        $result = $filelink->delete($security);
+    }
+
+    /**
      * Test storing a filelink
      */
     public function testFilelinkStore()
