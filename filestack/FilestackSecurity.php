@@ -41,7 +41,7 @@ class FilestackSecurity
      *                              url: (regex) subset of external URL domains that are
      *                                  allowed to be image/document sources for processing
      */
-    function __construct($secret, $options=[])
+    public function __construct($secret, $options=[])
     {
         $this->allowed_options = [
             'call', 'container', 'expiry', 'handle', 'maxSize', 'minSize', 'path', 'url'
@@ -115,8 +115,7 @@ class FilestackSecurity
     {
         try {
             $result = $this->generate($secret, $policy);
-        }
-        catch (FilestackException $e) {
+        } catch (FilestackException $e) {
             return false;
         }
 
@@ -160,9 +159,10 @@ class FilestackSecurity
     /**
      * Helper functions
      */
-    protected function urlsafeB64encode($string) {
+    protected function urlsafeB64encode($string)
+    {
         $data = base64_encode($string);
-        $data = str_replace(array('+','/'),array('-','_'),$data);
+        $data = str_replace(array('+','/'), array('-','_'), $data);
         return $data;
     }
 }

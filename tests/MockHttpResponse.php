@@ -9,7 +9,7 @@ class MockHttpResponse
     public $status_code;
     public $content;
 
-    function __construct($status_code, $content='{}')
+    public function __construct($status_code, $content='{}')
     {
         $this->status_code = $status_code;
         $this->content = $content;
@@ -30,7 +30,7 @@ class MockHttpResponseBody
 {
     public $content;
 
-    function __construct($content='')
+    public function __construct($content='')
     {
         $this->content = $content;
     }

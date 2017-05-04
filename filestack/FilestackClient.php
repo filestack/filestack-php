@@ -19,7 +19,7 @@ class FilestackClient
      *
      * @param string    $api_key    your Filestack API Key
      */
-    function __construct($api_key, $http_client=null)
+    public function __construct($api_key, $http_client=null)
     {
         $this->api_key = $api_key;
         if (is_null($http_client)) {
@@ -32,7 +32,8 @@ class FilestackClient
      * Get the cdn url of a filestack file
      *
      */
-    public function getCdnUrl($handle) {
+    public function getCdnUrl($handle)
+    {
         $url = sprintf('%s/%s', FilestackConfig::CDN_URL, $handle);
         return $url;
     }
@@ -55,7 +56,7 @@ class FilestackClient
         }
 
         // call CommonMixin function
-        $result = $this->sendGetContent($url);
+        $result = $this->sendGetContent($url, $security);
 
         return $result;
     }
@@ -84,7 +85,7 @@ class FilestackClient
         }
 
         // call CommonMixin function
-        $result = $this->sendGetMetaData($url, $fields);
+        $result = $this->sendGetMetaData($url, $fields, $security);
 
         return $result;
     }

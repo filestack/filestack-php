@@ -23,7 +23,7 @@ class Transformation
      * @param array     $conversion_tasks   array of conversion tasks
      * @param string    $api_key            your Filestack API Key
      */
-    function __construct($handle, $external_url=null,
+    public function __construct($handle, $external_url=null,
         $conversion_tasks=[], $api_key=null)
     {
         $this->api_key = $api_key;

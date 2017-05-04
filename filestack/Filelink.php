@@ -22,7 +22,7 @@ class Filelink
      * @param string    $handle     Filestack file handle
      * @param string    $api_key    Filestack API Key
      */
-    function __construct($handle, $api_key='', $http_client=null)
+    public function __construct($handle, $api_key='', $http_client=null)
     {
         $this->handle = $handle;
         $this->api_key = $api_key;

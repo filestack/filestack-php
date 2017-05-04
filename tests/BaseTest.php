@@ -9,7 +9,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     protected $test_file_url;
     protected $test_file_handle;
 
-    function __construct()
+    public function __construct()
     {
         $this->test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
         $this->test_secret = '3UAQ64UWMNCCRF36CY2NSRSPSU';

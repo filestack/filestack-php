@@ -33,7 +33,8 @@ trait CommonMixin
      *
      * @return bool
      */
-    public function isUrl($url) {
+    public function isUrl($url)
+    {
         $path = parse_url($url, PHP_URL_PATH);
         $encoded_path = array_map('urlencode', explode('/', $path));
         $url = str_replace($path, implode('/', $encoded_path), $url);
@@ -63,8 +64,7 @@ trait CommonMixin
         // handle response
         if ($status_code == 200) {
             return true;
-        }
-        else {
+        } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
@@ -109,8 +109,7 @@ trait CommonMixin
         // handle response
         if ($status_code == 200) {
             return true;
-        }
-        else {
+        } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
@@ -143,8 +142,7 @@ trait CommonMixin
         if ($status_code == 200) {
             $content = $response->getBody()->getContents();
             return $content;
-        }
-        else {
+        } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
@@ -190,8 +188,7 @@ trait CommonMixin
         if ($status_code == 200) {
             $json_response = json_decode($response->getBody(), true);
             return $json_response;
-        }
-        else {
+        } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
@@ -246,12 +243,9 @@ trait CommonMixin
             $filelink->metadata['filename'] = $json_response['filename'];
             $filelink->metadata['size'] = $json_response['size'];
             $filelink->metadata['mimetype'] = $json_response['type'];
-            $filelink->metadata['path'] = $json_response['key'];
-            $filelink->metadata['container'] = $json_response['container'];
 
             return $filelink;
-        }
-        else {
+        } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
@@ -283,7 +277,6 @@ trait CommonMixin
 
         // handle response
         if ($status_code == 200) {
-
             $json_response = json_decode($response->getBody(), true);
 
             $url = $json_response['url'];
@@ -295,8 +288,7 @@ trait CommonMixin
             $filelink->metadata['mimetype'] = $json_response['mimetype'];
 
             return $filelink;
-        }
-        else {
+        } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
@@ -312,14 +304,14 @@ trait CommonMixin
      *
      * @return array
      */
-    protected function createUploadFileData($filepath) {
+    protected function createUploadFileData($filepath)
+    {
         $data = [];
 
         if ($this->isUrl($filepath)) {
             // external source (passing url instead of filepath)
             $data['form_params'] = ['url' => $filepath];
-        }
-        else {
+        } else {
             // local file
             $data['body'] = fopen($filepath, 'r');
         }
@@ -335,7 +327,6 @@ trait CommonMixin
      */
     protected function requestPost($url, $data_to_send, $headers=[])
     {
-
         $headers['User-Agent'] = $this->user_agent_header;
 
         $data_to_send['headers'] = $headers;
