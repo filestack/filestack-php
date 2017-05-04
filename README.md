@@ -32,46 +32,46 @@ or download from GitHub
 
 Filestack library gives you access to two useful classes:
 
-* `FilepickerClient` - for easy file upload (creates FilepickerFile objects)
-* `FilepickerFile` - for file handling (downloading, converting etc.)
+* `FilestackClient` - for easy file upload (creates Filelink objects)
+* `Filelink` - for file handling (downloading, converting etc.)
 
 ### Uploading files
-First, you need to create an instance of FilepickerClient
+First, you need to create an instance of FilestackClient
 
 ```php
-use Filestack\FilepickerClient;
+use Filestack\FilestackClient;
+use Filestack\Filelink;
 
-$client = new FilepickerClient('YOUR_API_KEY');
+$client = new FilestackClient('YOUR_API_KEY');
 
 # or
-$client = new FilepickerClient();
+$client = new FilestackClient();
 $client.set_api_key('YOUR_API_KEY');
 ```
 
 ### Storage
-Amazon S3 is used to store your files by default. If you wish to use a different one, you can initialize FilepickerClient with an additional `storage` argument or use `set_storage()` method:
+Amazon S3 is used to store your files by default. If you wish to use a different one, you can initialize FilestackClient with an additional `storage` argument or use `set_storage()` method:
 
 ```php
-$client = FilepickerClient('YOUR_API_KEY', 'azure');
+$client = FilestackClient('YOUR_API_KEY', 'azure');
 # or
-$client = FilepickerClient('YOUR_API_KEY');
+$client = FilestackClient('YOUR_API_KEY');
 $client.set_storage('dropbox');
 ```
 ### Manipulating files
 
-FilepickerFile objects can be created in three ways:
+Filelink objects can be created in three ways:
 
- - by uploading a file with using FilepickerClient
- - by initializing FilepickerFile with file handle
- - by initializing FilepickerFile with a Filepicker url
+ - by uploading a file with using FilestackClient
+ - by initializing Filelink with file handle
+ - by initializing Filelink with a Filepicker url
 
 First method was shown above, the two other are also very easy and will create objects representing files that were already uploaded.
 
 ```php
-use Filestack\FilepickerClient;
-$file = new FilepickerFile('pGj2wWfBTMuXhWe2J3bL');
-# or
-$file = new FilepickerFile('https://www.filepicker.io/api/file/pGj2wWfBTMuXhWe2J3bL');
+use Filestack\filelink;
+
+$file = new Filelink('pGj2wWfBTMuXhWe2J3bL');
 ```
 
 ## Versioning

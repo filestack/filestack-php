@@ -5,17 +5,17 @@ use Filestack\FilestackConfig;
 use GuzzleHttp\Client;
 
 /**
- * Filepicker client.  This is the main object to
+ * FilestackClient client.  This is the main object to
  * make functional calls to the Filestack API.
  */
-class FilepickerClient
+class FilestackClient
 {
     use Mixins\CommonMixin;
 
     public $api_key;
 
     /**
-     * FilepickerClient constructor
+     * FilestackClient constructor
      *
      * @param string    $api_key    your Filestack API Key
      */
@@ -41,7 +41,7 @@ class FilepickerClient
      * Get the content of file
      *
      * @param string            $url        Filestack file url or handle
-     * @param Filetack\Security $security   Filestack security object if
+     * @param FilestackSecurity $security   Filestack security object if
      *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
@@ -70,7 +70,7 @@ class FilepickerClient
      *                                      location, path, container, exif,
      *                                      uploaded (timestamp), writable, cloud, source_url
      *
-     * @param Filetack\Security $security   Filestack security object if
+     * @param FilestackSecurity $security   Filestack security object if
      *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails
@@ -95,7 +95,7 @@ class FilepickerClient
      * @param string            $url            Filestack file url or handle
      * @param string            $destination    destination filepath to save to,
      *                                          can be folder name (defaults to stored filename)
-     * @param Filetack\Security $security       Filestack security object if
+     * @param FilestackSecurity $security       Filestack security object if
      *                                          security settings is turned on
      *
      * @throws FilestackException   if API call fails
@@ -125,7 +125,7 @@ class FilepickerClient
      *                                  S3, gcs, azure, rackspace, dropbox),
      *                              filename, mimetype, path, container,
      *                              access (public|private), base64decode (true|false)
-     * @param Filestack\Security    $security   Filestack Security object
+     * @param FilestackSecurity    $security   Filestack Security object
      *
      * @throws FilestackException   if API call fails
      *

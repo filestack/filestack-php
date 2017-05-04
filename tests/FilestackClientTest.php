@@ -1,8 +1,8 @@
 <?php
-use Filestack\FilepickerClient;
+use Filestack\FilestackClient;
 use Filestack\FilestackException;
 
-class FilepickerClientTest extends \PHPUnit_Framework_TestCase
+class FilestackClientTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_API_KEY = 'A5lEN6zU8SemSBWiwcGJhz';
 
@@ -12,7 +12,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
-        $this->test_file_url = 'https://cdn.filestackcontent.com/6mpd6Vs6TOOQ1Xny1owS';
+        $this->test_file_url = 'https://cdn.filestackcontent.com/IIkUk9D8TWKHldxmMVRt';
     }
 
     public function tearDown()
@@ -21,12 +21,12 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /*
-     * Test initializing FilepickerClient with an API Key
+     * Test initializing FilestackClient with an API Key
      */
     public function testClientInitialized()
     {
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $this->assertEquals($client->api_key, self::TEST_API_KEY);
     }
 
@@ -44,7 +44,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $result = $client->getContent($this->test_file_url);
 
         $this->assertNotNull($result);
@@ -67,7 +67,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $result = $client->getContent('some-bad-file-handle-testing');
     }
 
@@ -87,7 +87,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
 
         $destination = __DIR__ . '/testfiles/my-custom-filename.jpg';
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $result = $client->download($this->test_file_url, $destination);
 
         $this->assertTrue($result);
@@ -112,7 +112,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
 
         $destination = __DIR__ . '/testfiles/my-custom-filename.jpg';
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $result = $client->download('some-bad-file-handle-testing', $destination);
     }
 
@@ -130,7 +130,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $result_json = $client->getMetaData($this->test_file_url);
         $this->assertEquals($result_json['filename'], 'somefilename.jpg');
     }
@@ -152,7 +152,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $filelink = $client->getMetaData('some-bad-file-handle-testing');
     }
 
@@ -169,7 +169,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(403);
 
-        $client = new FilepickerClient('some_bad_key', $stub_http_client);
+        $client = new FilestackClient('some_bad_key', $stub_http_client);
         $filelink = $client->store($this->test_filepath);
     }
 
@@ -187,7 +187,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $filelink = $client->store($this->test_filepath);
         $this->assertNotNull($filelink);
     }
@@ -206,7 +206,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
 
         $security = null;
         $extras = [
@@ -232,7 +232,7 @@ class FilepickerClientTest extends \PHPUnit_Framework_TestCase
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilepickerClient(self::TEST_API_KEY, $stub_http_client);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $filelink = $client->store($this->test_file_url);
         $this->assertNotNull($filelink);
     }

@@ -16,7 +16,7 @@ class FilestackConfig {
      *                                          store, download, get_content, delete
      * @param string                $api_key    Filestack API Key
      * @param array                 $options    array of options
-     * @param Filestack\Security    $security   Filestack Security object
+     * @param FilestackSecurity     $security   Filestack Security object
      *
      * @return string (url)
      */
@@ -52,6 +52,11 @@ class FilestackConfig {
 
             default:
                 break;
+        }
+
+        // sign url if security is passed in
+        if ($security) {
+            $url = $security->signUrl($url);
         }
 
         return $url;

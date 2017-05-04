@@ -35,7 +35,7 @@ class Filelink
     /**
      * Get the content of filelink
      *
-     * @param Filetack\Security $security   Filestack security object if
+     * @param FilestackSecurity $security   Filestack security object if
      *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
@@ -59,7 +59,7 @@ class Filelink
      *                                      location, path, container, exif,
      *                                      uploaded (timestamp), writable, cloud, source_url
      *
-     * @param Filetack\Security $security   Filestack security object if
+     * @param FilestackSecurity $security   Filestack security object if
      *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails
@@ -79,7 +79,7 @@ class Filelink
      * @param string            $handle         Filestack file handle
      * @param string            $destination    destination filepath to save to,
      *                                          can be folder name (defaults to stored filename)
-     * @param Filetack\Security $security       Filestack security object if
+     * @param FilestackSecurity $security       Filestack security object if
      *                                          security settings is turned on
      *
      * @throws FilestackException   if API call fails
@@ -101,7 +101,7 @@ class Filelink
      * @param array                 $extras     extra optional params.  Allowed options are:
      *                                          location, filename, mimetype, path, container,
      *                                          access (public|private), base64decode (true|false)
-     * @param Filestack\Security    $security   Filestack Security object
+     * @param FilestackSecurity    $security   Filestack Security object
      *
      * @throws FilestackException   if API call fails
      *
@@ -130,7 +130,7 @@ class Filelink
     /**
      * return the URL (cdn) of this filelink with security policy
      *
-     * @param Filestack\Security    $security   Filestack security object
+     * @param FilestackSecurity    $security   Filestack security object
      *
      * @return string
      */

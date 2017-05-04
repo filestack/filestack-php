@@ -3,6 +3,7 @@ namespace Filestack\Mixins;
 
 use Filestack\FilestackConfig;
 use Filestack\Filelink;
+use Filestack\FileSecurity;
 use Filestack\FilestackException;
 
 /**
@@ -46,7 +47,7 @@ trait CommonMixin
      * @param string            $url            Filestack file url
      * @param string            $destination    destination filepath to save to,
      *                                          can be a directory name
-     * @param Filetack\Security $security       Filestack security object if
+     * @param FilestackSecurity $security       Filestack security object if
      *                                          security settings is turned on
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
@@ -57,9 +58,14 @@ trait CommonMixin
     {
         if (is_dir($destination)) {
             // destination is a folder
-            $json_response = $this->sendGetMetaData($url, ["filename"]);
+            $json_response = $this->sendGetMetaData($url, ["filename"], $security);
             $remote_filename = $json_response['filename'];
             $destination .= $remote_filename;
+        }
+
+        // sign url if security is passed in
+        if ($security) {
+            $url = $security->signUrl($url);
         }
 
         # send request
@@ -85,7 +91,7 @@ trait CommonMixin
      * Get the content of a file.
      *
      * @param string            $url        Filestack file url
-     * @param Filetack\Security $security   Filestack security object if
+     * @param FilestackSecurity $security   Filestack security object if
      *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
@@ -94,6 +100,11 @@ trait CommonMixin
      */
     protected function sendGetContent($url, $security=null)
     {
+        // sign url if security is passed in
+        if ($security) {
+            $url = $security->signUrl($url);
+        }
+
         $response = $this->get($url);
         $status_code = $response->getStatusCode();
 
@@ -114,16 +125,20 @@ trait CommonMixin
      * Get the metadata of a remote file.  Will only retrieve specific fields
      * if optional fields are passed in
      *
-     * @param   $url        url of file
-     * @param   $fields     optional, specific fields to retrieve.  values are:
-     *                      mimetype, filename, size, width, height,
-     *                      location, path, container, exif, uploaded (timestamp),
-     *                      writable, cloud, source_url
+     * @param                   $url        url of file
+     * @param                   $fields     optional, specific fields to retrieve.
+     *                                      values are: mimetype, filename, size,
+     *                                      width, height,location, path, container,
+     *                                      exif, uploaded (timestamp),
+     *                                      writable, cloud, source_url
+     * @param FilestackSecurity $security   Filestack security object if
+     *                                      security settings is turned on
+     *
      * @throws FilestackException   if API call fails, e.g 400 bad request
      *
      * @return json
      */
-    protected function sendGetMetaData($url, $fields=[])
+    protected function sendGetMetaData($url, $fields=[], $security=null)
     {
         $params = [];
         foreach ($fields as $field_name) {
@@ -131,6 +146,12 @@ trait CommonMixin
         }
 
         $url .= "/metadata";
+
+        // sign url if security is passed in
+        if ($security) {
+            $url = $security->signUrl($url);
+        }
+
         $response = $this->get($url, $params);
         $status_code = $response->getStatusCode();
 
@@ -162,7 +183,7 @@ trait CommonMixin
      *                                  container (string, container in bucket),
      *                                  access (string, public|private),
      *                                  base64decode (bool, true|false)
-     * @param Filestack\Security    $security   Filestack Security object
+     * @param FilestackSecurity     $security   Filestack Security object
      *
      * @throws FilestackException   if API call fails
      *
