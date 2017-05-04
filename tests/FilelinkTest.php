@@ -8,11 +8,13 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
     const TEST_API_KEY = 'A5lEN6zU8SemSBWiwcGJhz';
     const TEST_SECRET = '3UAQ64UWMNCCRF36CY2NSRSPSU';
 
+    protected $test_file_path;
     protected $test_file_url;
     protected $test_file_handle;
 
     protected function setUp()
     {
+        $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
         $this->test_file_url = 'https://cdn.filestackcontent.com/IIkUk9D8TWKHldxmMVRt';
         $this->test_file_handle = 'IIkUk9D8TWKHldxmMVRt';
     }
@@ -35,7 +37,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test filelink get content
      */
-    public function testFilelinkGetContent()
+    public function testFilelinkGetContentSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -80,7 +82,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test downloading a filelink
      */
-    public function testFilelinkDownload()
+    public function testFilelinkDownloadSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -126,7 +128,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getting meta data of a filelink
      */
-    public function testFilelinkGetMetadata()
+    public function testFilelinkGetMetadataSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -170,7 +172,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test deleting a filelink
      */
-    public function testFilelinkDelete()
+    public function testFilelinkDeleteSuccess()
     {
         $mock_response = new MockHttpResponse(200);
 
@@ -209,7 +211,7 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test storing a filelink
      */
-    public function testFilelinkStore()
+    public function testFilelinkStoreSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -222,7 +224,75 @@ class FilelinkTest extends \PHPUnit_Framework_TestCase
 
         $filelink = new Filelink($this->test_file_handle,
                         self::TEST_API_KEY, $stub_http_client);
+
         $new_filelink = $filelink->store();
+
         $this->assertNotNull($new_filelink);
+    }
+
+    /**
+     * Test storing a filelink
+     */
+    public function testFilelinkStoreException()
+    {
+        $mock_response = new MockHttpResponse(403);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(403);
+
+        $filelink = new Filelink($this->test_file_handle,
+                        'some-bad-key', $stub_http_client);
+
+        $new_filelink = $filelink->store();
+    }
+
+    /**
+     * Test overwriting a filelink
+     */
+    public function testFilelinkOverwriteSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{url: "https://cdn.filestack.com/somefilehandle"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $security = new FilestackSecurity(self::TEST_SECRET);
+        $filelink = new Filelink($this->test_file_handle,
+                        self::TEST_API_KEY, $stub_http_client);
+
+        $result = $filelink->overwrite($this->test_filepath, $security);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test overwriting a filelink
+     */
+    public function testFilelinkOverwriteException()
+    {
+        $mock_response = new MockHttpResponse(404);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $security = new FilestackSecurity(self::TEST_SECRET);
+        $filelink = new Filelink('some-bad-file-handle',
+                        self::TEST_API_KEY, $stub_http_client);
+
+        $result = $filelink->overwrite($this->test_filepath, $security);
+
+        $this->assertTrue($result);
     }
 }

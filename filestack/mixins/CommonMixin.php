@@ -167,7 +167,7 @@ trait CommonMixin
      *
      * @throws FilestackException   if API call fails, e.g 400 bad request
      *
-     * @return json
+     * @return array
      */
     protected function sendGetMetaData($url, $fields=[], $security=null)
     {
@@ -188,7 +188,7 @@ trait CommonMixin
 
         // handle response
         if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), $status_code);
+            $json_response = json_decode($response->getBody(), true);
             return $json_response;
         }
         else {
@@ -237,11 +237,18 @@ trait CommonMixin
 
         // handle response
         if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), $status_code);
+            $json_response = json_decode($response->getBody(), true);
 
             $url = $json_response['url'];
             $file_handle = substr($url, strrpos($url, '/') + 1);
+
             $filelink = new Filelink($file_handle, $api_key);
+            $filelink->metadata['filename'] = $json_response['filename'];
+            $filelink->metadata['size'] = $json_response['size'];
+            $filelink->metadata['mimetype'] = $json_response['type'];
+            $filelink->metadata['path'] = $json_response['key'];
+            $filelink->metadata['container'] = $json_response['container'];
+
             return $filelink;
         }
         else {
@@ -249,6 +256,52 @@ trait CommonMixin
         }
 
         return null;
+    }
+
+    /**
+     * Overwrite a file in cloud storage
+     *
+     * @param string            $filepath   real path to file
+     * @param string            $handle     Filestack file handle to overwrite
+     * @param string            $api_key    Filestack API Key
+     * @param FilestackSecurity $security   Filestack security object is
+     *                                      required for this call
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink
+     */
+    public function sendOverwrite($filepath, $handle, $api_key, $security)
+    {
+        $data_to_send = $this->createUploadFileData($filepath);
+
+        $options = ['handle' => $handle];
+        $url = FilestackConfig::createUrl('overwrite', $api_key, $options, $security);
+
+        $response = $this->requestPost($url, $data_to_send);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+
+            $json_response = json_decode($response->getBody(), true);
+
+            $url = $json_response['url'];
+            $file_handle = substr($url, strrpos($url, '/') + 1);
+
+            $filelink = new Filelink($file_handle, $api_key);
+            $filelink->metadata['filename'] = $json_response['filename'];
+            $filelink->metadata['size'] = $json_response['size'];
+            $filelink->metadata['mimetype'] = $json_response['mimetype'];
+
+            return $filelink;
+        }
+        else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        // failed if reached
+        return false;
     }
 
     /**

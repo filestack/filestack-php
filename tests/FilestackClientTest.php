@@ -10,11 +10,13 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
 
     protected $test_filepath;
     protected $test_file_url;
+    protected $test_file_handle;
 
     protected function setUp()
     {
         $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
         $this->test_file_url = 'https://cdn.filestackcontent.com/IIkUk9D8TWKHldxmMVRt';
+        $this->test_file_handle = 'IIkUk9D8TWKHldxmMVRt';
     }
 
     public function tearDown()
@@ -35,7 +37,7 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getting content of Filestack file
      */
-    public function testGetContent()
+    public function testGetContentSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -116,7 +118,7 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Test deleting a Filestack File
      */
-    public function testDelete()
+    public function testDeleteSuccess()
     {
         $mock_response = new MockHttpResponse(200);
 
@@ -157,7 +159,7 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Test downloading a Filestack File
      */
-    public function testDownload()
+    public function testDownloadSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -232,6 +234,7 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
 
         $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $filelink = $client->store($this->test_filepath);
+
         $this->assertNotNull($filelink);
     }
 
@@ -258,6 +261,7 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
         ];
 
         $filelink = $client->store($this->test_filepath);
+
         $this->assertNotNull($filelink);
     }
 
@@ -277,6 +281,58 @@ class FilestackClientTest extends \PHPUnit_Framework_TestCase
 
         $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
         $filelink = $client->store($this->test_file_url);
+
         $this->assertNotNull($filelink);
+    }
+
+    /**
+     * Test overwriting a Filestack File
+     */
+    public function testOverwriteSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{url: "https://cdn.filestack.com/somefilehandle"}');
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $security = new FilestackSecurity(self::TEST_SECRET);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
+
+        $filelink = $client->overwrite(
+                        $this->test_filepath,
+                        $this->test_file_handle,
+                        $security
+                    );
+
+        $this->assertNotNull($filelink);
+    }
+
+    /**
+     * Test overwriting file throws exception if invalid url
+     */
+    public function testOverwriteException()
+    {
+        $mock_response = new MockHttpResponse(
+            404,
+            'file not found');
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $security = new FilestackSecurity(self::TEST_SECRET);
+        $client = new FilestackClient(self::TEST_API_KEY, $stub_http_client);
+
+        $filelink = $client->overwrite(
+                        $this->test_filepath,
+                        'some-bad-file-handle-testing',
+                        $security
+                    );
     }
 }
