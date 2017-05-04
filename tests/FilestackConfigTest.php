@@ -1,24 +1,12 @@
 <?php
+namespace Filestack\Test;
 
 use Filestack\FilestackConfig;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
 
-class FilestackConfigTest extends \PHPUnit_Framework_TestCase
+class FilestackConfigTest extends BaseTest
 {
-    protected $test_api_key;
-
-    protected function setUp()
-    {
-        // setup
-        $this->test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
-    }
-
-    public function tearDown()
-    {
-        // teardown calls
-    }
-
     /**
      * Test building delete Url
      */
