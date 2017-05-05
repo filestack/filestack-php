@@ -28,29 +28,6 @@ class FilestackConfig
 
         $url = '';
         switch ($action) {
-            case 'store':
-                $allowed_options = [
-                    'filename', 'mimetype', 'path', 'container', 'access', 'base64decode'
-                ];
-
-                // set location to S3 if not passed in
-                $location = 'S3';
-                if (array_key_exists('location', $options)) {
-                    $location = $options['location'];
-                }
-
-                $url = sprintf('%s/store/%s?key=%s',
-                    self::API_URL,
-                    $location,
-                    $api_key);
-
-                foreach ($options as $key => $value) {
-                    if (in_array($key, $allowed_options)) {
-                        $url .= "&$key=$value";
-                    }
-                }
-                break;
-
             case 'delete':
             case 'overwrite':
                 $url = sprintf('%s/file/%s?key=%s',
@@ -76,6 +53,29 @@ class FilestackConfig
                 );
                 break;
 
+            case 'upload':
+                $allowed_options = [
+                    'filename', 'mimetype', 'path', 'container', 'access', 'base64decode'
+                ];
+
+                // set location to S3 if not passed in
+                $location = 'S3';
+                if (array_key_exists('location', $options)) {
+                    $location = $options['location'];
+                }
+
+                $url = sprintf('%s/store/%s?key=%s',
+                    self::API_URL,
+                    $location,
+                    $api_key);
+
+                foreach ($options as $key => $value) {
+                    if (in_array($key, $allowed_options)) {
+                        $url .= "&$key=$value";
+                    }
+                }
+                break;
+
             default:
                 break;
         }
@@ -99,4 +99,53 @@ class FilestackConfig
         $version = file_get_contents(__DIR__ . '/../VERSION');
         return trim($version);
     }
+
+    public static $Allowed_Attrs = [
+        'border' => [
+            'b', 'c', 'w',
+            'background', 'color', 'width'
+        ],
+        'circle' => [
+            'b', 'background'
+        ],
+        'crop' => [
+            'd', 'dim'
+        ],
+        'detect_faces' => [
+            'c', 'e', 'n', 'N',
+            'color', 'export', 'minSize', 'maxSize'
+        ],
+        'polaroid' => [
+            'b', 'c', 'r',
+            'background', 'color', 'rotate'
+        ],
+        'resize' => [
+            'w', 'h', 'f', 'a',
+            'width', 'height', 'fit', 'align'
+        ],
+        'rounded_corners' => [
+            'b', 'l', 'r',
+            'background', 'blur', 'radius'
+        ],
+        'rotate' => [
+            'b', 'd', 'e',
+            'background', 'deg', 'exif'
+        ],
+        'shadow' => [
+            'b', 'l', 'o', 'v',
+            'background', 'blur', 'opacity', 'vector'
+        ],
+        'torn_edges' => [
+            'b', 's',
+            'background', 'spread'
+        ],
+        'vignette' => [
+            'a', 'b', 'm',
+            'amount', 'background', 'blurmode',
+        ],
+        'watermark' => [
+            'f', 'p', 's',
+            'file', 'position', 'size'
+        ]
+    ];
 }

@@ -10,12 +10,12 @@ $test_filepath = __DIR__ . '/../tests/testfiles/calvinandhobbes.jpg';
 
 # Filestack client examples
 $security = new FilestackSecurity($test_secret);
-$client = new FilestackClient($test_api_key);
+$client = new FilestackClient($test_api_key, $security);
 
 // upload a file
 $options = ['Filename' => 'somefilename.jpg'];
 try {
-    $filelink = $client->store($test_filepath, $options, $security);
+    $filelink = $client->upload($test_filepath, $options);
     var_dump($filelink);
 } catch (FilestackException $e) {
     echo $e->getMessage();
@@ -24,11 +24,11 @@ try {
 
 // get metadata of file
 $fields = [];
-$metadata = $client->getMetaData($filelink->url(), $fields, $security);
+$metadata = $client->getMetaData($filelink->url(), $fields);
 var_dump($metadata);
 
 // get content of a file
-$content = $client->getContent($filelink->url(), $security);
+$content = $client->getContent($filelink->url());
 
 // save file to local drive
 $filepath = __DIR__ . '/../tests/testfiles/' . $metadata['filename'];
@@ -36,13 +36,13 @@ file_put_contents($filepath, $content);
 
 // download a file
 $destination = __DIR__ . '/../tests/testfiles/my-custom-filename.jpg';
-$result = $client->download($filelink->url(), $destination, $security);
+$result = $client->download($filelink->url(), $destination);
 var_dump($result);
 
 // overwrite a file
-$filelink2 = $client->overwrite($test_filepath, $filelink->handle, $security);
+$filelink2 = $client->overwrite($test_filepath, $filelink->handle);
 var_dump($filelink2);
 
 // delete a file
-$result = $client->delete($filelink->handle, $security);
+$result = $client->delete($filelink->handle);
 var_dump($result);

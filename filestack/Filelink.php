@@ -10,13 +10,12 @@ use Filestack\FilestackConfig;
 class Filelink
 {
     use Mixins\CommonMixin;
-    use Mixins\TransformationMixin {
-        Mixins\TransformationMixin::__construct as transformationConstruct;
-    }
+    use Mixins\TransformationMixin;
 
     public $api_key;
     public $handle;
     public $metadata;
+    public $security;
 
     /**
      * Filelink constructor
@@ -24,33 +23,32 @@ class Filelink
      * @param string    $handle     Filestack file handle
      * @param string    $api_key    Filestack API Key
      */
-    public function __construct($handle, $api_key='', $http_client=null)
+    public function __construct($handle, $api_key='', $security=null, $http_client=null)
     {
         $this->handle = $handle;
         $this->api_key = $api_key;
+        $this->security = $security;
+
         $this->metadata = [];
 
         if (is_null($http_client)) {
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
-        $this->transformationConstruct();
     }
 
     /**
      * Get the content of filelink
      *
-     * @param FilestackSecurity $security   Filestack security object if
-     *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return string (file content)
      */
-    public function getContent($security=null)
+    public function getContent()
     {
         // call CommonMixin function
-        $result = $this->sendGetContent($this->url());
+        $result = $this->sendGetContent($this->url(), $this->security);
 
         return $result;
     }
@@ -64,17 +62,15 @@ class Filelink
      *                                      location, path, container, exif,
      *                                      uploaded (timestamp), writable, cloud, source_url
      *
-     * @param FilestackSecurity $security   Filestack security object if
-     *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails
      *
      * @return array
      */
-    public function getMetaData($fields=[], $security=null)
+    public function getMetaData($fields=[])
     {
         // call CommonMixin function
-        $result = $this->sendGetMetaData($this->url(), $fields);
+        $result = $this->sendGetMetaData($this->url(), $fields, $this->security);
 
         foreach ($result as $key => $value) {
             $this->metadata[$key] = $value;
@@ -86,17 +82,15 @@ class Filelink
     /**
      * Delete this filelink from cloud storage
      *
-     * @param FilestackSecurity $security       Filestack security object is
-     *                                          required for this call
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return bool (true = delete success, false = failed)
      */
-    public function delete($security)
+    public function delete()
     {
         // call CommonMixin function
-        $result = $this->sendDelete($this->handle, $this->api_key, $security);
+        $result = $this->sendDelete($this->handle, $this->api_key, $this->security);
         return $result;
     }
 
@@ -106,59 +100,31 @@ class Filelink
      * @param string            $handle         Filestack file handle
      * @param string            $destination    destination filepath to save to,
      *                                          can be folder name (defaults to stored filename)
-     * @param FilestackSecurity $security       Filestack security object if
-     *                                          security settings is turned on
      *
      * @throws FilestackException   if API call fails
      *
      * @return bool (true = download success, false = failed)
      */
-    public function download($destination, $security=null)
+    public function download($destination)
     {
         // call CommonMixin function
-        $result = $this->sendDownload($this->url(), $destination, $security);
+        $result = $this->sendDownload($this->url(), $destination, $this->security);
         return $result;
-    }
-
-    /**
-     * Store this file to desired cloud service, defaults to Filestack's S3
-     * storage.  Set $extra['location'] to specify location.
-     * Possible values are: S3, gcs, azure, rackspace, dropbox
-     *
-     * @param array                 $extras     extra optional params.  Allowed options are:
-     *                                          location, filename, mimetype, path, container,
-     *                                          access (public|private), base64decode (true|false)
-     * @param FilestackSecurity    $security   Filestack Security object
-     *
-     * @throws FilestackException   if API call fails
-     *
-     * @return Filestack\Filelink or null
-     */
-    public function store($extras=[], $security=null)
-    {
-        $filepath = $this->url();
-
-        // call CommonMixin function
-        $filelink = $this->sendStore($filepath, $this->api_key, $extras, $security);
-
-        return $filelink;
     }
 
     /**
      * Overwrite this filelink in cloud storage
      *
      * @param string            $filepath   real path to file
-     * @param FilestackSecurity $security   Filestack security object is
-     *                                      required for this call
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return boolean
      */
-    public function overwrite($filepath, $security)
+    public function overwrite($filepath)
     {
         $result = $this->sendOverwrite($filepath,
-            $this->handle, $this->api_key, $security);
+            $this->handle, $this->api_key, $this->security);
 
         // update metadata
         $this->metadata['filename'] = $result->metadata['filename'];
@@ -168,7 +134,12 @@ class Filelink
         return true;
     }
 
-    public function transform($transform_tasks, $destination=null, $security=null)
+    public function crop($options)
+    {
+
+    }
+
+    public function transform($transform_tasks, $destination=null)
     {
         // build tasks_str
         $tasks_str = '';
@@ -188,7 +159,7 @@ class Filelink
         // build url
         $options['tasks_str'] = $tasks_str;
         $options['handle'] = $this->handle;
-        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $this->security);
 
         $params = [];
         $headers = [];

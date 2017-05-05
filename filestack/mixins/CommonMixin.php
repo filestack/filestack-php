@@ -197,62 +197,6 @@ trait CommonMixin
     }
 
     /**
-     * store a file to desired cloud service, defaults to Filestack's S3
-     * storage.  Set $options['location'] to specify location, possible values are:
-     *                                      S3, gcs, azure, rackspace, dropbox
-     *
-     * @param string                $filepath   url or filepath
-     * @param string                $api_key    Filestack API Key
-     * @param array                 $options     extra optional params. e.g.
-     *                                  location (string, storage location),
-     *                                  filename (string, custom filename),
-     *                                  mimetype (string, file mimetype),
-     *                                  path (string, path in cloud container),
-     *                                  container (string, container in bucket),
-     *                                  access (string, public|private),
-     *                                  base64decode (bool, true|false)
-     * @param FilestackSecurity     $security   Filestack Security object
-     *
-     * @throws FilestackException   if API call fails
-     *
-     * @return Filestack\Filelink or null
-     */
-    protected function sendStore($filepath, $api_key, $options=[], $security=null)
-    {
-        // set filename to original file if one does not exists
-        if (!array_key_exists('filename', $options)) {
-            $options['filename'] = basename($filepath);
-        }
-
-        // build url and data to send
-        $url = FilestackConfig::createUrl('store', $api_key, $options, $security);
-        $data_to_send = $this->createUploadFileData($filepath);
-
-        // send post request
-        $response = $this->requestPost($url, $data_to_send);
-        $status_code = $response->getStatusCode();
-
-        // handle response
-        if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), true);
-
-            $url = $json_response['url'];
-            $file_handle = substr($url, strrpos($url, '/') + 1);
-
-            $filelink = new Filelink($file_handle, $api_key);
-            $filelink->metadata['filename'] = $json_response['filename'];
-            $filelink->metadata['size'] = $json_response['size'];
-            $filelink->metadata['mimetype'] = $json_response['type'];
-
-            return $filelink;
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        return null;
-    }
-
-    /**
      * Overwrite a file in cloud storage
      *
      * @param string            $filepath   real path to file

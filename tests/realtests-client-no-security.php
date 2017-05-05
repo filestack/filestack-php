@@ -20,7 +20,7 @@ class RealTestsClientNoSecurity extends \PHPUnit_Framework_TestCase
         // upload a file
         $options = ['Filename' => 'somefilename.jpg'];
         try {
-            $filelink = $client->store($test_filepath, $options);
+            $filelink = $client->upload($test_filepath, $options);
             var_dump($filelink);
         } catch (FilestackException $e) {
             echo $e->getMessage();

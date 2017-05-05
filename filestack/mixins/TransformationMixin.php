@@ -5,13 +5,6 @@ use Filestack\FilestackException;
 
 trait TransformationMixin
 {
-    public $allowed_attrs;
-
-    public function __construct()
-    {
-        $this->setAllowedAttrs();
-    }
-
     /**
      * Return the URL portion of crop operation
      *
@@ -24,7 +17,7 @@ trait TransformationMixin
      */
     public function getTransformStr($taskname, $process_attrs)
     {
-        if (!array_key_exists($taskname, $this->allowed_attrs)) {
+        if (!array_key_exists($taskname, FilestackConfig::Allowed_Attrs)) {
             throw new FilestackException('Invalid transformation task', 400);
         }
 

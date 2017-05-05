@@ -31,8 +31,8 @@ class FilelinkTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $filelink = new Filelink($this->test_file_handle,
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
 
         $result = $filelink->getContent();
 
@@ -56,8 +56,8 @@ class FilelinkTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $filelink = new Filelink($this->test_file_handle,
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
 
         $result = $filelink->getContent();
     }
@@ -76,8 +76,8 @@ class FilelinkTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $filelink = new Filelink($this->test_file_handle,
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
         $destination = __DIR__ . "/testfiles/my-custom-filenamed.jpg";
 
         $result = $filelink->download($destination);
@@ -101,8 +101,8 @@ class FilelinkTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $filelink = new Filelink("some-bad-file-handle",
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink('some-bad-file-handle', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
         $destination = __DIR__ . "/testfiles/test.jpg";
 
         $result = $filelink->download($destination);
@@ -122,8 +122,8 @@ class FilelinkTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $filelink = new Filelink($this->test_file_handle,
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
 
         $result = $filelink->getMetaData();
         $this->assertNotNull($result['filename']);
@@ -146,8 +146,8 @@ class FilelinkTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $filelink = new Filelink("some-bad-file-handle",
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink('some-bad-file-handle', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
 
         $result = $filelink->getMetaData();
     }
@@ -163,10 +163,9 @@ class FilelinkTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU',
-                        $this->test_api_key, $stub_http_client);
-        $result = $filelink->delete($security);
+        $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+        $result = $filelink->delete();
 
         $this->assertTrue($result);
     }
@@ -185,52 +184,10 @@ class FilelinkTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU',
-                        $this->test_api_key, $stub_http_client);
-        $result = $filelink->delete($security);
-    }
+        $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU', $this->test_api_key,
+            $this->test_security, $stub_http_client);
 
-    /**
-     * Test storing a filelink
-     */
-    public function testFilelinkStoreSuccess()
-    {
-        $mock_response = new MockHttpResponse(
-            200,
-            '{url: "https://cdn.filestack.com/somefilehandle"}'
-        );
-
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
-        $filelink = new Filelink($this->test_file_handle,
-                        $this->test_api_key, $stub_http_client);
-
-        $new_filelink = $filelink->store();
-
-        $this->assertNotNull($new_filelink);
-    }
-
-    /**
-     * Test storing a filelink
-     */
-    public function testFilelinkStoreException()
-    {
-        $mock_response = new MockHttpResponse(403);
-
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
-        $this->expectException(FilestackException::class);
-        $this->expectExceptionCode(403);
-
-        $filelink = new Filelink($this->test_file_handle,
-                        'some-bad-key', $stub_http_client);
-
-        $new_filelink = $filelink->store();
+        $result = $filelink->delete();
     }
 
     /**
@@ -247,11 +204,10 @@ class FilelinkTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $filelink = new Filelink($this->test_file_handle,
-                        $this->test_api_key, $stub_http_client);
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
 
-        $result = $filelink->overwrite($this->test_filepath, $security);
+        $result = $filelink->overwrite($this->test_filepath);
 
         $this->assertTrue($result);
     }
@@ -270,11 +226,12 @@ class FilelinkTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $security = new FilestackSecurity($this->test_secret);
         $filelink = new Filelink('some-bad-file-handle',
-                        $this->test_api_key, $stub_http_client);
+                        $this->test_api_key,
+                        $this->test_security,
+                        $stub_http_client);
 
-        $result = $filelink->overwrite($this->test_filepath, $security);
+        $result = $filelink->overwrite($this->test_filepath);
 
         $this->assertTrue($result);
     }

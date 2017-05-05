@@ -22,6 +22,12 @@ class TransformationTests extends BaseTest
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key);
 
         $destination = __DIR__ . '/testfiles/my-transformed-file.jpg';
-        $content = $filelink->transform($transform_tasks, $destination, $security);
+        //$content = $filelink->transform($transform_tasks, $destination, $security);
+
+        # or ?
+        /*$transformed_filelink = $filelink
+                                    ->crop($crop_options)
+                                    ->rotate($rotate_options)
+                                    ->resize($resize_options);*/
     }
 }

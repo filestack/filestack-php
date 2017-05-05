@@ -1,6 +1,8 @@
 <?php
 namespace Filestack\Test;
 
+use Filestack\FilestackSecurity;
+
 class BaseTest extends \PHPUnit_Framework_TestCase
 {
     protected $test_api_key;
@@ -8,6 +10,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     protected $test_file_path;
     protected $test_file_url;
     protected $test_file_handle;
+    protected $test_security;
 
     public function __construct()
     {
@@ -17,6 +20,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
         $this->test_file_url = 'https://cdn.filestackcontent.com/IIkUk9D8TWKHldxmMVRt';
         $this->test_file_handle = 'IIkUk9D8TWKHldxmMVRt';
+        $this->test_security = new FilestackSecurity($this->test_secret);
     }
 
     public function testFileExists()

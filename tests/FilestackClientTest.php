@@ -13,7 +13,11 @@ class FilestackClientTest extends BaseTest
     public function testClientInitialized()
     {
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
         $this->assertEquals($client->api_key, $this->test_api_key);
     }
 
@@ -31,7 +35,11 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
         $result = $client->getContent($this->test_file_url);
 
         $this->assertNotNull($result);
@@ -54,7 +62,10 @@ class FilestackClientTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client);
         $result = $client->getContent('some-bad-file-handle-testing');
     }
 
@@ -72,7 +83,11 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
         $result_json = $client->getMetaData($this->test_file_url);
         $this->assertEquals($result_json['filename'], 'somefilename.jpg');
     }
@@ -94,7 +109,11 @@ class FilestackClientTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
         $filelink = $client->getMetaData('some-bad-file-handle-testing');
     }
 
@@ -109,11 +128,14 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
 
         $test_handle = 'gQNI9RF1SG2nRmvmQDMU';
-        $result = $client->delete($test_handle, $security);
+        $result = $client->delete($test_handle);
 
         $this->assertTrue($result);
     }
@@ -132,11 +154,14 @@ class FilestackClientTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
 
         $test_handle = 'some-bad-file-handle-testing';
-        $result = $client->delete($test_handle, $security);
+        $result = $client->delete($test_handle);
     }
 
     /**
@@ -155,7 +180,11 @@ class FilestackClientTest extends BaseTest
 
         $destination = __DIR__ . '/testfiles/my-custom-filename.jpg';
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
         $result = $client->download($this->test_file_url, $destination);
 
         $this->assertTrue($result);
@@ -180,14 +209,18 @@ class FilestackClientTest extends BaseTest
 
         $destination = __DIR__ . '/testfiles/my-custom-filename.jpg';
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
         $result = $client->download('some-bad-file-handle-testing', $destination);
     }
 
     /**
-     * Test calling the store function with an invalid api key.
+     * Test calling the upload function with an invalid api key.
      */
-    public function testStoreInvalidKey()
+    public function testUploadInvalidKey()
     {
         $mock_response = new MockHttpResponse(403);
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -197,14 +230,18 @@ class FilestackClientTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(403);
 
-        $client = new FilestackClient('some_bad_key', $stub_http_client);
-        $filelink = $client->store($this->test_filepath);
+        $client = new FilestackClient(
+            'some-bad-key',
+            $this->test_security,
+            $stub_http_client
+        );
+        $filelink = $client->upload($this->test_filepath);
     }
 
     /**
-     * Test calling the store function with a valid api key.
+     * Test calling the upload function with a valid api key.
      */
-    public function testStoreSuccess()
+    public function testUploadSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -215,16 +252,20 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
-        $filelink = $client->store($this->test_filepath);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+        $filelink = $client->upload($this->test_filepath);
 
         $this->assertNotNull($filelink);
     }
 
     /**
-     * Test calling the store function with a valid api key and options
+     * Test calling the upload function with a valid api key and options
      */
-    public function testStoreSuccessWithOptions()
+    public function testUploadSuccessWithOptions()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -235,23 +276,26 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
 
-        $security = null;
         $extras = [
             'Location' => 'dropbox',
             'Filename' => 'somefilename.jpg',
         ];
 
-        $filelink = $client->store($this->test_filepath);
+        $filelink = $client->upload($this->test_filepath);
 
         $this->assertNotNull($filelink);
     }
 
     /**
-     * Test calling the store function with a valid api key and URL of file
+     * Test calling the upload function with a valid api key and URL of file
      */
-    public function testStoreUrlSuccess()
+    public function testUploadUrlSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -262,8 +306,12 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
-        $filelink = $client->store($this->test_file_url);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+        $filelink = $client->upload($this->test_file_url);
 
         $this->assertNotNull($filelink);
     }
@@ -281,15 +329,13 @@ class FilestackClientTest extends BaseTest
         $stub_http_client->method('request')
              ->willReturn($mock_response);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
 
-        $filelink = $client->overwrite(
-                        $this->test_filepath,
-                        $this->test_file_handle,
-                        $security
-                    );
-
+        $filelink = $client->overwrite($this->test_filepath, $this->test_file_handle);
         $this->assertNotNull($filelink);
     }
 
@@ -309,13 +355,15 @@ class FilestackClientTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $security = new FilestackSecurity($this->test_secret);
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
 
         $filelink = $client->overwrite(
                         $this->test_filepath,
-                        'some-bad-file-handle-testing',
-                        $security
+                        'some-bad-file-handle-testing'
                     );
     }
 }
