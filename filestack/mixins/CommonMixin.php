@@ -101,9 +101,9 @@ trait CommonMixin
 
         # send request
         $headers = [];
-        $options = ["sink" => $destination];
+        $options = ['sink' => $destination];
 
-        $response = $this->requestGet($url, ["dl" => "true"], $headers, $options);
+        $response = $this->requestGet($url, ['dl' => 'true'], $headers, $options);
         $status_code = $response->getStatusCode();
 
         // handle response

@@ -60,12 +60,31 @@ class FilestackConfig
                 );
                 break;
 
+            case 'transform':
+                $base_url = sprintf('%s/%s',
+                    self::PROCESSING_URL,
+                    $api_key);
+
+                // security in a different format for transformations
+                $security_str = $security ? sprintf('/security=policy:%s,signature:%s',
+                        $security->policy,
+                        $security->signature) : '';
+
+                $url = sprintf($base_url . $security_str . '/%s/%s',
+                    $options['tasks_str'],
+                    $options['handle']
+                );
+                break;
+
             default:
                 break;
         }
 
-        // sign url if security is passed in
-        if ($security) {
+        /**
+         * sign url if security is passed in, ignoring transform called handle
+         * in case statement above
+         */
+        if ($security && $action !== 'transform') {
             $url = $security->signUrl($url);
         }
 

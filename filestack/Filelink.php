@@ -10,7 +10,9 @@ use Filestack\FilestackConfig;
 class Filelink
 {
     use Mixins\CommonMixin;
-    use Mixins\ImageConversionMixin;
+    use Mixins\TransformationMixin {
+        Mixins\TransformationMixin::__construct as transformationConstruct;
+    }
 
     public $api_key;
     public $handle;
@@ -32,6 +34,7 @@ class Filelink
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
+        $this->transformationConstruct();
     }
 
     /**
@@ -161,6 +164,53 @@ class Filelink
         $this->metadata['filename'] = $result->metadata['filename'];
         $this->metadata['mimetype'] = $result->metadata['mimetype'];
         $this->metadata['size'] = $result->metadata['size'];
+
+        return true;
+    }
+
+    public function transform($transform_tasks, $destination=null, $security=null)
+    {
+        // build tasks_str
+        $tasks_str = '';
+        $num_tasks = count($transform_tasks);
+        $num_tasks_attached = 0;
+
+        foreach ($transform_tasks as $taskname => $task_attrs) {
+            // call TransformationMixin function to chain tasks
+            $tasks_str .= $this->getTransformStr($taskname, $task_attrs);
+
+            if ($num_tasks_attached < $num_tasks - 1) {
+                $tasks_str .= "/"; // task separator
+            }
+            $num_tasks_attached++;
+        }
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $this->handle;
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
+
+        $params = [];
+        $headers = [];
+        $req_options = [];
+
+        if ($destination) {
+            $req_options['sink'] = $destination;
+        };
+
+        // call CommonMixin function
+        $response = $this->requestGet($url, $params, $headers, $req_options);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            if (!$destination) { // return content
+                $content = $response->getBody()->getContents();
+                return $content;
+            }
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
 
         return true;
     }
