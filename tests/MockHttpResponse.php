@@ -1,16 +1,18 @@
 <?php
+namespace Filestack\Test;
+
 /**
  * A mock Http response with getStatusCode and getBody functions.
  */
 class MockHttpResponse
 {
     public $status_code;
-    public $contents;
+    public $content;
 
-    function __construct($status_code, $contents='{}')
+    public function __construct($status_code, $content='{}')
     {
         $this->status_code = $status_code;
-        $this->contents = $contents;
+        $this->content = $content;
     }
 
     public function getStatusCode()
@@ -20,6 +22,21 @@ class MockHttpResponse
 
     public function getBody()
     {
-        return $this->contents;
+        return $this->content;
+    }
+}
+
+class MockHttpResponseBody
+{
+    public $content;
+
+    public function __construct($content='')
+    {
+        $this->content = $content;
+    }
+
+    public function getContents()
+    {
+        return $this->content;
     }
 }
