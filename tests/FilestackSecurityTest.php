@@ -62,8 +62,12 @@ class FilestackSecurityTest extends BaseTest
             'minSize'   => 100
         ];
         $security = new FilestackSecurity($this->test_secret, $options);
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
-        $result = $client->download($this->test_file_url, $destination, $security);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+        $result = $client->download($this->test_file_url, $destination);
 
         $this->assertTrue($result);
     }
@@ -87,7 +91,11 @@ class FilestackSecurityTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(403);
 
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            null,
+            $stub_http_client
+        );
         $result = $client->download($this->test_file_url, $destination);
     }
 
@@ -111,8 +119,12 @@ class FilestackSecurityTest extends BaseTest
         $this->expectExceptionCode(403);
 
         $security = new FilestackSecurity('some-invalid-secret-test');
-        $client = new FilestackClient($this->test_api_key, $stub_http_client);
-        $result = $client->download($this->test_file_url, $destination, $security);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+        $result = $client->download($this->test_file_url, $destination);
     }
 
     /*

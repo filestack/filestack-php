@@ -29,9 +29,9 @@ class FilestackConfigTest extends BaseTest
     }
 
     /**
-     * Test building storeUrl
+     * Test building upload url
      */
-    public function testBuildStoreUrl()
+    public function testBuildUploadUrl()
     {
         $security = null;
         $options = [
@@ -45,7 +45,7 @@ class FilestackConfigTest extends BaseTest
             $this->test_api_key,
             $options['Filename']);
 
-        $url = FilestackConfig::createUrl('store', $this->test_api_key, $options, $security);
+        $url = FilestackConfig::createUrl('upload', $this->test_api_key, $options, $security);
 
         $this->assertEquals($url, $expected_url);
     }
