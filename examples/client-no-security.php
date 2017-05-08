@@ -27,7 +27,7 @@ $metadata = $client->getMetaData($filelink->url(), $fields);
 var_dump($metadata);
 
 // get content of a file
-$content = $client->getContent($filelink->handle;
+$content = $client->getContent($filelink->handle);
 # or
 $content = $client->getContent($filelink->url());
 
@@ -42,5 +42,31 @@ $result = $client->download($filelink->handle, $destination);
 $result = $client->download($filelink->url(), $destination);
 var_dump($result);
 
-// overwrite() require security settings turned on for this operation
-// delete() require security settings turned on for this operation
+// transform an image from url
+$url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
+$transform_tasks = [
+    'crop'      => ['dim' => '[10,20,200,250]'],
+    'resize'    => ['w' => '100', 'h' => '100'],
+    'rotate'    => ['b' => '00FF00', 'd' => '45'],
+];
+
+$content = $client->transform($url, $transform_tasks);
+
+// save file to local drive
+$filepath = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
+file_put_contents($filepath, $content);
+
+// transform an image from url with store()
+$url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
+$transform_tasks = [
+    'resize'    => ['width' => '100', 'height' => '100'],
+    'rotate'    => ['background' => 'red', 'deg' => '45'],
+    'store'     => []
+];
+
+$result = $client->transform($url, $transform_tasks);
+$json = json_decode($result);
+
+var_dump($json);
+
+/* overwrite() and delete() require security settings turned on */

@@ -10,6 +10,130 @@ class FilestackConfig
     const PROCESSING_URL = 'https://cdn.filestackcontent.com';
     const CDN_URL = 'https://cdn.filestackcontent.com';
 
+    const ALLOWED_TRANSFORMATIONS = [
+        'ascii', 'blackwhite', 'blur', 'border',
+        'collage', 'compress', 'circle', 'crop', 'detect_faces', 'enhance',
+        'modulate', 'monochrome', 'negative', 'oil_paint',
+        'partial_blur', 'partial_pixelate', 'pixelate', 'polaroid',
+        'quality', 'redeye', 'resize', 'rounded_corners', 'rotate',
+        'sepia', 'shadow', 'sharpen', 'store',
+        'torn_edges', 'upscale', 'urlscreenshot', 'vignette', 'watermark', 'zip'
+    ];
+
+    const ALLOWED_ATTRS = [
+        'ascii' => [
+            'b', 'c', 'f', 'r', 's',
+            'background', 'colored', 'foreground', 'reverse', 'size'
+        ],
+        'blackwhite' => [
+            't', 'threshold'
+        ],
+        'blur' => [
+            'a', 'amount'
+        ],
+        'border' => [
+            'b', 'c', 'w',
+            'background', 'color', 'width'
+        ],
+        'collage' => [
+            'a', 'c', 'f', 'm', 'w', 'h',
+            'autorotate', 'color', 'files', 'margin', 'width', 'height'
+        ],
+        'circle' => [
+            'b', 'background'
+        ],
+        'compress' => [
+            'm', 'metadata'
+        ],
+        'crop' => [
+            'd', 'dim'
+        ],
+        'detect_faces' => [
+            'c', 'e', 'n', 'N',
+            'color', 'export', 'minSize', 'maxSize'
+        ],
+        'enhance' => [
+        ],
+        'modulate' => [
+            'b', 'h', 's',
+            'brightness', 'hue', 'saturation'
+        ],
+        'monochrome' => [
+        ],
+        'negative' => [
+        ],
+        'oil_paint' => [
+            'a', 'amount'
+        ],
+        'partial_blur' => [
+            'a', 'l', 'o', 't',
+            'amount', 'blur', 'objects', 'type'
+        ],
+        'partial_pixelate' => [
+            'a', 'l', 'o', 't',
+            'amount', 'blur', 'objects', 'type'
+        ],
+        'pixelate' => [
+            'a','amount'
+        ],
+        'polaroid' => [
+            'b', 'c', 'r',
+            'background', 'color', 'rotate'
+        ],
+        'quality' => [
+            'v', 'value'
+        ],
+        'redeye' => [
+        ],
+        'resize' => [
+            'w', 'h', 'f', 'a',
+            'width', 'height', 'fit', 'align'
+        ],
+        'rounded_corners' => [
+            'b', 'l', 'r',
+            'background', 'blur', 'radius'
+        ],
+        'rotate' => [
+            'b', 'd', 'e',
+            'background', 'deg', 'exif'
+        ],
+        'sepia' => [
+            't', 'tone'
+        ],
+        'sharpen' => [
+            'a', 'amount'
+        ],
+        'shadow' => [
+            'b', 'l', 'o', 'v',
+            'background', 'blur', 'opacity', 'vector'
+        ],
+        'store' => [
+            'a', 'b', 'c', 'f', 'l', 'p', 'r',
+            'access', 'base64decode', 'container', 'filename', 'location', 'path', 'region'
+        ],
+        'torn_edges' => [
+            'b', 's',
+            'background', 'spread'
+        ],
+        'upscale' => [
+            'n', 's', 'u',
+            'noise', 'style', 'upscale'
+        ],
+        'urlscreenshot' => [
+            'a', 'd', 'm', 'w', 'h',
+            'agent', 'delay', 'mode', 'width', 'height'
+        ],
+        'vignette' => [
+            'a', 'b', 'm',
+            'amount', 'background', 'blurmode',
+        ],
+        'watermark' => [
+            'f', 'p', 's',
+            'file', 'position', 'size'
+        ],
+        'zip' => []
+    ];
+
     /**
      * Create the URL to send requests to based on action type
      *
@@ -99,53 +223,4 @@ class FilestackConfig
         $version = file_get_contents(__DIR__ . '/../VERSION');
         return trim($version);
     }
-
-    public static $Allowed_Attrs = [
-        'border' => [
-            'b', 'c', 'w',
-            'background', 'color', 'width'
-        ],
-        'circle' => [
-            'b', 'background'
-        ],
-        'crop' => [
-            'd', 'dim'
-        ],
-        'detect_faces' => [
-            'c', 'e', 'n', 'N',
-            'color', 'export', 'minSize', 'maxSize'
-        ],
-        'polaroid' => [
-            'b', 'c', 'r',
-            'background', 'color', 'rotate'
-        ],
-        'resize' => [
-            'w', 'h', 'f', 'a',
-            'width', 'height', 'fit', 'align'
-        ],
-        'rounded_corners' => [
-            'b', 'l', 'r',
-            'background', 'blur', 'radius'
-        ],
-        'rotate' => [
-            'b', 'd', 'e',
-            'background', 'deg', 'exif'
-        ],
-        'shadow' => [
-            'b', 'l', 'o', 'v',
-            'background', 'blur', 'opacity', 'vector'
-        ],
-        'torn_edges' => [
-            'b', 's',
-            'background', 'spread'
-        ],
-        'vignette' => [
-            'a', 'b', 'm',
-            'amount', 'background', 'blurmode',
-        ],
-        'watermark' => [
-            'f', 'p', 's',
-            'file', 'position', 'size'
-        ]
-    ];
 }

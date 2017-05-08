@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 class FilestackClient
 {
     use Mixins\CommonMixin;
+    use Mixins\TransformationMixin;
 
     public $api_key;
     public $security;
@@ -23,7 +24,7 @@ class FilestackClient
      * @param GuzzleHttp\Client $http_client    DI http client, will instantiate
      *                                          one if not passed in
      */
-    public function __construct($api_key,  $security=null, $http_client=null)
+    public function __construct($api_key, $security=null, $http_client=null)
     {
         $this->api_key = $api_key;
         $this->security = $security;
@@ -32,6 +33,17 @@ class FilestackClient
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
+    }
+
+    /**
+     * Catchall function, throws Filestack Exception if method is not valid
+     *
+     * @throws FilestackException   method not found in allowed lists
+     */
+    public function __call($method, $args)
+    {
+        throw new FilestackException("$method() is not a valid method.", 400);
+        return $this;
     }
 
     /**
@@ -148,6 +160,26 @@ class FilestackClient
     }
 
     /**
+     * Applied array of transformation tasks to a url
+     *
+     * @param string    $url                url to transform
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     * @param string   $destination         option real path to where to save
+     *                                      transformed file
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink or contents
+     */
+    public function transform($url, $transform_tasks, $destination=null)
+    {
+        // call TransformationMixin
+        $result = $this->sendTransform($url, $transform_tasks, $destination);
+        return $result;
+    }
+
+    /**
      * Upload a file to desired cloud service, defaults to Filestack's S3
      * storage.  Set $options['location'] to specify location, possible values are:
      *                                      S3, gcs, azure, rackspace, dropbox
@@ -189,7 +221,7 @@ class FilestackClient
             $url = $json_response['url'];
             $file_handle = substr($url, strrpos($url, '/') + 1);
 
-            $filelink = new Filelink($file_handle, $this->api_key);
+            $filelink = new Filelink($file_handle, $this->api_key, $this->security);
             $filelink->metadata['filename'] = $json_response['filename'];
             $filelink->metadata['size'] = $json_response['size'];
             $filelink->metadata['mimetype'] = $json_response['type'];

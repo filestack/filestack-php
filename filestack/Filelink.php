@@ -16,6 +16,7 @@ class Filelink
     public $handle;
     public $metadata;
     public $security;
+    public $transform_url;
 
     /**
      * Filelink constructor
@@ -38,8 +39,31 @@ class Filelink
     }
 
     /**
+     * Catchall function, handles allowed transformation and conversion functions
+     *
+     * @throws FilestackException   method not found in allowed lists
+     */
+    public function __call($method, $args)
+    {
+        // transformation calls
+        if (in_array($method, FilestackConfig::ALLOWED_TRANSFORMATIONS)) {
+            $options = [];
+            if (count($args) > 0) {
+                $options = $args[0];
+            }
+            $this->setTransformUrl($method, $options);
+        } else {
+            throw new FilestackException("$method() is not a valid method.", 400);
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the content of filelink
      *
+     * @param bool      $is_transformation  optional flag, set to true if downloading
+     *                                      transformation_url
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
@@ -49,7 +73,23 @@ class Filelink
     {
         // call CommonMixin function
         $result = $this->sendGetContent($this->url(), $this->security);
+        return $result;
+    }
 
+    /**
+     * Get the transformed content of filelink
+     *
+     * @param bool      $is_transformation  optional flag, set to true if downloading
+     *                                      transformation_url
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return string (file content)
+     */
+    public function getTransformedContent()
+    {
+        // call CommonMixin function
+        $result = $this->sendGetContent($this->transform_url);
         return $result;
     }
 
@@ -97,18 +137,35 @@ class Filelink
     /**
      * Download filelink as a file, saving it to specified destination
      *
-     * @param string            $handle         Filestack file handle
-     * @param string            $destination    destination filepath to save to,
-     *                                          can be folder name (defaults to stored filename)
+     * @param string    $destination        destination filepath to save to,
+     *                                      can be folder name (defaults to stored filename)
      *
      * @throws FilestackException   if API call fails
      *
      * @return bool (true = download success, false = failed)
      */
-    public function download($destination)
+    public function download($destination, $is_transformation=false)
     {
         // call CommonMixin function
         $result = $this->sendDownload($this->url(), $destination, $this->security);
+        return $result;
+    }
+
+    /**
+     * Download transformed filelink as a file, saving it to specified destination
+     *
+     * @param string    $destination        destination filepath to save to,
+     *                                      can be folder name (defaults to stored filename)
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return bool (true = download success, false = failed)
+     */
+    public function downloadTransformed($destination)
+    {
+
+        // call CommonMixin function
+        $result = $this->sendDownload($this->transform_url, $destination);
         return $result;
     }
 
@@ -134,56 +191,78 @@ class Filelink
         return true;
     }
 
-    public function crop($options)
+    /**
+     * Reset the transformation url of this Filelink.  Call this function if
+     * you are calling multiple transformations on the same filelink without
+     * using the transform method.
+     */
+    public function resetTransform()
     {
-
+        $this->transform_url = null;
     }
 
-    public function transform($transform_tasks, $destination=null)
+    /**
+     * Append or Create a task to the transformation url for this filelink
+     *
+     * @param array $options    task options, e.g. ['b' => '00FF00', 'd' => '45']
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return void
+     */
+    public function setTransformUrl($method, $options)
     {
-        // build tasks_str
-        $tasks_str = '';
-        $num_tasks = count($transform_tasks);
-        $num_tasks_attached = 0;
+        $this->initTransformUrl();
+        $this->transform_url = $this->insertTransformStr($this->transform_url, $method, $options);
+    }
 
-        foreach ($transform_tasks as $taskname => $task_attrs) {
-            // call TransformationMixin function to chain tasks
-            $tasks_str .= $this->getTransformStr($taskname, $task_attrs);
-
-            if ($num_tasks_attached < $num_tasks - 1) {
-                $tasks_str .= "/"; // task separator
-            }
-            $num_tasks_attached++;
-        }
-
-        // build url
-        $options['tasks_str'] = $tasks_str;
-        $options['handle'] = $this->handle;
-        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $this->security);
-
-        $params = [];
-        $headers = [];
-        $req_options = [];
-
-        if ($destination) {
-            $req_options['sink'] = $destination;
-        };
+    public function store($options=[])
+    {
+        $this->initTransformUrl();
+        $this->transform_url = $this->insertTransformStr($this->transform_url, 'store', $options);
 
         // call CommonMixin function
-        $response = $this->requestGet($url, $params, $headers, $req_options);
+        $response = $this->requestGet($this->transform_url);
         $status_code = $response->getStatusCode();
 
         // handle response
         if ($status_code == 200) {
-            if (!$destination) { // return content
-                $content = $response->getBody()->getContents();
-                return $content;
-            }
+            $json_response = json_decode($response->getBody(), true);
+
+            $url = $json_response['url'];
+            $file_handle = substr($url, strrpos($url, '/') + 1);
+
+            $filelink = new Filelink($file_handle, $this->api_key, $this->security);
+            $filelink->metadata['filename'] = $json_response['filename'];
+            $filelink->metadata['size'] = $json_response['size'];
+            $filelink->metadata['mimetype'] = $json_response['type'];
+
+            return $filelink;
         } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
-        return true;
+        // error if reached
+        return false;
+    }
+
+    /**
+     * Applied array of transformation tasks to this file link.
+     *
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     * @param string   $destination        option real path to where to save
+     *                                      transformed file
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink or contents
+     */
+    public function transform($transform_tasks, $destination=null)
+    {
+        // call TransformationMixin
+        $result = $this->sendTransform($this->handle, $transform_tasks, $destination);
+        return $result;
     }
 
     /**
@@ -209,5 +288,22 @@ class Filelink
             $this->url(),
             $security->policy,
             $security->signature);
+    }
+
+    /**
+     * Initialize transform url if it doesnt exist
+     */
+    protected function initTransformUrl()
+    {
+        if (!$this->transform_url) {
+            // security in a different format for transformations
+            $security_str = $this->security ? sprintf('/security=policy:%s,signature:%s',
+                    $this->security->policy,
+                    $this->security->signature) : '';
+
+            $this->transform_url = sprintf(FilestackConfig::PROCESSING_URL . '%s/%s',
+                $security_str,
+                $this->handle);
+        }
     }
 }

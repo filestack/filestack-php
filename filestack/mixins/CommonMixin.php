@@ -226,7 +226,7 @@ trait CommonMixin
             $url = $json_response['url'];
             $file_handle = substr($url, strrpos($url, '/') + 1);
 
-            $filelink = new Filelink($file_handle, $api_key);
+            $filelink = new Filelink($file_handle, $api_key, $security);
             $filelink->metadata['filename'] = $json_response['filename'];
             $filelink->metadata['size'] = $json_response['size'];
             $filelink->metadata['mimetype'] = $json_response['mimetype'];
@@ -299,7 +299,7 @@ trait CommonMixin
         }
 
         foreach ($params as $key => $value) {
-            $url .= "&$key=$value";
+            $url .= sprintf('&%s=%s', urlencode($key), urlencode($value));
         }
 
         $response = $this->http_client->request('GET', $url, $options);
@@ -325,7 +325,7 @@ trait CommonMixin
         }
 
         foreach ($params as $key => $value) {
-            $url .= "&$key=$value";
+            $url .= sprintf('&%s=%s', urlencode($key), urlencode($value));
         }
 
         $response = $this->http_client->request('DELETE', $url, $options);

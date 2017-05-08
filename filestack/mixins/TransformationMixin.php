@@ -1,12 +1,13 @@
 <?php
 namespace Filestack\Mixins;
 
+use Filestack\FilestackConfig;
 use Filestack\FilestackException;
 
 trait TransformationMixin
 {
     /**
-     * Return the URL portion of crop operation
+     * Return the URL portion of a transformation task
      *
      * @param string    $taskname       name of task, e.g. 'crop', 'resize', etc.
      * @param array     $process_attrs  attributes replated to this task
@@ -17,7 +18,7 @@ trait TransformationMixin
      */
     public function getTransformStr($taskname, $process_attrs)
     {
-        if (!array_key_exists($taskname, FilestackConfig::Allowed_Attrs)) {
+        if (!array_key_exists($taskname, FilestackConfig::ALLOWED_ATTRS)) {
             throw new FilestackException('Invalid transformation task', 400);
         }
 
@@ -30,7 +31,9 @@ trait TransformationMixin
 
         // append attributes if exists
         foreach ($process_attrs as $key => $value) {
-            $tranform_str .= "$key:$value,";
+            $tranform_str .= sprintf('%s:%s,',
+                urlencode($key),
+                urlencode($value));
         }
 
         // remove last comma
@@ -42,19 +45,87 @@ trait TransformationMixin
     }
 
     /**
-     * Get detailed information back about successful and failed requests.
-     * See https://www.filestack.com/docs/image-transformations/debug
+     * Insert a transformation task into existing url
      *
-     * @return object debug object
+     * @param string    $taskname       name of task, e.g. 'crop', 'resize', etc.
+     * @param array     $process_attrs  attributes replated to this task
+     *
+     * @throws Filestack\FilestackException
+     *
+     * @return Transformation object
      */
-    public function debug()
+    protected function insertTransformStr($url, $taskname, $process_attrs)
     {
-        # should probably return some kind of Debug object
-        return null;
+        $transform_str = $this->getTransformStr($taskname, $process_attrs);
+
+        // insert transform_url before file handle
+        $url = substr($url, 0, strrpos($url, '/'));
+
+        return "$url/$transform_str/" . $this->handle;
     }
 
     /**
-     * crop an image
+     * Applied array of transformation tasks to handle or external url
+     *
+     * @param string    $resource           url or filestack handle to transform
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     * @param string   $destination        option real path to where to save
+     *                                      transformed file
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink or contents
+     */
+    public function sendTransform($resource, $transform_tasks, $destination=null)
+    {
+        // build tasks_str
+        $tasks_str = '';
+        $num_tasks = count($transform_tasks);
+        $num_tasks_attached = 0;
+
+        foreach ($transform_tasks as $taskname => $task_attrs) {
+            // call TransformationMixin function to chain tasks
+            $tasks_str .= $this->getTransformStr($taskname, $task_attrs);
+
+            if ($num_tasks_attached < $num_tasks - 1) {
+                $tasks_str .= "/"; // task separator
+            }
+            $num_tasks_attached++;
+        }
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $resource;
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $this->security);
+
+        $params = [];
+        $headers = [];
+        $req_options = [];
+
+        if ($destination) {
+            $req_options['sink'] = $destination;
+        };
+
+        // call CommonMixin function
+        $response = $this->requestGet($url, $params, $headers, $req_options);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            if (!$destination) { // return content
+                $content = $response->getBody()->getContents();
+                return $content;
+            }
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate the attributes of a transformation task
      *
      * @param string    $taskname   task name, e.g. "resize, crop, etc."
      * @param array     $attrs      attributes  attributes to validate
@@ -66,7 +137,7 @@ trait TransformationMixin
     protected function validateAttributes($taskname, $attrs)
     {
         foreach ($attrs as $key => $value) {
-            if (!in_array($key, $this->allowed_attrs[$taskname])) {
+            if (!in_array($key, FilestackConfig::ALLOWED_ATTRS[$taskname])) {
                 throw new FilestackException(
                     "Invalid transformation attribute $key for $taskname",
                     400
@@ -75,70 +146,5 @@ trait TransformationMixin
         }
 
         return true;
-    }
-
-    protected function setAllowedAttrs()
-    {
-        $allowed_attrs = [];
-
-        $this->allowed_attrs['border'] = [
-            'b', 'c', 'w',
-            'background', 'color', 'width'
-        ];
-
-        $this->allowed_attrs['circle'] = [
-            'b',
-            'background'
-        ];
-
-        $this->allowed_attrs['crop'] = [
-            'd',
-            'dim'
-        ];
-
-        $this->allowed_attrs['detect_faces'] = [
-            'c', 'e', 'n', 'N',
-            'color', 'export', 'minSize', 'maxSize'
-        ];
-
-        $this->allowed_attrs['polaroid'] = [
-            'b', 'c', 'r',
-            'background', 'color', 'rotate'
-        ];
-
-        $this->allowed_attrs['resize'] = [
-            'w', 'h', 'f', 'a',
-            'width', 'height', 'fit', 'align'
-        ];
-
-        $this->allowed_attrs['rounded_corners'] = [
-            'b', 'l', 'r',
-            'background', 'blur', 'radius'
-        ];
-
-        $this->allowed_attrs['rotate'] = [
-            'b', 'd', 'e',
-            'background', 'deg', 'exif'
-        ];
-
-        $this->allowed_attrs['shadow'] = [
-            'b', 'l', 'o', 'v',
-            'background', 'blur', 'opacity', 'vector'
-        ];
-
-        $this->allowed_attrs['torn_edges'] = [
-            'b', 's',
-            'background', 'spread'
-        ];
-
-        $this->allowed_attrs['vignette'] = [
-            'a', 'b', 'm',
-            'amount', 'background', 'blurmode',
-        ];
-
-        $this->allowed_attrs['watermark'] = [
-            'f', 'p', 's',
-            'file', 'position', 'size'
-        ];
     }
 }
