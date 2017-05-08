@@ -43,36 +43,42 @@ use Filestack\FilestackClient;
 use Filestack\Filelink;
 
 $client = new FilestackClient('YOUR_API_KEY');
-
-# or
-$client = new FilestackClient();
-$client.set_api_key('YOUR_API_KEY');
 ```
 
 ### Storage
-Amazon S3 is used to store your files by default. If you wish to use a different one, you can initialize FilestackClient with an additional `storage` argument or use `set_storage()` method:
+Amazon S3 is used to store your files by default. If you wish to use a different one, you can pass in additional parameter 'location' when making upload() and store calls
 
 ```php
-$client = FilestackClient('YOUR_API_KEY', 'azure');
-# or
 $client = FilestackClient('YOUR_API_KEY');
-$client.set_storage('dropbox');
+$extras = [
+    'Location' => 'dropbox',
+    'Filename' => 'somefilename.jpg',
+];
+
+$filepath = '/path/to/file';
+$filelink = $client->upload($filepath);
 ```
+
 ### Manipulating files
 
 Filelink objects can be created in three ways:
 
  - by uploading a file with using FilestackClient
- - by initializing Filelink with file handle
- - by initializing Filelink with a Filepicker url
+ - by initializing Filelink with file handle and api_key
 
-First method was shown above, the two other are also very easy and will create objects representing files that were already uploaded.
+First method was shown above, the second method is also very easy and will create objects representing files that were already uploaded.
 
 ```php
 use Filestack\filelink;
 
-$file = new Filelink('pGj2wWfBTMuXhWe2J3bL');
+$file = new Filelink('pGj2wWfBTMuXhWe2J3bL', 'YOUR_API_KEY');
+$transformed_filelink = $filelink
+            ->circle()
+            ->blur(['amount' => '20'])
+            ->store();
 ```
+
+For more examples, see the examples/ folder in this project.
 
 ## Versioning
 

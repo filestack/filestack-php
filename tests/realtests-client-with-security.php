@@ -19,12 +19,12 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
 
         # Filestack client examples
         $security = new FilestackSecurity($test_secret);
-        $client = new FilestackClient($test_api_key);
+        $client = new FilestackClient($test_api_key, $security);
 
         // upload a file
         $options = ['Filename' => 'somefilename.jpg'];
         try {
-            $filelink = $client->store($test_filepath, $options, $security);
+            $filelink = $client->upload($test_filepath, $options);
             var_dump($filelink);
         } catch (FilestackException $e) {
             echo $e->getMessage();
@@ -33,11 +33,11 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
 
         // get metadata of file
         $fields = [];
-        $metadata = $client->getMetaData($filelink->url(), $fields, $security);
+        $metadata = $client->getMetaData($filelink->url(), $fields);
         var_dump($metadata);
 
         // get content of a file
-        $content = $client->getContent($filelink->url(), $security);
+        $content = $client->getContent($filelink->url());
 
         // save file to local drive
         $filepath = __DIR__ . '/../tests/testfiles/' . $metadata['filename'];
@@ -45,15 +45,42 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
 
         // download a file
         $destination = __DIR__ . '/../tests/testfiles/my-custom-filename.jpg';
-        $result = $client->download($filelink->url(), $destination, $security);
+        $result = $client->download($filelink->url(), $destination);
         var_dump($result);
 
         // overwrite a file
-        $filelink2 = $client->overwrite($test_filepath, $filelink->handle, $security);
+        $filelink2 = $client->overwrite($test_filepath, $filelink->handle);
         var_dump($filelink2);
 
+        // transform an image from url
+        $url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
+        $transform_tasks = [
+            'crop'      => ['dim' => '[10,20,200,250]'],
+            'resize'    => ['w' => '100', 'h' => '100'],
+            'rotate'    => ['b' => '00FF00', 'd' => '45'],
+        ];
+
+        $content = $client->transform($url, $transform_tasks);
+
+        // save file to local drive
+        $filepath = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
+        file_put_contents($filepath, $content);
+
+        // transform an image from url with store()
+        $url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
+        $transform_tasks = [
+            'resize'    => ['width' => '100', 'height' => '100'],
+            'rotate'    => ['background' => 'red', 'deg' => '45'],
+            'store'     => []
+        ];
+
+        $result = $client->transform($url, $transform_tasks);
+        $json = json_decode($result);
+
+        var_dump($json);
+
         // delete a file
-        $result = $client->delete($filelink->handle, $security);
+        $result = $client->delete($filelink->handle);
         var_dump($result);
     }
 }
