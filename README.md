@@ -78,7 +78,7 @@ $transformed_filelink = $filelink
             ->store();
 ```
 
-For more examples, see the examples/ folder in this project.
+For more examples, see the [examples/](examples/) folder in this project.
 
 ## Versioning
 
