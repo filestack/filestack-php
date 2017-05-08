@@ -103,11 +103,11 @@ Please see [CONTRIBUTING.md](https://github.com/filestack/filestack-php/blob/mas
 Thank you to all the [contributors](https://github.com/filestack/filestack-php/graphs/contributors).
 
 
-## Installing
+## Other Resources
 
-[travis_ci]: http://travis-ci.org/filestack/filestack-php
-[travis_ci_badge]: https://travis-ci.org/filestack/filestack-php.svg?branch=master
-[code_climate]: https://codeclimate.com/github/filestack/filestack-php
-[code_climate_badge]: https://codeclimate.com/github/filestack/filestack-php.png
-[coveralls]: https://coveralls.io/github/filestack/filestack-php?branch=master
-[coveralls_badge]: https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master
+- [travis_ci](http://travis-ci.org/filestack/filestack-php)
+- [travis_ci_badge](https://travis-ci.org/filestack/filestack-php.svg?branch=master)
+- [code_climate](https://codeclimate.com/github/filestack/filestack-php)
+- [code_climate_badge](https://filestack.com/themes/filestack/assets/images/press-articles/color.svg)
+- [coveralls](https://coveralls.io/github/filestack/filestack-php?branch=master)
+- [coveralls_badge](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)
