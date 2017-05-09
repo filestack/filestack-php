@@ -74,6 +74,10 @@ class FilestackSecurity
      */
     private function generate($secret, $options=[])
     {
+        if (!$secret) {
+            throw new FilestackException("Secret can not be empty", 400);
+        }
+
         // check that options passed in are valid (on allowed list)
         $this->validateOptions($options);
 

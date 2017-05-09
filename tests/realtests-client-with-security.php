@@ -1,20 +1,23 @@
 <?php
+namespace Filestack\Test;
 
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;
 use Filestack\Filelink;
 use Filestack\FilestackException;
 
-class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
+class RealTestsClientWithSecurity extends BaseTest
 {
     public function testClientCalls()
     {
-        $this->markTestSkipped(
-            'Real calls to the API using the Filestack client, comment out to test'
-        );
+        if (!$this->run_real_tests) {
+            $this->markTestSkipped(
+                'Real calls to the API using the Filestack client, comment out to test'
+            );
+        }
 
-        $test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
-        $test_secret = '3UAQ64UWMNCCRF36CY2NSRSPSU';
+        $test_api_key = $this->test_api_key;
+        $test_secret = $this->test_secret;
         $test_filepath = __DIR__ . '/../tests/testfiles/calvinandhobbes.jpg';
 
         # Filestack client examples
@@ -25,7 +28,7 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
         $options = ['Filename' => 'somefilename.jpg'];
         try {
             $filelink = $client->upload($test_filepath, $options);
-            var_dump($filelink);
+            # var_dump($filelink);
         } catch (FilestackException $e) {
             echo $e->getMessage();
             echo $e->getCode();
@@ -34,7 +37,7 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
         // get metadata of file
         $fields = [];
         $metadata = $client->getMetaData($filelink->url(), $fields);
-        var_dump($metadata);
+        # var_dump($metadata);
 
         // get content of a file
         $content = $client->getContent($filelink->url());
@@ -46,11 +49,11 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
         // download a file
         $destination = __DIR__ . '/../tests/testfiles/my-custom-filename.jpg';
         $result = $client->download($filelink->url(), $destination);
-        var_dump($result);
+        # var_dump($result);
 
         // overwrite a file
         $filelink2 = $client->overwrite($test_filepath, $filelink->handle);
-        var_dump($filelink2);
+        # var_dump($filelink2);
 
         // transform an image from url
         $url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
@@ -76,11 +79,10 @@ class RealTestsClientWithSecurity extends \PHPUnit_Framework_TestCase
 
         $result = $client->transform($url, $transform_tasks);
         $json = json_decode($result);
-
-        var_dump($json);
+        # var_dump($json);
 
         // delete a file
         $result = $client->delete($filelink->handle);
-        var_dump($result);
+        # var_dump($result);
     }
 }

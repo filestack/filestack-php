@@ -14,4 +14,13 @@
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">filestack/</directory>
+            <exclude>
+                <file>filestack/FilestackConfig.php</file>
+                <file>filestack/FilestackException.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

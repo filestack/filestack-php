@@ -1,19 +1,23 @@
 <?php
+namespace Filestack\Test;
+
 use Filestack\FilestackClient;
 use Filestack\Filelink;
 use Filestack\FilestackException;
 use Filestack\FilestackSecurity;
 
-class RealTestsFilelinkWithSecurity extends \PHPUnit_Framework_TestCase
+class RealTestsFilelinkWithSecurity extends BaseTest
 {
     public function testClientCalls()
     {
-        $this->markTestSkipped(
-            'Real calls to the API using a Filelink with Security, comment out to test'
-        );
+        if (!$this->run_real_tests) {
+            $this->markTestSkipped(
+                'Real calls to the API using a Filelink with Security, comment out to test'
+            );
+        }
 
-        $test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
-        $test_secret = '3UAQ64UWMNCCRF36CY2NSRSPSU';
+        $test_api_key = $this->test_api_key;
+        $test_secret = $this->test_secret;
         $test_filepath = __DIR__ . '/../tests/testfiles/calvinandhobbes.jpg';
 
         // upload a file to test
@@ -28,9 +32,11 @@ class RealTestsFilelinkWithSecurity extends \PHPUnit_Framework_TestCase
 
         // get metadata
         $metadata = $filelink->getMetaData();
+        # var_dump($metadata);
 
         // get content of a file
         $content = $filelink->getContent();
+        # var_dump($content);
 
         // save file to local drive
         $filepath = __DIR__ . '/../tests/testfiles/' . $metadata['filename'];
@@ -66,6 +72,8 @@ class RealTestsFilelinkWithSecurity extends \PHPUnit_Framework_TestCase
                 ->rotate($rotate_options)
                 ->downloadTransformed($filepath);
 
+        # var_dump($contents);
+
         /*
          * must call resetTransform() to clear previous transformation calls if
          * you're using the same filelink instance that has been transformed before
@@ -78,10 +86,11 @@ class RealTestsFilelinkWithSecurity extends \PHPUnit_Framework_TestCase
                     ->blur(['amount' => '20'])
                     ->store();
 
-        var_dump($transformed_filelink);
-        echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
+        # var_dump($transformed_filelink);
+        # echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
 
         // delete remote file
-        $filelink->delete();
+        $success = $filelink->delete();
+        # echo "\n deleted $success";
     }
 }

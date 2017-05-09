@@ -16,17 +16,6 @@ trait CommonMixin
     protected $user_agent_header;
 
     /**
-     * CommonMixin constructor
-     *
-     * @param object    $http_client     Http client
-     */
-    public function __construct($http_client)
-    {
-        $this->http_client = $http_client;
-        $this->user_agent_header = sprintf('filestack-php-%s', FilestackConfig::getVersion());
-    }
-
-    /**
      * Check if a string is a valid url.
      *
      * @param   string  $url    url string to check
@@ -39,7 +28,7 @@ trait CommonMixin
         $encoded_path = array_map('urlencode', explode('/', $path));
         $url = str_replace($path, implode('/', $encoded_path), $url);
 
-        return filter_var($url, FILTER_VALIDATE_URL) ? true : false;
+        return filter_var($url, FILTER_VALIDATE_URL);
     }
 
     /**
@@ -310,25 +299,28 @@ trait CommonMixin
      * Send DELETE request
      *
      * @param string    $url        url to post to
-     * @param array     $params     optional params to send
      * @param array     $headers    optional headers to send
+     * @param array     $options    optional options to send
      */
-    protected function requestDelete($url, $params=[], $headers=[], $options=[])
+    protected function requestDelete($url, $headers=[], $options=[])
     {
-        $headers['User-Agent'] = $this->user_agent_header;
+        $headers['User-Agent'] = $this->getUserAgentHeader();
         $options['http_errors'] = false;
         $options['headers'] = $headers;
 
-        // append question mark if there are optional params and ? doesn't exist
-        if (count($params) > 0 && strrpos($url, '?') === false) {
-            $url .= "?";
-        }
-
-        foreach ($params as $key => $value) {
-            $url .= sprintf('&%s=%s', urlencode($key), urlencode($value));
-        }
-
         $response = $this->http_client->request('DELETE', $url, $options);
         return $response;
+    }
+
+    /**
+     * Get User Agent Header
+     */
+    protected function getUserAgentHeader()
+    {
+        if (!$this->user_agent_header) {
+            $this->user_agent_header = sprintf('filestack-php-%s',
+                FilestackConfig::getVersion());
+        }
+        return $this->user_agent_header;
     }
 }

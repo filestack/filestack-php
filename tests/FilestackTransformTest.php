@@ -63,6 +63,58 @@ class FilestackTransformTest extends BaseTest
     }
 
     /**
+     * Test the transform method throws exception if api call failed
+     */
+    public function testTranformationFailed()
+    {
+        $mock_response = new MockHttpResponse(
+            403,
+            'Forbidden, Missing credentials'
+        );
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(403);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $transform_tasks = [
+            'resize'    => ['w' => '100', 'h' => '100']
+        ];
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+        $contents = $filelink->transform($transform_tasks);
+    }
+
+    /**
+     * Test the transform method throws exception if task is invalid
+     */
+    public function testTranformInvalidTaskThrowsException()
+    {
+        $mock_response = new MockHttpResponse(
+            400,
+            'Invalid transformation task'
+        );
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(400);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $transform_tasks = [
+            'some_bad_task'    => ['w' => '100', 'h' => '100']
+        ];
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+        $contents = $filelink->transform($transform_tasks);
+    }
+
+    /**
      * Test getting a transformation url of a chained call
      */
     public function testTranformChainUrl()

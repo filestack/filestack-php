@@ -18,6 +18,24 @@ class FilelinkTest extends BaseTest
     }
 
     /**
+     * Test Filelink get Signed Url
+     */
+    public function testFilelinkSignedUrl()
+    {
+        $filelink = new Filelink($this->test_file_handle,
+            $this->test_api_key);
+
+        $expected_url = sprintf('%s?policy=%s&signature=%s',
+            $filelink->url(),
+            $this->test_security->policy,
+            $this->test_security->signature
+        );
+
+        $signed_url = $filelink->signedUrl($this->test_security);
+        $this->assertEquals($expected_url, $signed_url);
+    }
+
+    /**
      * Test filelink get content
      */
     public function testFilelinkGetContentSuccess()
@@ -234,5 +252,28 @@ class FilelinkTest extends BaseTest
         $result = $filelink->overwrite($this->test_filepath);
 
         $this->assertTrue($result);
+    }
+
+    /**
+     * Test calling store() API failed throws exception
+     */
+    public function testFilelinkStoreException()
+    {
+        $mock_response = new MockHttpResponse(400,
+            'Invalid parameters');
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(400);
+
+        $filelink = new Filelink('some-bad-file-handle',
+                        $this->test_api_key,
+                        $this->test_security,
+                        $stub_http_client);
+
+        $result = $filelink->store();
     }
 }

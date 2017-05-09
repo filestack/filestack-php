@@ -145,4 +145,21 @@ class FilestackSecurityTest extends BaseTest
 
         $this->assertTrue($result);
     }
+
+    /*
+     * Test verifying a policy and signature failed
+     */
+    /*
+     * Test security intialization with valid options
+     */
+    public function testSecurityVerifyFailed()
+    {
+        $secret = "";
+        $options = [];
+
+        $security = new FilestackSecurity($this->test_secret, $options);
+        $result = $security->verify($options, $security->signature, $secret);
+
+        $this->assertFalse($result);
+    }
 }

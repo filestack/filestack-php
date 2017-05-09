@@ -1,18 +1,22 @@
 <?php
+namespace Filestack\Test;
+
 use Filestack\FilestackClient;
 use Filestack\Filelink;
 use Filestack\FilestackException;
 
-class RealTestsFilelinkNoSecurity extends \PHPUnit_Framework_TestCase
+class RealTestsFilelinkNoSecurity extends BaseTest
 {
     public function testClientCalls()
     {
-        $this->markTestSkipped(
-            'Real calls to the API using a Filelink, comment out to test'
-        );
+        if (!$this->run_real_tests) {
+            $this->markTestSkipped(
+                'Real calls to the API using a Filelink, comment out to test'
+            );
+        }
 
-        $test_api_key = 'AefuF1HdTzGBlwfxk1FYWz';
-        $test_handle = 'AxBBQ4MFRIyDz6rZn2AW';
+        $test_api_key = $this->test_api_key_no_sec;
+        $test_handle = $this->test_file_handle_no_sec;
         $test_filepath = __DIR__ . '/../tests/testfiles/testing-download.jpg';
 
         # Filestack client examples
@@ -57,6 +61,8 @@ class RealTestsFilelinkNoSecurity extends \PHPUnit_Framework_TestCase
                 ->rotate($rotate_options)
                 ->downloadTransformed($filepath);
 
+        # var_dump($contents);
+
         /*
          * must call resetTransform() to clear previous transformation calls if
          * you're using the same filelink instance that has been transformed before
@@ -69,7 +75,7 @@ class RealTestsFilelinkNoSecurity extends \PHPUnit_Framework_TestCase
                     ->blur(['amount' => '20'])
                     ->store();
 
-        var_dump($transformed_filelink);
-        echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
+        # var_dump($transformed_filelink);
+        # echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
     }
 }

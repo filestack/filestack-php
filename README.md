@@ -86,6 +86,26 @@ Filestack PHP SDK follows the [Semantic Versioning](http://semver.org/).
 - PSR-4 autoloading standard (http://www.php-fig.org/psr/psr-4/)
 - phpDoc documentation comments standard (https://www.phpdoc.org/docs/latest/getting-started/your-first-set-of-documentation.html)
 
+## Testing
+
+- To run tests, from the project root director, run
+```
+vendor/bin/phpunit
+```
+
+- To generate coverage report, run following command (will generage html files under
+directory tests/coverage)
+```
+vendor/bin/phpunit --coverage-html=tests/coverage
+```
+
+- To run lint and code-standard fixer, run bash file ./runfixer.sh or individually:
+```
+php php-cs-fixer-v2.phar fix filestack/
+php php-cs-fixer-v2.phar fix tests/
+php php-cs-fixer-v2.phar fix examples/
+```
+
 ## Issues
 
 If you have problems, please create a [Github Issue](https://github.com/filestack/filestack-php/issues).

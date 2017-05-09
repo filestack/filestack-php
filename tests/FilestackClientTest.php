@@ -188,6 +188,12 @@ class FilestackClientTest extends BaseTest
         $result = $client->download($this->test_file_url, $destination);
 
         $this->assertTrue($result);
+
+        // test downloading to directory
+        $destination = __DIR__ . '/testfiles/';
+        $result2 = $client->download($this->test_file_url, $destination);
+
+        $this->assertTrue($result2);
     }
 
     /**
