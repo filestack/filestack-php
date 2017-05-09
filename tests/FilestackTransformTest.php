@@ -199,8 +199,6 @@ class FilestackTransformTest extends BaseTest
         $crop_options = ['dim' => '[10,20,200,250]'];
         $rotate_options = ['b' => '00FF00', 'd' => '45'];
 
-        $is_transformation = true;
-
         $contents = $filelink->crop($crop_options)
                 ->rotate($rotate_options)
                 ->getTransformedContent();

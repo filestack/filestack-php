@@ -62,9 +62,6 @@ class Filelink
     /**
      * Get the content of filelink
      *
-     * @param bool      $is_transformation  optional flag, set to true if downloading
-     *                                      transformation_url
-     *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return string (file content)
@@ -79,8 +76,6 @@ class Filelink
     /**
      * Get the transformed content of filelink
      *
-     * @param bool      $is_transformation  optional flag, set to true if downloading
-     *                                      transformation_url
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
@@ -144,7 +139,7 @@ class Filelink
      *
      * @return bool (true = download success, false = failed)
      */
-    public function download($destination, $is_transformation=false)
+    public function download($destination)
     {
         // call CommonMixin function
         $result = $this->sendDownload($this->url(), $destination, $this->security);
