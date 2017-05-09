@@ -10,7 +10,7 @@ class FilestackConfig
     const PROCESSING_URL = 'https://cdn.filestackcontent.com';
     const CDN_URL = 'https://cdn.filestackcontent.com';
 
-    const ALLOWED_TRANSFORMATIONS = [
+    /*const ALLOWED_TRANSFORMATIONS = [
         'ascii', 'blackwhite', 'blur', 'border',
         'collage', 'compress', 'circle', 'crop', 'detect_faces', 'enhance',
         'modulate', 'monochrome', 'negative', 'oil_paint',
@@ -18,7 +18,7 @@ class FilestackConfig
         'quality', 'redeye', 'resize', 'rounded_corners', 'rotate',
         'sepia', 'shadow', 'sharpen', 'store',
         'torn_edges', 'upscale', 'urlscreenshot', 'vignette', 'watermark', 'zip'
-    ];
+    ];*/
 
     const ALLOWED_ATTRS = [
         'ascii' => [
@@ -125,7 +125,7 @@ class FilestackConfig
         ],
         'vignette' => [
             'a', 'b', 'm',
-            'amount', 'background', 'blurmode',
+            'amount', 'background', 'blurmode'
         ],
         'watermark' => [
             'f', 'p', 's',

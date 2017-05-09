@@ -120,30 +120,25 @@ class FilestackTransformTest extends BaseTest
     public function testTranformChainUrl()
     {
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key);
-
-        $crop_options = ['dim' => '[10,20,200,250]'];
-        $rotate_options = ['b' => '00FF00', 'd' => '45'];
-        $resize_options = ['w' => '100', 'h' => '100'];
-
-        $filelink->crop($crop_options)
-                ->rotate($rotate_options);
+        $filelink->crop(10, 20, 200, 250)
+                ->rotate('00FF00', 45);
 
         $expected_url = sprintf('%s/%s/%s',
             FilestackConfig::PROCESSING_URL,
-            'crop=dim:%5B10%2C20%2C200%2C250%5D/rotate=b:00FF00,d:45',
+            'crop=dim:%5B10%2C20%2C200%2C250%5D/rotate=b:00FF00,d:45,e:false',
             $filelink->handle
         );
-        $this->assertEquals($filelink->transform_url, $expected_url);
+        $this->assertEquals($expected_url, $filelink->transform_url);
 
         $expected_url = sprintf('%s/%s/%s',
             FilestackConfig::PROCESSING_URL,
-            'resize=w:100,h:100',
+            'resize=w:100,h:100,f:clip,a:center',
             $filelink->handle
         );
 
         $filelink->resetTransform();
-        $filelink->resize($resize_options);
-        $this->assertEquals($filelink->transform_url, $expected_url);
+        $filelink->resize(100, 100);
+        $this->assertEquals($expected_url, $filelink->transform_url);
     }
 
     /**
@@ -155,25 +150,7 @@ class FilestackTransformTest extends BaseTest
         $this->expectExceptionCode(400);
 
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key);
-        $crop_options = ['dim' => '[10,20,200,250]'];
-        $filelink->crop_bad_method($crop_options);
-    }
-
-    /**
-     * Test getting a transformation url of a chained call
-     */
-    public function testTranformInvalidAttributes()
-    {
-        $this->expectException(FilestackException::class);
-        $this->expectExceptionCode(400);
-
-        $filelink = new Filelink($this->test_file_handle,
-            $this->test_api_key,
-            $this->test_security
-        );
-
-        $crop_options = ['some_bad_attribute' => 'some_bad_values'];
-        $content = $filelink->crop($crop_options)->getTransformedContent();
+        $filelink->crop_bad_method(10, 20, 200, 250);
     }
 
     /**
@@ -196,11 +173,8 @@ class FilestackTransformTest extends BaseTest
             $stub_http_client
         );
 
-        $crop_options = ['dim' => '[10,20,200,250]'];
-        $rotate_options = ['b' => '00FF00', 'd' => '45'];
-
-        $contents = $filelink->crop($crop_options)
-                ->rotate($rotate_options)
+        $contents = $filelink->crop(10, 20, 200, 250)
+                ->rotate('green', 45)
                 ->getTransformedContent();
 
         $this->assertNotNull($contents);
@@ -226,13 +200,10 @@ class FilestackTransformTest extends BaseTest
             $stub_http_client
         );
 
-        $resize_options = ['w' => '100', 'h' => '100'];
-
         $destination = __DIR__ . '/testfiles/my-transformed-file.jpg';
-        $is_transformation = true;
 
         $result = $filelink
-                        ->resize($resize_options)
+                        ->resize(100, 100)
                         ->downloadTransformed($destination);
 
         $this->assertTrue($result);
@@ -266,7 +237,7 @@ class FilestackTransformTest extends BaseTest
         $transformed_filelink = $filelink
                         ->sepia()
                         ->circle()
-                        ->blur(['amount' => '20'])
+                        ->blur(20)
                         ->store();
 
         $this->assertNotNull($transformed_filelink);

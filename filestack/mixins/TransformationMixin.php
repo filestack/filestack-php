@@ -47,6 +47,7 @@ trait TransformationMixin
     /**
      * Insert a transformation task into existing url
      *
+     * @param string    $url            url to insert task into
      * @param string    $taskname       name of task, e.g. 'crop', 'resize', etc.
      * @param array     $process_attrs  attributes replated to this task
      *
@@ -54,7 +55,7 @@ trait TransformationMixin
      *
      * @return Transformation object
      */
-    protected function insertTransformStr($url, $taskname, $process_attrs)
+    protected function insertTransformStr($url, $taskname, $process_attrs=[])
     {
         $transform_str = $this->getTransformStr($taskname, $process_attrs);
 
