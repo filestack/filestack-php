@@ -490,4 +490,93 @@ class FilestackClientTest extends BaseTest
             $this->test_security);
         $result = $client->someInvalidMethod('test');
     }
+
+    /**
+     * Test zipping files successfully
+     */
+    public function testZipSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content')
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $sources = [
+            'https://d1wtqaffaaj63z.cloudfront.net/images/20150617_143146.jpg',
+            $this->test_file_handle
+        ];
+
+        $contents = $client->zip($sources);
+        $this->assertNotNull($contents);
+    }
+
+    /**
+     * Test zipping files saved to destination successfully
+     */
+    public function testZipWithDestSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content')
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $sources = [
+            'https://d1wtqaffaaj63z.cloudfront.net/images/20150617_143146.jpg',
+            $this->test_file_handle
+        ];
+
+        $destination = __DIR__ . '/testfiles/my-test-zipped-file.zip';
+        $result = $client->zip($sources, $destination);
+
+        $this->assertTrue($result);
+    }
+    /**
+     * Test zipping files throw exceptions if file not found
+     */
+    public function testZipFilesNotFound()
+    {
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $mock_response = new MockHttpResponse(
+            404,
+            'File not found'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $sources = [
+            'some-bad-file-handle-or-url'
+        ];
+
+        $contents = $client->zip($sources);
+    }
 }

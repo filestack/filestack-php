@@ -129,6 +129,48 @@ trait TransformationMixin
     }
 
     /**
+     * Send zip call to API
+     *
+     * @param array     $sources        Filestack handles and urls to zip
+     * @param string    $destination    Optional filepath to where to save the zip
+     *                                  file.  If not passed in function will return
+     *                                  file content as string
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool or file content
+     */
+    public function sendZip($sources, $destination=null)
+    {
+        $options = [
+            'sources_str' => sprintf('[%s]', implode(',', $sources))
+        ];
+
+        $url = FilestackConfig::createUrl('zip', $this->api_key, $options, $this->security);
+
+        $req_options = [];
+        if ($destination) {
+            $req_options['sink'] = $destination;
+        };
+
+        // call CommonMixin function
+        $response = $this->requestGet($url, [], [], $req_options);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            if (!$destination) { // return content
+                $content = $response->getBody()->getContents();
+                return $content;
+            }
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        return true;
+    }
+
+    /**
      * Validate the attributes of a transformation task
      *
      * @param string    $taskname   task name, e.g. "resize, crop, etc."

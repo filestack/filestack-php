@@ -150,14 +150,14 @@ class FilestackTransformTest extends BaseTest
                 ->rotate('00FF00', 45);
 
         $expected_url = sprintf('%s/%s/%s',
-            FilestackConfig::PROCESSING_URL,
+            FilestackConfig::CDN_URL,
             'crop=d:%5B10%2C20%2C200%2C250%5D/rotate=b:00FF00,d:45,e:false',
             $filelink->handle
         );
         $this->assertEquals($expected_url, $filelink->transform_url);
 
         $expected_url = sprintf('%s/%s/%s',
-            FilestackConfig::PROCESSING_URL,
+            FilestackConfig::CDN_URL,
             'resize=w:100,h:100,f:clip,a:center',
             $filelink->handle
         );
@@ -290,7 +290,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'ascii=b:black,c:true,f:white,r:false,s:100';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -314,7 +314,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'blackwhite=t:50';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -338,7 +338,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'blur=a:10';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -365,7 +365,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'border=b:gray,c:black,w:10';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -389,7 +389,30 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'circle=b:gray';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
+                $this->test_security->policy,
+                $this->test_security->signature,
+                $expected_transform_str,
+                $this->test_file_handle
+            );
+
+        $this->assertEquals($expected_url, $filelink->transform_url);
+    }
+
+    /**
+     * Test compress transformation call
+     */
+    public function testCompressSuccess()
+    {
+        $filelink = new Filelink($this->test_file_handle,
+                        $this->test_api_key,
+                        $this->test_security);
+
+        $filelink->compress(true);
+
+        $expected_transform_str = 'compress=m:true';
+        $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -416,7 +439,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'crop=d:'. urlencode('[10,10,200,200]');
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -444,7 +467,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'detect_faces=c:black,e:false,n:0.5,N:1';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -467,7 +490,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'enhance';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -494,7 +517,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'modulate=b:50,h:10,s:75';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -517,7 +540,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'monochrome';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -540,7 +563,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'negative';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -564,7 +587,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'oil_paint=a:50';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -594,7 +617,7 @@ class FilestackTransformTest extends BaseTest
                                    urlencode('[[10,20,200,250]]') . ',t:oval';
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -624,7 +647,7 @@ class FilestackTransformTest extends BaseTest
                                    urlencode('[[10,20,200,250]]') . ',t:oval';
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -648,7 +671,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'pixelate=a:10';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -675,7 +698,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'polaroid=b:gray,c:white,r:45';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -699,7 +722,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'quality=v:70';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -722,7 +745,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'redeye';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -750,7 +773,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'resize=w:100,h:100,f:scale,a:left';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -777,7 +800,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'rounded_corners=b:white,l:0.3,r:5';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -804,7 +827,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'rotate=b:white,d:90,e:false';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -828,7 +851,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'sepia=t:50';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -852,7 +875,7 @@ class FilestackTransformTest extends BaseTest
 
         $expected_transform_str = 'sharpen=a:50';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -882,7 +905,7 @@ class FilestackTransformTest extends BaseTest
             urlencode(json_encode($vector));
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -910,7 +933,7 @@ class FilestackTransformTest extends BaseTest
             urlencode(json_encode($spread));
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -938,7 +961,7 @@ class FilestackTransformTest extends BaseTest
         $expected_transform_str = 'upscale=n:none,s:photo,u:true';
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -966,7 +989,7 @@ class FilestackTransformTest extends BaseTest
         $expected_transform_str = 'vignette=a:20,b:white,m:gaussian';
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,
@@ -994,7 +1017,7 @@ class FilestackTransformTest extends BaseTest
         $expected_transform_str = 'watermark=f:' . $file_handle . ',p:center,s:30';
 
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
-                FilestackConfig::PROCESSING_URL,
+                FilestackConfig::CDN_URL,
                 $this->test_security->policy,
                 $this->test_security->signature,
                 $expected_transform_str,

@@ -13,7 +13,9 @@ $security = new FilestackSecurity($test_secret);
 $client = new FilestackClient($test_api_key, $security);
 
 // upload a file
+$filelink = null;
 $options = ['Filename' => 'somefilename.jpg'];
+
 try {
     $filelink = $client->upload($test_filepath, $options);
     var_dump($filelink);
@@ -69,6 +71,16 @@ $result = $client->transform($url, $transform_tasks);
 $json = json_decode($result);
 
 var_dump($json);
+
+// zipping files
+$sources = [
+    'https://d1wtqaffaaj63z.cloudfront.net/images/20150617_143146.jpg',
+    $filelink->handle
+];
+
+$contents = $client->zip($sources);
+$filepath = __DIR__ . '/../tests/testfiles/contents-zipped.zip';
+file_put_contents($filepath, $contents);
 
 // delete a file
 $result = $client->delete($filelink->handle);

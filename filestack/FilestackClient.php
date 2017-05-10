@@ -233,4 +233,25 @@ class FilestackClient
 
         return null;
     }
+
+    /**
+     * Bundle an array of files into a zip file.  This task takes the file or files
+     * that are passed in the array and compresses them into a zip file.  Sources can
+     * be handles, urls, or a mix of both
+     *
+     * @param array     $sources        Filestack handles and urls to zip
+     * @param string    $destination    Optional filepath to where to save the zip
+     *                                  file.  If not passed in function will return
+     *                                  file content as string
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool or file content
+     */
+    public function zip($sources, $destination=null)
+    {
+        // call TransformationMixin
+        $result = $this->sendZip($sources, $destination);
+        return $result;
+    }
 }

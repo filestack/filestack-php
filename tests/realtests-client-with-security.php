@@ -26,6 +26,7 @@ class RealTestsClientWithSecurity extends BaseTest
 
         // upload a file
         $options = ['Filename' => 'somefilename.jpg'];
+        $filelink = null;
         try {
             $filelink = $client->upload($test_filepath, $options);
             # var_dump($filelink);
@@ -84,5 +85,15 @@ class RealTestsClientWithSecurity extends BaseTest
         // delete a file
         $result = $client->delete($filelink->handle);
         # var_dump($result);
+
+        // zipping files
+        $sources = [
+            'https://d1wtqaffaaj63z.cloudfront.net/images/20150617_143146.jpg',
+            'I4JVPJ1eTxakD9CjRKZ3'
+        ];
+
+        $contents = $client->zip($sources);
+        $filepath = __DIR__ . '/../tests/testfiles/contents-zipped.zip';
+        file_put_contents($filepath, $contents);
     }
 }
