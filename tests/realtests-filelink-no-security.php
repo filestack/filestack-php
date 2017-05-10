@@ -54,11 +54,8 @@ class RealTestsFilelinkNoSecurity extends BaseTest
         $success = $filelink->transform($transform_tasks, $filepath);
 
         // chaining transformations
-        $crop_options = ['dim' => '[10,20,200,250]'];
-        $rotate_options = ['b' => 'red', 'd' => '45'];
-
-        $contents = $filelink->crop($crop_options)
-                ->rotate($rotate_options)
+        $contents = $filelink->crop(10, 20, 200, 200)
+                ->rotate('red', 45)
                 ->downloadTransformed($filepath);
 
         # var_dump($contents);
@@ -72,7 +69,7 @@ class RealTestsFilelinkNoSecurity extends BaseTest
         // transform then store to cloud
         $transformed_filelink = $filelink
                     ->circle()
-                    ->blur(['amount' => '20'])
+                    ->blur(20)
                     ->store();
 
         # var_dump($transformed_filelink);
