@@ -171,6 +171,27 @@ class Filelink
     }
 
     /**
+     * Set this Filelink's transform_url to include the compress task
+     *
+     * @param bool    $metadata     By default the compress task will strip photo
+     *                              metadata out of the image to reduce the file
+     *                              size. If you need to maintain the file metadata,
+     *                              you can set this to true in order to prevent
+     *                              the metadata from being removed.
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack/Filelink
+     */
+    public function compress($metadata=false)
+    {
+        // call TransformationMixin function
+        $this->setTransformUrl('compress', ['m' => $metadata]);
+
+        return $this;
+    }
+
+    /**
      * Set this Filelink's transform_url to include crop task
      *
      * @param int   $x      x coordinate to start cropping
@@ -993,6 +1014,21 @@ class Filelink
     }
 
     /**
+     * Set this Filelink's transform_url to include the zip task
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack/Filelink
+     */
+    public function zip()
+    {
+        // call TransformationMixin function
+        $this->setTransformUrl('zip');
+
+        return $this;
+    }
+
+    /**
      * return the URL (cdn) of this filelink
      *
      * @return string
@@ -1028,7 +1064,7 @@ class Filelink
                     $this->security->policy,
                     $this->security->signature) : '';
 
-            $this->transform_url = sprintf(FilestackConfig::PROCESSING_URL . '%s/%s',
+            $this->transform_url = sprintf(FilestackConfig::CDN_URL . '%s/%s',
                 $security_str,
                 $this->handle);
         }

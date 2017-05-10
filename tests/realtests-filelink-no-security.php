@@ -74,5 +74,11 @@ class RealTestsFilelinkNoSecurity extends BaseTest
 
         # var_dump($transformed_filelink);
         # echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
+
+        // download and save a zipped a transformed filelink
+        $destination = __DIR__ . '/../tests/testfiles/my-zipped-contents.zip';
+        $contents = $filelink->rotate('00FF00', 45)
+            ->zip()
+            ->downloadTransformed($destination);
     }
 }

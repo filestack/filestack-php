@@ -59,3 +59,18 @@ $transformed_filelink = $filelink
 
 var_dump($transformed_filelink);
 echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
+
+// zipping a transformed filelink
+$result = $filelink->rotate('00FF00', 45)
+    ->zip()
+    ->downloadTransformed($destination);
+echo "\nresult=$result";
+
+// get contents of a zipped a transformed filelink
+$contents = $filelink->rotate('00FF00', 45)
+    ->zip()
+    ->getTransformedContent();
+
+// save file to local drive
+$filepath = __DIR__ . '/../tests/testfiles/my-zipped-contents.zip';
+file_put_contents($filepath, $transformed_content);
