@@ -155,31 +155,6 @@ class FilestackConfig
                 }
                 break;
 
-            case 'transform':
-            case 'zip':
-                $base_url = sprintf('%s/%s',
-                    self::CDN_URL,
-                    $api_key);
-
-                // security in a different format for transformations
-                $security_str = $security ? sprintf('/security=policy:%s,signature:%s',
-                        $security->policy,
-                        $security->signature) : '';
-
-                // build url for transform or zip
-                if ($action === 'transform') {
-                    $url = sprintf($base_url . $security_str . '/%s/%s',
-                        $options['tasks_str'],
-                        $options['handle']
-                    );
-                }
-                elseif ($action === 'zip') {
-                    $url = sprintf($base_url . $security_str . '/zip/%s',
-                        $options['sources_str']
-                    );
-                }
-                break;
-
             case 'upload':
                 $allowed_options = [
                     'filename', 'mimetype', 'path', 'container', 'access', 'base64decode'
@@ -204,6 +179,42 @@ class FilestackConfig
 
                 if ($security) {
                     $append_security = true;
+                }
+                break;
+
+            /* transformation calls */
+            case 'transform':
+            case 'screenshot':
+            case 'zip':
+                $base_url = sprintf('%s/%s',
+                    self::CDN_URL,
+                    $api_key);
+
+                // security in a different format for transformations
+                $security_str = $security ? sprintf('/security=policy:%s,signature:%s',
+                        $security->policy,
+                        $security->signature) : '';
+
+                // build url for transform or zip
+                if ($action === 'transform') {
+                    $url = sprintf($base_url . $security_str . '/%s/%s',
+                        $options['tasks_str'],
+                        $options['handle']
+                    );
+                }
+                elseif ($action === 'screenshot') {
+                    $attrs_str = ($options['attrs_str']) ?
+                        sprintf('=%s', $options['attrs_str']) : '';
+
+                    $url = sprintf($base_url . $security_str . '/urlscreenshot%s/%s',
+                        $attrs_str,
+                        $options['url_to_screenshot']
+                    );
+                }
+                elseif ($action === 'zip') {
+                    $url = sprintf($base_url . $security_str . '/zip/%s',
+                        $options['sources_str']
+                    );
                 }
                 break;
 

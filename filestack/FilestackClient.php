@@ -160,6 +160,58 @@ class FilestackClient
     }
 
     /**
+     * Take a screenshot of a URL
+     *
+     * @param string    $url            URL to screenshot
+     * @param string    $destination    filepath of location to save screenshot file
+     * @param string    $agent          desktop or mobile
+     * @param string    $mode           all or window
+     * @param int       $width          Designate the width of the browser window. The
+     *                                  width is 1024 by default, but can be set to
+     *                                  anywhere between 1 to 1920.
+     * @param int       $height         Designate the height of the browser window.
+     *                                  The height is 768 by default, but can be set
+     *                                  to anywhere between 1 to 1080.
+     * @param int       $delay          Tell URL Screenshot to wait x milliseconds before
+     *                                  capturing the webpage. Sometimes pages take
+     *                                  longer to load, so you may need to delay the
+     *                                  capture in order to make sure the page is
+     *                                  rendered before the screenshot is taken. The
+     *                                  delay must be an integer between 0 and 10000.
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack/Filelink
+     */
+    public function screenshot($url, $destination=null,
+        $agent='desktop', $mode='all', $width=1024, $height=768, $delay=0)
+    {
+        $options = [
+            'a' => $agent,
+            'm' => $mode,
+            'w' => $width,
+            'h' => $height,
+            'd' => $delay
+        ];
+
+        $attrs_str = '';
+        foreach ($options as $key => $value) {
+            $attrs_str .= "$key:$value,";
+        }
+
+        // remove last comma of attrs_str
+        if ($attrs_str) {
+            $attrs_str = substr($attrs_str, 0, strlen($attrs_str) - 1);
+        }
+
+        // call CommonMixin function
+        $result = $this->sendScreenshot($url, $this->api_key,
+            $attrs_str, $destination, $this->security);
+
+        return $result;
+    }
+
+    /**
      * Applied array of transformation tasks to a url
      *
      * @param string    $url                url to transform
