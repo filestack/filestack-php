@@ -31,9 +31,12 @@ trait TransformationMixin
 
         // append attributes if exists
         foreach ($process_attrs as $key => $value) {
+            $encoded_value = gettype($value) === 'string' ?
+                urlencode($value) : urlencode(json_encode($value));
+
             $tranform_str .= sprintf('%s:%s,',
                 urlencode($key),
-                urlencode($value));
+                $encoded_value);
         }
 
         // remove last comma
@@ -47,6 +50,7 @@ trait TransformationMixin
     /**
      * Insert a transformation task into existing url
      *
+     * @param string    $url            url to insert task into
      * @param string    $taskname       name of task, e.g. 'crop', 'resize', etc.
      * @param array     $process_attrs  attributes replated to this task
      *
@@ -54,7 +58,7 @@ trait TransformationMixin
      *
      * @return Transformation object
      */
-    protected function insertTransformStr($url, $taskname, $process_attrs)
+    protected function insertTransformStr($url, $taskname, $process_attrs=[])
     {
         $transform_str = $this->getTransformStr($taskname, $process_attrs);
 
