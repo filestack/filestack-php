@@ -224,6 +224,61 @@ class FilestackClientTest extends BaseTest
     }
 
     /**
+     * Test calling the screenshot function successfully
+     */
+    public function testScreenshotSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content')
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $url = 'https://en.wikipedia.org/wiki/Main_Page';
+        $destination = __DIR__ . '/testfiles/my-test-screenshot.png';
+
+        $contents = $client->screenshot($url);
+        $this->assertNotNull($contents);
+    }
+
+    /**
+     * Test calling the screenshot function successfully
+     */
+    public function testScreenshotWithDest()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content')
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $url = 'https://en.wikipedia.org/wiki/Main_Page';
+        $destination = __DIR__ . '/testfiles/my-test-screenshot.png';
+
+        $result = $client->screenshot($url, $destination);
+
+        $this->assertTrue($result);
+    }
+
+    /**
      * Test calling the upload function with an invalid api key.
      */
     public function testUploadInvalidKey()
