@@ -7,7 +7,6 @@ namespace Filestack;
 class FilestackConfig
 {
     const API_URL = 'https://www.filestackapi.com/api';
-    const PROCESSING_URL = 'https://cdn.filestackcontent.com';
     const CDN_URL = 'https://cdn.filestackcontent.com';
 
     const ALLOWED_ATTRS = [
@@ -159,7 +158,7 @@ class FilestackConfig
             case 'transform':
             case 'zip':
                 $base_url = sprintf('%s/%s',
-                    self::PROCESSING_URL,
+                    self::CDN_URL,
                     $api_key);
 
                 // security in a different format for transformations

@@ -1064,7 +1064,7 @@ class Filelink
                     $this->security->policy,
                     $this->security->signature) : '';
 
-            $this->transform_url = sprintf(FilestackConfig::PROCESSING_URL . '%s/%s',
+            $this->transform_url = sprintf(FilestackConfig::CDN_URL . '%s/%s',
                 $security_str,
                 $this->handle);
         }
