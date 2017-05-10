@@ -31,9 +31,12 @@ trait TransformationMixin
 
         // append attributes if exists
         foreach ($process_attrs as $key => $value) {
+            $encoded_value = gettype($value) === 'string' ?
+                urlencode($value) : urlencode(json_encode($value));
+
             $tranform_str .= sprintf('%s:%s,',
                 urlencode($key),
-                urlencode($value));
+                $encoded_value);
         }
 
         // remove last comma

@@ -94,7 +94,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function blackwhite($threshold=50)
+    public function blackWhite($threshold=50)
     {
         // call TransformationMixin function
         $this->setTransformUrl('blackwhite', ['t' => $threshold]);
@@ -185,7 +185,7 @@ class Filelink
     public function crop($x, $y, $width, $height)
     {
         // call TransformationMixin function
-        $this->setTransformUrl('crop', ["dim" => "[$x,$y,$width,$height]"]);
+        $this->setTransformUrl('crop', ["d" => "[$x,$y,$width,$height]"]);
         return $this;
     }
 
@@ -306,7 +306,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function oil_paint($amount=2)
+    public function oilPaint($amount=2)
     {
         // call TransformationMixin function
         $this->setTransformUrl('oil_paint', ['a' => $amount]);
@@ -336,7 +336,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function partial_blur($amount=10, $blur=4, $objects=[], $type='rect')
+    public function partialBlur($amount=10, $blur=4, $objects=[], $type='rect')
     {
         $options = [
             'a' => $amount,
@@ -373,7 +373,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function partial_pixelate($amount=10, $blur=4, $objects=[], $type='rect')
+    public function partialPixelate($amount=10, $blur=4, $objects=[], $type='rect')
     {
         $options = [
             'a' => $amount,
@@ -411,7 +411,8 @@ class Filelink
      * @param string    $background     Sets the background color to display behind
      *                                  the image. This can be the word for a color,
      *                                  or the hex color code, e.g. ('red' or 'FF0000')
-     * @param string    $color
+     * @param string    $color          Sets the polaroid frame color. This can be
+     *                                  a word or the hex value e.g. ('red' or 'FF0000')
      * @param int       $rotate         The degree by which to rotate the image clockwise.
      *                                  Range is 0 to 359.
      *
@@ -428,7 +429,7 @@ class Filelink
         ];
 
         // call TransformationMixin function
-        $this->setTransformUrl('polaroid', ['a' => $amount]);
+        $this->setTransformUrl('polaroid', $options);
 
         return $this;
     }
@@ -444,7 +445,7 @@ class Filelink
      *                              the original file will be returned. Using quality
      *                              as a seperate task is better when no previous
      *                              image manipulations (no previous recompressions)
-     *                              have been done.
+     *                              have been done. (1 to 100)
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
