@@ -276,4 +276,32 @@ class FilelinkTest extends BaseTest
 
         $result = $filelink->store();
     }
+
+    /**
+     * Test zipping the content of a chained call
+     */
+    public function testFilelinkZipSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content')
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink($this->test_file_handle,
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $destination = __DIR__ . '/testfiles/my-zipped-transformed-file.zip';
+        $result = $filelink->rotate('00FF00', 45)
+                ->zip()
+                ->downloadTransformed($destination);
+
+        $this->assertTrue($result);
+    }
 }

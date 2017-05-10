@@ -139,8 +139,9 @@ class FilestackConfig
     {
         // lower case all keys
         $options = array_change_key_case($options, CASE_LOWER);
-
         $url = '';
+        $append_security = false;
+
         switch ($action) {
             case 'delete':
             case 'overwrite':
@@ -149,9 +150,14 @@ class FilestackConfig
                     $options['handle'],
                     $api_key
                 );
+
+                if ($security) {
+                    $append_security = true;
+                }
                 break;
 
             case 'transform':
+            case 'zip':
                 $base_url = sprintf('%s/%s',
                     self::PROCESSING_URL,
                     $api_key);
@@ -161,10 +167,18 @@ class FilestackConfig
                         $security->policy,
                         $security->signature) : '';
 
-                $url = sprintf($base_url . $security_str . '/%s/%s',
-                    $options['tasks_str'],
-                    $options['handle']
-                );
+                // build url for transform or zip
+                if ($action === 'transform') {
+                    $url = sprintf($base_url . $security_str . '/%s/%s',
+                        $options['tasks_str'],
+                        $options['handle']
+                    );
+                }
+                elseif ($action === 'zip') {
+                    $url = sprintf($base_url . $security_str . '/zip/%s',
+                        $options['sources_str']
+                    );
+                }
                 break;
 
             case 'upload':
@@ -188,6 +202,10 @@ class FilestackConfig
                         $url .= "&$key=$value";
                     }
                 }
+
+                if ($security) {
+                    $append_security = true;
+                }
                 break;
 
             default:
@@ -195,10 +213,9 @@ class FilestackConfig
         }
 
         /**
-         * sign url if security is passed in, ignoring transform called handle
-         * in case statement above
+         * sign url if security is passed in and flag set
          */
-        if ($security && $action !== 'transform') {
+        if ($security && $append_security) {
             $url = $security->signUrl($url);
         }
 

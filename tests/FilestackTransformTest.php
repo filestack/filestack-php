@@ -400,6 +400,29 @@ class FilestackTransformTest extends BaseTest
     }
 
     /**
+     * Test compress transformation call
+     */
+    public function testCompressSuccess()
+    {
+        $filelink = new Filelink($this->test_file_handle,
+                        $this->test_api_key,
+                        $this->test_security);
+
+        $filelink->compress(true);
+
+        $expected_transform_str = 'compress=m:true';
+        $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
+                FilestackConfig::PROCESSING_URL,
+                $this->test_security->policy,
+                $this->test_security->signature,
+                $expected_transform_str,
+                $this->test_file_handle
+            );
+
+        $this->assertEquals($expected_url, $filelink->transform_url);
+    }
+
+    /**
      * Test crop transformation call
      */
     public function testCropSuccess()
