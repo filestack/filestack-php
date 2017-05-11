@@ -34,50 +34,5 @@ $filelink->download($test_filepath);
 // overwrite remote file with local file
 $filelink->overwrite($test_filepath);
 
-// transformations
-$transform_tasks = [
-    'crop'      => ['dim' => '[10,20,200,250]'],
-    'resize'    => ['w' => '100', 'h' => '100'],
-    'rotate'    => ['b' => '00FF00', 'd' => '45']
-];
-
-$transformed_content = $filelink->transform($transform_tasks);
-
-// save file to local drive
-$filepath = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
-file_put_contents($filepath, $transformed_content);
-
-// transformation save to destination
-$success = $filelink->transform($transform_tasks, $filepath);
-
-// chaining transformations
-$contents = $filelink->crop(10, 20, 200, 250)
-        ->rotate('red', 45)
-        ->downloadTransformed($filepath);
-
-/*
- * must call resetTransform() to clear previous transformation calls if
- * you're using the same filelink instance that has been transformed before
-*/
-$filelink->resetTransform();
-
-// transform then store to cloud
-$transformed_filelink = $filelink
-            ->circle()
-            ->blur(20)
-            ->store();
-
-var_dump($transformed_filelink);
-echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
-
-// get contents of a zipped a transformed filelink
-$contents = $filelink->rotate('00FF00', 45)
-    ->zip()
-    ->getTransformedContent();
-
-// save file to local drive
-$filepath = __DIR__ . '/../tests/testfiles/my-zipped-contents.zip';
-file_put_contents($filepath, $transformed_content);
-
 // delete remote file
 $filelink->delete();

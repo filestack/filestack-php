@@ -171,6 +171,53 @@ class Filelink
     }
 
     /**
+     * Set this Filelink's transform_url to include the collage task
+     *
+     * @param array     $files          An array of Filestack file handles or external
+     *                                  urls. These are the images that will comprise
+     *                                  the other images in the collage. The order in
+     *                                  which they appear in the array dictates how the
+     *                                  images will be arranged.
+     * @param int       $width          width of result image (1 to 10000)
+     * @param int       $height         height of result image (1 to 10000)
+     * @param string    $color          Border color for the collage. This can be a
+     *                                  word or hex value, e.g. ('red' or 'FF0000')
+     * @param string    $fit            auto or crop.  Allows you to control how the
+     *                                  images in the collage are manipulated so that
+     *                                  the final collage image will match the height
+     *                                  and width parameters you set more closely.
+     *                                  Using crop will produce a result that is closest
+     *                                  to the height and width parameters you set.
+     * @param int       $margin         Sets the size of the border between and around
+     *                                  the images.  Range is 1 to 100.
+     * @param bool      $auto_rotate    Setting this parameter to true automatically
+     *                                  rotates all the images in the collage according
+                                        to their exif orientation data.
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack/Filelink
+     */
+    public function collage($files, $width, $height,
+        $color='white', $fit='auto', $margin=10, $auto_rotate=false)
+    {
+        $options = [
+            'f' => json_encode($files),
+            'w' => $width,
+            'h' => $height,
+            'c' => $color,
+            'i' => $fit,
+            'm' => $margin,
+            'a' => $auto_rotate
+        ];
+
+        // call TransformationMixin function
+        $this->setTransformUrl('collage', $options);
+
+        return $this;
+    }
+
+    /**
      * Set this Filelink's transform_url to include the compress task
      *
      * @param bool    $metadata     By default the compress task will strip photo
@@ -827,21 +874,6 @@ class Filelink
     }
 
     /**
-     * Get the transformed content of filelink
-     *
-     *
-     * @throws FilestackException   if API call fails, e.g 404 file not found
-     *
-     * @return string (file content)
-     */
-    public function getTransformedContent()
-    {
-        // call CommonMixin function
-        $result = $this->sendGetContent($this->transform_url);
-        return $result;
-    }
-
-    /**
      * Get metadata of filehandle
      *
      * @param array             $fields     optional, specific fields to retrieve.
@@ -900,24 +932,6 @@ class Filelink
     }
 
     /**
-     * Download transformed filelink as a file, saving it to specified destination
-     *
-     * @param string    $destination        destination filepath to save to,
-     *                                      can be folder name (defaults to stored filename)
-     *
-     * @throws FilestackException   if API call fails
-     *
-     * @return bool (true = download success, false = failed)
-     */
-    public function downloadTransformed($destination)
-    {
-
-        // call CommonMixin function
-        $result = $this->sendDownload($this->transform_url, $destination);
-        return $result;
-    }
-
-    /**
      * Overwrite this filelink in cloud storage
      *
      * @param string            $filepath   real path to file
@@ -950,21 +964,15 @@ class Filelink
     }
 
     /**
-     * Append or Create a task to the transformation url for this filelink
+     * Save this transformed filelink in cloud storage
      *
-     * @param array $options    task options, e.g. ['b' => '00FF00', 'd' => '45']
+     * @param array     $options    array of store options
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return void
+     * @return Filestack\Filelink
      */
-    public function setTransformUrl($method, $options=[])
-    {
-        $this->initTransformUrl();
-        $this->transform_url = $this->insertTransformStr($this->transform_url, $method, $options);
-    }
-
-    public function store($options=[])
+    public function save($options=[])
     {
         $this->initTransformUrl();
         $this->transform_url = $this->insertTransformStr($this->transform_url, 'store', $options);
@@ -995,21 +1003,36 @@ class Filelink
     }
 
     /**
+     * Append or Create a task to the transformation url for this filelink
+     *
+     * @param array $options    task options, e.g. ['b' => '00FF00', 'd' => '45']
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return void
+     */
+    public function setTransformUrl($method, $options=[])
+    {
+        $this->initTransformUrl();
+        $this->transform_url = $this->insertTransformStr($this->transform_url, $method, $options);
+    }
+
+    /**
      * Applied array of transformation tasks to this file link.
      *
      * @param array     $transform_tasks    array of transformation tasks and
      *                                      optional attributes per task
-     * @param string   $destination        option real path to where to save
-     *                                      transformed file
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return Filestack\Filelink or contents
      */
-    public function transform($transform_tasks, $destination=null)
+    public function transform($transform_tasks)
     {
         // call TransformationMixin
-        $result = $this->sendTransform($this->handle, $transform_tasks, $destination);
+        $result = $this->sendTransform($this->handle,
+                            $transform_tasks, $this->security);
+
         return $result;
     }
 

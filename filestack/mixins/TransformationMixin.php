@@ -3,6 +3,7 @@ namespace Filestack\Mixins;
 
 use Filestack\FilestackConfig;
 use Filestack\FilestackException;
+use Filestack\Filelink;
 
 trait TransformationMixin
 {
@@ -74,15 +75,18 @@ trait TransformationMixin
      * @param string    $resource           url or filestack handle to transform
      * @param array     $transform_tasks    array of transformation tasks and
      *                                      optional attributes per task
-     * @param string   $destination        option real path to where to save
-     *                                      transformed file
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return Filestack\Filelink or contents
      */
-    public function sendTransform($resource, $transform_tasks, $destination=null)
+    public function sendTransform($resource, $transform_tasks, $security=null)
     {
+        // add store method if one does not exists
+        if (!array_key_exists('store', $transform_tasks)) {
+            $transform_tasks['store'] = [];
+        }
+
         // build tasks_str
         $tasks_str = '';
         $num_tasks = count($transform_tasks);
@@ -101,15 +105,12 @@ trait TransformationMixin
         // build url
         $options['tasks_str'] = $tasks_str;
         $options['handle'] = $resource;
-        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $this->security);
+
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
 
         $params = [];
         $headers = [];
         $req_options = [];
-
-        if ($destination) {
-            $req_options['sink'] = $destination;
-        };
 
         // call CommonMixin function
         $response = $this->requestGet($url, $params, $headers, $req_options);
@@ -117,52 +118,16 @@ trait TransformationMixin
 
         // handle response
         if ($status_code == 200) {
-            if (!$destination) { // return content
-                $content = $response->getBody()->getContents();
-                return $content;
-            }
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
+            $json_response = json_decode($response->getBody(), true);
+            $url = $json_response['url'];
+            $file_handle = substr($url, strrpos($url, '/') + 1);
 
-        return true;
-    }
+            $filelink = new Filelink($file_handle, $this->api_key, $this->security);
+            $filelink->metadata['filename'] = $json_response['filename'];
+            $filelink->metadata['size'] = $json_response['size'];
+            $filelink->metadata['mimetype'] = $json_response['type'];
 
-    /**
-     * Send zip call to API
-     *
-     * @param array     $sources        Filestack handles and urls to zip
-     * @param string    $destination    Optional filepath to where to save the zip
-     *                                  file.  If not passed in function will return
-     *                                  file content as string
-     *
-     * @throws FilestackException   if API call fails, e.g 404 file not found
-     *
-     * @return bool or file content
-     */
-    public function sendZip($sources, $destination=null)
-    {
-        $options = [
-            'sources_str' => sprintf('[%s]', implode(',', $sources))
-        ];
-
-        $url = FilestackConfig::createUrl('zip', $this->api_key, $options, $this->security);
-
-        $req_options = [];
-        if ($destination) {
-            $req_options['sink'] = $destination;
-        };
-
-        // call CommonMixin function
-        $response = $this->requestGet($url, [], [], $req_options);
-        $status_code = $response->getStatusCode();
-
-        // handle response
-        if ($status_code == 200) {
-            if (!$destination) { // return content
-                $content = $response->getBody()->getContents();
-                return $content;
-            }
+            return $filelink;
         } else {
             throw new FilestackException($response->getBody(), $status_code);
         }

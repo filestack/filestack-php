@@ -14,6 +14,8 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     protected $test_security;
     protected $run_real_tests;
 
+    protected $mock_response_json;
+
     public function __construct()
     {
         $this->test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
@@ -25,8 +27,14 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $this->test_file_url = FilestackConfig::CDN_URL . '/' . $this->test_file_handle;
         $this->test_secret = '3UAQ64UWMNCCRF36CY2NSRSPSU';
         $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
-
         $this->test_security = new FilestackSecurity($this->test_secret);
+
+        $this->mock_response_json = json_encode([
+            'filename'  => 'somefilename.jpg',
+            'size'      => '1000',
+            'type'      => 'image/jpg',
+            'url'       => 'https://cdn.filestack.com/somefilehandle'
+        ]);
 
         $this->run_real_tests = false; // set to true to run real tests
     }

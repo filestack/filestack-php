@@ -118,6 +118,47 @@ class FilestackClientTest extends BaseTest
     }
 
     /**
+     * Test calling collage() function successfully
+     */
+    public function testCollageSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            $this->mock_response_json
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $sources = [
+            '9K1BZLt6SAyztVaOtAQ4',
+            'FWOrzDcpREanJDI3hdR5',
+            'Vi6RUEi6TgCSo9FXYVxP',
+            'https://d1wtqaffaaj63z.cloudfront.net/images/E-0510.JPG'
+        ];
+
+        $width = 800;
+        $height = 600;
+        $color = 'white';
+        $fit = 'auto';
+        $margin = 10;
+        $auto_rotate = false;
+        $store_options = ['filename' => 'mycollage_file.png'];
+
+        $filelink = $client->collage($sources, $width, $height, $store_options,
+                            $color, $fit, $margin, $auto_rotate);
+
+        $this->assertNotNull($filelink);
+    }
+
+    /**
      * Test deleting a Filestack File
      */
     public function testDeleteSuccess()
@@ -230,7 +271,7 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody('some content')
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -244,10 +285,10 @@ class FilestackClientTest extends BaseTest
         );
 
         $url = 'https://en.wikipedia.org/wiki/Main_Page';
-        $destination = __DIR__ . '/testfiles/my-test-screenshot.png';
+        $store_options = ['filename' => 'myscreenshot_file.png'];
 
-        $contents = $client->screenshot($url);
-        $this->assertNotNull($contents);
+        $filelink = $client->screenshot($url, $store_options);
+        $this->assertNotNull($filelink);
     }
 
     /**
@@ -257,7 +298,7 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody('some content')
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -271,11 +312,9 @@ class FilestackClientTest extends BaseTest
         );
 
         $url = 'https://en.wikipedia.org/wiki/Main_Page';
-        $destination = __DIR__ . '/testfiles/my-test-screenshot.png';
+        $filelink = $client->screenshot($url);
 
-        $result = $client->screenshot($url, $destination);
-
-        $this->assertTrue($result);
+        $this->assertNotNull($filelink);
     }
 
     /**
@@ -435,7 +474,7 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody('some content')
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -455,9 +494,9 @@ class FilestackClientTest extends BaseTest
             'rotate'    => ['b' => '00FF00', 'd' => '45']
         ];
 
-        $content = $client->transform($url, $transform_tasks);
+        $filelink = $client->transform($url, $transform_tasks);
 
-        $this->assertNotNull($content);
+        $this->assertNotNull($filelink);
     }
 
     /**
@@ -467,7 +506,7 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody('some content')
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -485,51 +524,8 @@ class FilestackClientTest extends BaseTest
             'crop'      => ['dim' => '[10,20,200,250]']
         ];
 
-        $destination = __DIR__ . '/testfiles/transform-with-dest.jpg';
-        $content = $client->transform($url, $transform_tasks, $destination);
-
-        $this->assertNotNull($content);
-    }
-
-    /**
-     * Test transforming an external source
-     */
-    public function testTransformStoreSuccess()
-    {
-        $mock_response = new MockHttpResponse(
-            200,
-            new MockHttpResponseBody(json_encode([
-                    'filename'  => 'somefilename.jpg',
-                    'size'      => '1000',
-                    'type'      => 'image/jpg',
-                    'url'       => 'https://cdn.filestack.com/somefilehandle'
-                ])
-            )
-        );
-
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
-        $client = new FilestackClient(
-            $this->test_api_key,
-            $this->test_security,
-            $stub_http_client
-        );
-
-        $url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
-        $transform_tasks = [
-            'crop'      => ['dim' => '[10,20,200,250]'],
-            'resize'    => ['w' => '100', 'h' => '100'],
-            'rotate'    => ['b' => '00FF00', 'd' => '45'],
-            'store'     => []
-        ];
-
-        $result = $client->transform($url, $transform_tasks);
-        $json = json_decode($result);
-
-        $this->assertNotNull($result);
-        $this->assertEquals($json->filename, 'somefilename.jpg');
+        $filelink = $client->transform($url, $transform_tasks);
+        $this->assertNotNull($filelink);
     }
 
     /**
@@ -553,7 +549,7 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody('some content')
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -571,40 +567,11 @@ class FilestackClientTest extends BaseTest
             $this->test_file_handle
         ];
 
-        $contents = $client->zip($sources);
-        $this->assertNotNull($contents);
+        $store_options = ['filename' => 'mycollage_file.png'];
+        $filelink = $client->zip($sources, $store_options);
+        $this->assertNotNull($filelink);
     }
 
-    /**
-     * Test zipping files saved to destination successfully
-     */
-    public function testZipWithDestSuccess()
-    {
-        $mock_response = new MockHttpResponse(
-            200,
-            new MockHttpResponseBody('some content')
-        );
-
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
-        $client = new FilestackClient(
-            $this->test_api_key,
-            $this->test_security,
-            $stub_http_client
-        );
-
-        $sources = [
-            'https://d1wtqaffaaj63z.cloudfront.net/images/20150617_143146.jpg',
-            $this->test_file_handle
-        ];
-
-        $destination = __DIR__ . '/testfiles/my-test-zipped-file.zip';
-        $result = $client->zip($sources, $destination);
-
-        $this->assertTrue($result);
-    }
     /**
      * Test zipping files throw exceptions if file not found
      */

@@ -230,45 +230,6 @@ trait CommonMixin
     }
 
     /**
-     * Send request to take screenshot of a URL
-     *
-     * @param   string  $url         url to screenshot
-     * @param   array   $attrs_str   attributes string in format attr1:value1,attr2:value2
-     *
-     * @return true or file content
-     */
-    protected function sendScreenshot($url, $api_key, $attrs_str='', $destination=null, $security=null)
-    {
-        $options = [
-            'url_to_screenshot' => $url,
-            'attrs_str' => $attrs_str
-        ];
-
-        $screenshot_url =  FilestackConfig::createUrl('screenshot', $api_key,
-            $options, $security);
-
-        $req_options = [];
-        if ($destination) {
-            $req_options['sink'] = $destination;
-        }
-
-        $response = $this->requestGet($screenshot_url, [], [], $req_options);
-        $status_code = $response->getStatusCode();
-
-        // handle response
-        if ($status_code == 200) {
-            if (!$destination) {
-                $content = $response->getBody()->getContents();
-                return $content;
-            }
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        return true;
-    }
-
-    /**
      * Creates data array to send to request based on if filepath is
      * real filepath or url
      *

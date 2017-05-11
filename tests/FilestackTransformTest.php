@@ -15,7 +15,7 @@ class FilestackTransformTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody("some content")
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -42,7 +42,7 @@ class FilestackTransformTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            new MockHttpResponseBody("some content")
+            $this->mock_response_json
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -56,10 +56,9 @@ class FilestackTransformTest extends BaseTest
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
                         $this->test_security, $stub_http_client);
 
-        $destination = __DIR__ . '/testfiles/my-transformed-file.jpg';
-        $success = $filelink->transform($transform_tasks, $destination);
+        $new_filelink = $filelink->transform($transform_tasks);
 
-        $this->assertTrue($success);
+        $this->assertNotNull($new_filelink);
     }
 
     /**
@@ -180,33 +179,6 @@ class FilestackTransformTest extends BaseTest
     }
 
     /**
-     * Test chaining transformation with getContent call
-     */
-    public function testTranformChainGetContent()
-    {
-        $mock_response = new MockHttpResponse(
-            200,
-            new MockHttpResponseBody("some content")
-        );
-
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
-        $filelink = new Filelink($this->test_file_handle,
-            $this->test_api_key,
-            $this->test_security,
-            $stub_http_client
-        );
-
-        $contents = $filelink->crop(10, 20, 200, 250)
-                ->rotate('green', 45)
-                ->getTransformedContent();
-
-        $this->assertNotNull($contents);
-    }
-
-    /**
      * Test chaining transformation with download call
      */
     public function testTranformChainDownload()
@@ -228,15 +200,15 @@ class FilestackTransformTest extends BaseTest
 
         $destination = __DIR__ . '/testfiles/my-transformed-file.jpg';
 
-        $result = $filelink
+        $filelink = $filelink
                         ->resize(100, 100)
-                        ->downloadTransformed($destination);
+                        ->download($destination);
 
-        $this->assertTrue($result);
+        $this->assertNotNull($filelink);
     }
 
     /**
-     * Test chaining transformation with download call
+     * Test chaining transformation with store call
      */
     public function testTranformChainStore()
     {
@@ -264,7 +236,7 @@ class FilestackTransformTest extends BaseTest
                         ->sepia()
                         ->circle()
                         ->blur(20)
-                        ->store();
+                        ->save();
 
         $this->assertNotNull($transformed_filelink);
         $this->assertEquals($transformed_filelink->metadata['filename'], 'somefilename.jpg');
@@ -388,6 +360,48 @@ class FilestackTransformTest extends BaseTest
         $filelink->circle($background);
 
         $expected_transform_str = 'circle=b:gray';
+        $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
+                FilestackConfig::CDN_URL,
+                $this->test_security->policy,
+                $this->test_security->signature,
+                $expected_transform_str,
+                $this->test_file_handle
+            );
+
+        $this->assertEquals($expected_url, $filelink->transform_url);
+    }
+
+    /**
+     * Test circle transformation call
+     */
+    public function testCollageSuccess()
+    {
+        $filelink = new Filelink($this->test_file_handle,
+                        $this->test_api_key,
+                        $this->test_security);
+
+        $files = [
+            '9K1BZLt6SAyztVaOtAQ4',
+            'FWOrzDcpREanJDI3hdR5',
+            'Vi6RUEi6TgCSo9FXYVxP',
+            'https://d1wtqaffaaj63z.cloudfront.net/images/E-0510.JPG'
+        ];
+
+        $width = 800;
+        $height = 600;
+        $color='white';
+        $fit='auto';
+        $margin=10;
+        $auto_rotate=false;
+
+        $filelink->collage($files, $width, $height,
+            $color, $fit, $margin, $auto_rotate);
+
+        $expected_transform_str = sprintf('collage=f:%s' .
+            ',w:800,h:600,c:white,i:auto,m:10,a:false',
+            urlencode(json_encode($files))
+        );
+
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
                 FilestackConfig::CDN_URL,
                 $this->test_security->policy,

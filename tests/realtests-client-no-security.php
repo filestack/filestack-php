@@ -11,7 +11,7 @@ class RealTestsClientNoSecurity extends BaseTest
     {
         if (!$this->run_real_tests) {
             $this->markTestSkipped(
-                'Real calls to the API using the Filestack client, comment out to test'
+                'Real calls to the API using the Filestack client'
             );
         }
 
@@ -41,8 +41,8 @@ class RealTestsClientNoSecurity extends BaseTest
         $content = $client->getContent($filelink->url());
 
         // save file to local drive
-        $filepath = __DIR__ . '/../tests/testfiles/' . $metadata['filename'];
-        file_put_contents($filepath, $content);
+        $destination = __DIR__ . '/../tests/testfiles/' . $metadata['filename'];
+        file_put_contents($destination, $content);
 
         // download a file
         $destination = __DIR__ . '/../tests/testfiles/my-custom-filename.jpg';
@@ -57,23 +57,13 @@ class RealTestsClientNoSecurity extends BaseTest
             'rotate'    => ['b' => '00FF00', 'd' => '45'],
         ];
 
-        $content = $client->transform($url, $transform_tasks);
+        $destination = __DIR__ . '/../tests/testfiles/my-transformed-file.png';
+        $transformed_file = $client->transform($url, $transform_tasks);
 
-        // save file to local drive
-        $filepath = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
-        file_put_contents($filepath, $content);
-
-        // transform an image from url with store()
-        $url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
-        $transform_tasks = [
-            'resize'    => ['width' => '100', 'height' => '100'],
-            'rotate'    => ['background' => 'red', 'deg' => '45'],
-            'store'     => []
-        ];
-
-        $result = $client->transform($url, $transform_tasks);
-        $json = json_decode($result);
-        # var_dump($json);
+        $contents = $transformed_file->getContent();
+        file_put_contents($destination, $contents);
+        # or
+        $result = $transformed_file->download($destination);
 
         // overwriting a file will fail as security is required for this operation
         // deleting a file will fail as securiy is required for this operation
@@ -81,11 +71,41 @@ class RealTestsClientNoSecurity extends BaseTest
         // zipping files
         $sources = [
             'https://d1wtqaffaaj63z.cloudfront.net/images/20150617_143146.jpg',
-            'I4JVPJ1eTxakD9CjRKZ3'
+            $filelink->handle
         ];
 
-        $contents = $client->zip($sources);
-        $filepath = __DIR__ . '/../tests/testfiles/contents-zipped.zip';
-        file_put_contents($filepath, $contents);
+        $zipped_filelink = $client->zip($sources);
+        $destination = __DIR__ . '/../tests/testfiles/contents-zipped.zip';
+
+        $result = $zipped_filelink->download($destination);
+        # or
+        $contents = $zipped_filelink->getContent();
+        file_put_contents($destination, $contents);
+
+        // creating a collage
+        $sources = [
+            '9K1BZLt6SAyztVaOtAQ4',
+            'FWOrzDcpREanJDI3hdR5',
+            'Vi6RUEi6TgCSo9FXYVxP',
+            'https://d1wtqaffaaj63z.cloudfront.net/images/E-0510.JPG'
+        ];
+
+        $collage_filelink = $client->collage($sources, 800, 600);
+        $destination = __DIR__ . '/../tests/testfiles/collage-test.png';
+
+        $result = $collage_filelink->download($destination);
+        # or
+        $contents = $collage_filelink->getContent();
+        file_put_contents($destination, $contents);
+
+        // take a screenshot of a url
+        $url = 'https://en.wikipedia.org/wiki/Main_Page';
+        $screenshot_filelink = $client->screenshot($url);
+        $destination = __DIR__ . '/../tests/testfiles/screenshot-test.png';
+
+        $result = $screenshot_filelink->download($destination);
+        # or get contents then save
+        $contents = $screenshot_filelink->getContent();
+        file_put_contents($destination, $contents);
     }
 }

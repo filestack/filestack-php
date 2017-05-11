@@ -8,7 +8,7 @@ use Filestack\FilestackSecurity;
 
 class RealTestsFilelinkWithSecurity extends BaseTest
 {
-    public function testClientCalls()
+    public function testFilelinkCalls()
     {
         if (!$this->run_real_tests) {
             $this->markTestSkipped(
@@ -55,45 +55,44 @@ class RealTestsFilelinkWithSecurity extends BaseTest
             'rotate'    => ['b' => '00FF00', 'd' => '45']
         ];
 
-        $transformed_content = $filelink->transform($transform_tasks);
+        $transformed_filelink = $filelink->transform($transform_tasks);
 
-        // save file to local drive
-        $filepath = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
-        file_put_contents($filepath, $transformed_content);
+        $destination = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
 
-        // transformation save to destination
-        $success = $filelink->transform($transform_tasks, $filepath);
+        // download transformed file
+        $result = $transformed_filelink->download($destination);
+        # or save file to local drive
+        $transformed_content = $transformed_filelink->getContent();
+        file_put_contents($destination, $transformed_content);
 
         // chaining transformations
-        $contents = $filelink->crop(10, 20, 200, 250)
+        $chained_filelink = $filelink->crop(10, 20, 200, 200)
                 ->rotate('red', 45)
-                ->downloadTransformed($filepath);
+                ->save(); /**
+                            You HAVE to call save() to save transformation to storage,
+                            otherwise you'll just get a url to the transformation call.
+                          */
 
-        # var_dump($contents);
+        $destination = __DIR__ . '/../tests/testfiles/chained-transformation.png';
 
-        /*
+        // download transformed file
+        $result = $chained_filelink->download($destination);
+        # or save file to local drive
+        $chained_content = $chained_filelink->getContent();
+        file_put_contents($destination, $chained_content);
+
+        /**
          * must call resetTransform() to clear previous transformation calls if
          * you're using the same filelink instance that has been transformed before
-        */
+         * for new transformations
+         */
         $filelink->resetTransform();
 
-        // transform then store to cloud
-        $transformed_filelink = $filelink
-                    ->circle()
-                    ->blur(20)
-                    ->store();
-
-        # var_dump($transformed_filelink);
-        # echo "\nnew transformed file cdn url is: " . $transformed_filelink->url();
-
-        // get contents of a zipped a transformed filelink
-        $contents = $filelink->rotate('00FF00', 45)
+        // download and save a zipped a transformed filelink
+        $destination = __DIR__ . '/../tests/testfiles/my-zipped-contents.zip';
+        $result = $filelink->rotate('00FF00', 45)
             ->zip()
-            ->getTransformedContent();
-
-        // save file to local drive
-        $filepath = __DIR__ . '/../tests/testfiles/my-zipped-contents.zip';
-        file_put_contents($filepath, $transformed_content);
+            ->download($destination);
 
         // delete remote file
         $success = $filelink->delete();

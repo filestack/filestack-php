@@ -105,6 +105,65 @@ class FilestackClient
     }
 
     /**
+     * Set this Filelink's transform_url to include the collage task
+     *
+     * @param array    $sources     An array of Filestack file handles or external
+     *                              urls. These are the images that will comprise
+     *                              the other images in the collage. The order in
+     *                              which they appear in the array dictates how the
+     *                              images will be arranged.
+     * @param int       $width          width of result image (1 to 10000)
+     * @param int       $height         height of result image (1 to 10000)
+     * @param string    $color          Border color for the collage. This can be a
+     *                                  word or hex value, e.g. ('red' or 'FF0000')
+     * @param string    $fit            auto or crop.  Allows you to control how the
+     *                                  images in the collage are manipulated so that
+     *                                  the final collage image will match the height
+     *                                  and width parameters you set more closely.
+     *                                  Using crop will produce a result that is closest
+     *                                  to the height and width parameters you set.
+     * @param int       $margin         Sets the size of the border between and around
+     *                                  the images.  Range is 1 to 100.
+     * @param bool      $auto_rotate    Setting this parameter to true automatically
+     *                                  rotates all the images in the collage according
+     *                                to their exif orientation data.
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack/Filelink or contents
+     */
+    public function collage($sources, $width, $height, $store_options=[],
+        $color='white', $fit='auto', $margin=10, $auto_rotate=false)
+    {
+
+        // slice off first source as the filelink
+        $first_source = array_shift($sources);
+
+        $process_attrs = [
+            'f' => json_encode($sources),
+            'w' => $width,
+            'h' => $height,
+            'c' => $color,
+            'i' => $fit,
+            'm' => $margin,
+            'a' => $auto_rotate
+        ];
+
+        $transform_tasks = [
+            'collage' => $process_attrs
+        ];
+
+        if (!empty($store_options)) {
+            $transform_tasks['store'] = $store_options;
+        }
+
+        // call TransformationMixin function
+        $result = $this->sendTransform($first_source, $transform_tasks, $this->security);
+
+        return $result;
+    }
+
+    /**
      * Delete a file from cloud storage
      *
      * @param string            $handle         Filestack file handle to delete
@@ -163,7 +222,7 @@ class FilestackClient
      * Take a screenshot of a URL
      *
      * @param string    $url            URL to screenshot
-     * @param string    $destination    filepath of location to save screenshot file
+     * @param string    $store_options  optional store values
      * @param string    $agent          desktop or mobile
      * @param string    $mode           all or window
      * @param int       $width          Designate the width of the browser window. The
@@ -183,10 +242,10 @@ class FilestackClient
      *
      * @return Filestack/Filelink
      */
-    public function screenshot($url, $destination=null,
+    public function screenshot($url, $store_options=[],
         $agent='desktop', $mode='all', $width=1024, $height=768, $delay=0)
     {
-        $options = [
+        $process_attrs = [
             'a' => $agent,
             'm' => $mode,
             'w' => $width,
@@ -194,19 +253,16 @@ class FilestackClient
             'd' => $delay
         ];
 
-        $attrs_str = '';
-        foreach ($options as $key => $value) {
-            $attrs_str .= "$key:$value,";
+        $transform_tasks = [
+            'urlscreenshot' => $process_attrs
+        ];
+
+        if (!empty($store_options)) {
+            $transform_tasks['store'] = $store_options;
         }
 
-        // remove last comma of attrs_str
-        if ($attrs_str) {
-            $attrs_str = substr($attrs_str, 0, strlen($attrs_str) - 1);
-        }
-
-        // call CommonMixin function
-        $result = $this->sendScreenshot($url, $this->api_key,
-            $attrs_str, $destination, $this->security);
+        // call TransformationMixin function
+        $result = $this->sendTransform($url, $transform_tasks, $this->security);
 
         return $result;
     }
@@ -217,17 +273,15 @@ class FilestackClient
      * @param string    $url                url to transform
      * @param array     $transform_tasks    array of transformation tasks and
      *                                      optional attributes per task
-     * @param string   $destination         option real path to where to save
-     *                                      transformed file
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack\Filelink or contents
+     * @return Filestack\Filelink or file content
      */
-    public function transform($url, $transform_tasks, $destination=null)
+    public function transform($url, $transform_tasks)
     {
         // call TransformationMixin
-        $result = $this->sendTransform($url, $transform_tasks, $destination);
+        $result = $this->sendTransform($url, $transform_tasks, $this->security);
         return $result;
     }
 
@@ -249,7 +303,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails
      *
-     * @return Filestack\Filelink or null
+     * @return Filestack\Filelink
      */
     public function upload($filepath, $options=[])
     {
@@ -292,18 +346,26 @@ class FilestackClient
      * be handles, urls, or a mix of both
      *
      * @param array     $sources        Filestack handles and urls to zip
-     * @param string    $destination    Optional filepath to where to save the zip
-     *                                  file.  If not passed in function will return
-     *                                  file content as string
+     * @param array     $store_options  Optional store options
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return bool or file content
+     * @return Filestack/Filelink or file content
      */
-    public function zip($sources, $destination=null)
+    public function zip($sources, $store_options=[])
     {
+        $transform_tasks = [
+            'zip' => []
+        ];
+
+        if (!empty($store_options)) {
+            $transform_tasks['store'] = $store_options;
+        }
+
+        $sources_str = '[' . implode(',', $sources) . ']';
+
         // call TransformationMixin
-        $result = $this->sendZip($sources, $destination);
+        $result = $this->sendTransform($sources_str, $transform_tasks, $this->security);
         return $result;
     }
 }

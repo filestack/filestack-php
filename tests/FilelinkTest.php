@@ -257,7 +257,7 @@ class FilelinkTest extends BaseTest
     /**
      * Test calling store() API failed throws exception
      */
-    public function testFilelinkStoreException()
+    public function testFilelinkSaveException()
     {
         $mock_response = new MockHttpResponse(400,
             'Invalid parameters');
@@ -274,7 +274,7 @@ class FilelinkTest extends BaseTest
                         $this->test_security,
                         $stub_http_client);
 
-        $result = $filelink->store();
+        $result = $filelink->save();
     }
 
     /**
@@ -298,10 +298,10 @@ class FilelinkTest extends BaseTest
         );
 
         $destination = __DIR__ . '/testfiles/my-zipped-transformed-file.zip';
-        $result = $filelink->rotate('00FF00', 45)
+        $transformed_filelink = $filelink->rotate('00FF00', 45)
                 ->zip()
-                ->downloadTransformed($destination);
+                ->download($destination);
 
-        $this->assertTrue($result);
+        $this->assertNotNull($transformed_filelink);
     }
 }
