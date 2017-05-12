@@ -9,9 +9,33 @@ use Filestack\FilestackException;
 class FilestackTransformTest extends BaseTest
 {
     /**
+     * Test debugging a transformation url of a chained call
+     */
+    public function testDebuggingTransformCalls()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"apikey": "someapikey", "errors": "some errors"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+            $this->test_security, $stub_http_client);
+
+        $json_response = $filelink->rotate('00FF00', 45)
+                ->detectFaces()
+                ->debug();
+
+        $this->assertNotNull($json_response);
+    }
+
+    /**
      * Test the transform method on a Filelink returning contents
      */
-    public function testTranformationSuccess()
+    public function testTransformationSuccess()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -38,7 +62,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test the transform method on a Filelink saving to a location
      */
-    public function testTranformationWithDest()
+    public function testTransformationWithDest()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -64,7 +88,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test the transform method throws exception if api call failed
      */
-    public function testTranformationFailed()
+    public function testTransformationFailed()
     {
         $mock_response = new MockHttpResponse(
             403,
@@ -90,7 +114,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test the transform method throws exception if task is invalid
      */
-    public function testTranformInvalidTaskThrowsException()
+    public function testTransformInvalidTaskThrowsException()
     {
         $mock_response = new MockHttpResponse(
             400,
@@ -116,7 +140,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test the transform method throws exception if passed in invalid attribute
      */
-    public function testTranformInvalidAttrThrowsException()
+    public function testTransformInvalidAttrThrowsException()
     {
         $mock_response = new MockHttpResponse(
             400,
@@ -142,7 +166,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test getting a transformation url of a chained call
      */
-    public function testTranformChainUrl()
+    public function testTransformChainUrl()
     {
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key);
         $filelink->crop(10, 20, 200, 250)
@@ -169,7 +193,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test getting a transformation url of a chained call
      */
-    public function testTranformInvalidMethod()
+    public function testTransformInvalidMethod()
     {
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
@@ -181,7 +205,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test chaining transformation with download call
      */
-    public function testTranformChainDownload()
+    public function testTransformChainDownload()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -210,7 +234,7 @@ class FilestackTransformTest extends BaseTest
     /**
      * Test chaining transformation with store call
      */
-    public function testTranformChainStore()
+    public function testTransformChainStore()
     {
         $mock_response = new MockHttpResponse(
             200,
@@ -479,7 +503,7 @@ class FilestackTransformTest extends BaseTest
 
         $filelink->detectFaces($color, $export, $min_size, $max_size);
 
-        $expected_transform_str = 'detect_faces=c:black,e:false,n:0.5,N:1';
+        $expected_transform_str = 'detect_faces=c:black,e:false,n:0.5,x:1';
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',
                 FilestackConfig::CDN_URL,
                 $this->test_security->policy,

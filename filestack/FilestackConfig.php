@@ -37,8 +37,9 @@ class FilestackConfig
         'crop' => [
             'd', 'dim'
         ],
+        'debug' => [],
         'detect_faces' => [
-            'c', 'e', 'n', 'N',
+            'c', 'e', 'n', 'x',
             'color', 'export', 'minSize', 'maxSize'
         ],
         'enhance' => [
@@ -142,6 +143,18 @@ class FilestackConfig
         $append_security = false;
 
         switch ($action) {
+            case 'debug':
+                $url = sprintf('%s/%s/debug/%s',
+                    self::CDN_URL,
+                    $api_key,
+                    $options['transform_str']
+                );
+
+                if ($security) {
+                    $append_security = true;
+                }
+                break;
+
             case 'delete':
             case 'overwrite':
                 $url = sprintf('%s/file/%s?key=%s',

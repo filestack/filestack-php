@@ -260,6 +260,21 @@ class Filelink
     /**
      * Set this Filelink's transform_url to include the detect_faces task
      *
+     * @throws FilestackException   if API call fails
+     *
+     * @return json object
+     */
+    public function debug()
+    {
+        // call TransformationMixin functions
+        $json_response = $this->sendDebug($this->transform_url, $this->security);
+
+        return $json_response;
+    }
+
+    /**
+     * Set this Filelink's transform_url to include the detect_faces task
+     *
      * @param string    $color          Will change the color of the "face object"
      *                                  boxes and text.  This can be the word for a color,
      *                                  or the hex color code, e.g. ('red' or 'FF0000')
@@ -281,7 +296,7 @@ class Filelink
             'c' => $color,
             'e' => $export ? 'true' : 'false',
             'n' => $min_size,
-            'N' => $max_size
+            'x' => $max_size
         ];
 
         // call TransformationMixin function

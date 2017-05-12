@@ -70,6 +70,41 @@ trait TransformationMixin
     }
 
     /**
+     * Send debug call
+     *
+     * @param string    $transform_str           url or filestack handle to transform
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return json object
+     */
+    public function sendDebug($transform_url, $security=null)
+    {
+        $transform_str = str_replace(FilestackConfig::CDN_URL . '/', '', $transform_url);
+        $options = ['transform_str' => $transform_str];
+        $debug_url = FilestackConfig::createUrl('debug', $this->api_key, $options, $security);
+
+        // call CommonMixin function
+        $response = $this->requestGet($debug_url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+
+            $json_response = json_decode($response->getBody(), true);
+            return $json_response;
+
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        // failed if reached
+        return false;
+    }
+
+    /**
      * Applied array of transformation tasks to handle or external url
      *
      * @param string    $resource           url or filestack handle to transform
@@ -87,6 +122,39 @@ trait TransformationMixin
             $transform_tasks['store'] = [];
         }
 
+        $tasks_str = $this->createTransformStr($transform_tasks);
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $resource;
+
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
+
+        // call CommonMixin function
+        $response = $this->requestGet($url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            $json_response = json_decode($response->getBody(), true);
+            $url = $json_response['url'];
+            $file_handle = substr($url, strrpos($url, '/') + 1);
+
+            $filelink = new Filelink($file_handle, $this->api_key, $security);
+            $filelink->metadata['filename'] = $json_response['filename'];
+            $filelink->metadata['size'] = $json_response['size'];
+            $filelink->metadata['mimetype'] = $json_response['type'];
+
+            return $filelink;
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        return true;
+    }
+
+    protected function createTransformStr($transform_tasks)
+    {
         // build tasks_str
         $tasks_str = '';
         $num_tasks = count($transform_tasks);
@@ -102,37 +170,7 @@ trait TransformationMixin
             $num_tasks_attached++;
         }
 
-        // build url
-        $options['tasks_str'] = $tasks_str;
-        $options['handle'] = $resource;
-
-        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
-
-        $params = [];
-        $headers = [];
-        $req_options = [];
-
-        // call CommonMixin function
-        $response = $this->requestGet($url, $params, $headers, $req_options);
-        $status_code = $response->getStatusCode();
-
-        // handle response
-        if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), true);
-            $url = $json_response['url'];
-            $file_handle = substr($url, strrpos($url, '/') + 1);
-
-            $filelink = new Filelink($file_handle, $this->api_key, $this->security);
-            $filelink->metadata['filename'] = $json_response['filename'];
-            $filelink->metadata['size'] = $json_response['size'];
-            $filelink->metadata['mimetype'] = $json_response['type'];
-
-            return $filelink;
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        return true;
+        return $tasks_str;
     }
 
     /**

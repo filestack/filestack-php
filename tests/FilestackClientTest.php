@@ -500,13 +500,13 @@ class FilestackClientTest extends BaseTest
     }
 
     /**
-     * Test transforming an external source
+     * Test debugging a transformation url of a chained call
      */
-    public function testTransformWithDest()
+    public function testDebuggingTransformCalls()
     {
         $mock_response = new MockHttpResponse(
             200,
-            $this->mock_response_json
+            '{"apikey": "someapikey", "errors": "some errors"}'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -519,13 +519,44 @@ class FilestackClientTest extends BaseTest
             $stub_http_client
         );
 
-        $url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
         $transform_tasks = [
-            'crop'      => ['dim' => '[10,20,200,250]']
+            'resize'    => ['w' => '100', 'h' => '100'],
+            'detect_faces'    => []
         ];
 
-        $filelink = $client->transform($url, $transform_tasks);
-        $this->assertNotNull($filelink);
+        $json_response = $client->debug($this->test_file_handle, $transform_tasks);
+
+        $this->assertNotNull($json_response);
+    }
+
+    /**
+     * Test debugging a transformation url of a chained call
+     */
+    public function testDebuggingThrowsException()
+    {
+        $mock_response = new MockHttpResponse(
+            400,
+            'invalid attr value'
+        );
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(400);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $transform_tasks = [
+            'resize'    => ['w' => 'test-value']
+        ];
+
+        $json_response = $client->debug($this->test_file_handle, $transform_tasks);
     }
 
     /**

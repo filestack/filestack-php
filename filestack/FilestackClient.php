@@ -164,6 +164,32 @@ class FilestackClient
     }
 
     /**
+     * Debug transform tasks
+     *
+     * @param string    $resource           url or file handle
+     * @param array     $transform_tasks    Transformation tasks to debug
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function debug($resource, $transform_tasks)
+    {
+        $tasks_str = $this->createTransformStr($transform_tasks);
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $resource;
+
+        $transform_url = FilestackConfig::createUrl('transform', $this->api_key, $options);
+
+        // call TransformationMixin functions
+        $json_response = $this->sendDebug($transform_url, $this->security);
+
+        return $json_response;
+    }
+
+    /**
      * Delete a file from cloud storage
      *
      * @param string            $handle         Filestack file handle to delete

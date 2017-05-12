@@ -55,3 +55,11 @@ $destination = __DIR__ . '/../tests/testfiles/my-zipped-contents.zip';
 $result = $filelink->rotate('00FF00', 45)
     ->zip()
     ->download($destination);
+
+/**
+ * calling debug() will return a json item detailing
+ * any errors the tasks may return
+ */
+$json_response = $filelink->rotate('00FF00', 45)
+                ->detectFaces()
+                ->debug();

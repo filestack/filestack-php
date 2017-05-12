@@ -37,3 +37,16 @@ $result = $zipped_filelink->download($destination);
 # or
 $contents = $zipped_filelink->getContent();
 file_put_contents($destination, $contents);
+
+// debugging transformation calls
+$transform_tasks = [
+            'resize'    => ['w' => '100', 'h' => '100'],
+            'detect_faces'    => []
+        ];
+
+/**
+ * calling debug() will return a json item detailing
+ * any errors the tasks may return
+ */
+$json_response = $client->debug($this->test_file_handle, $transform_tasks);
+print_r($json_response);
