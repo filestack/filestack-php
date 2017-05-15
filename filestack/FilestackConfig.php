@@ -118,6 +118,16 @@ class FilestackConfig
             'a', 'd', 'm', 'w', 'h',
             'agent', 'delay', 'mode', 'width', 'height'
         ],
+        'video_convert' => [
+            'a', 'b', 'c', 'e', 'f', 'l', 'o', 'p', 'r', 'w', 'h', 's', 't', 'u',
+            'access', 'aspect_mode',
+            'audio_bitrate', 'audio_channels', 'audio_sample_rate',
+            'clip_length', 'clip_offset', 'container', 'extname', 'fps', 'force',
+            'keyframe_interval', 'location', 'path', 'preset', 'title', 'two_pass',
+            'width', 'height', 'upscale', 'video_bitrate',
+            'watermark_bottom', 'watermark_left', 'watermark_right', 'watermark_top',
+            'watermark_width', 'watermark_height', 'watermark_url'
+        ],
         'vignette' => [
             'a', 'b', 'm',
             'amount', 'background', 'blurmode'

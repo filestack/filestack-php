@@ -196,6 +196,110 @@ class FilestackClientTest extends BaseTest
     }
 
     /**
+     * Test calling convertAudio() function successfully
+     */
+    public function testconvertAudioSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"uuid" : "some_uuid"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $source = 'https://upload.wikimedia.org/wikipedia/commons/b/b5/'.
+            'Op.14%2C_Scherzo_No.2_in_C_minor_for_piano%2C_C._Schumann.ogg';
+        $output_options = [
+            'access'                => 'public',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion'
+        ];
+
+        $uuid = $client->convertAudio($source, 'mp3', $output_options);
+
+        $this->assertNotNull($uuid);
+    }
+
+    /**
+     * Test calling convertVideo() function successfully
+     */
+    public function testconvertVideoSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"uuid" : "some_uuid"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $source = 'Q5eBTKldRfCSuEjUYuAz';
+        $output_options = [
+            'access'                => 'public',
+            'aspect_mode'           => 'letterbox',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'fps'                   => 60,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion',
+            'video_bitrate'         => 1024,
+            'watermark_top'         => 10,
+            'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
+        ];
+
+        $uuid = $client->convertVideo($source, 'm4a', $output_options);
+
+        $this->assertNotNull($uuid);
+    }
+
+    /**
+     * Test calling convertVideo() throws exception
+     */
+    public function testconvertVideoThrowsException()
+    {
+        $mock_response = new MockHttpResponse(
+            404,
+            'file not found'
+        );
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $source = 'Q5eBTKldRfCSuEjUYuAz';
+        $output_options = [];
+        $uuid = $client->convertVideo($source, 'm4a', $output_options);
+    }
+
+    /**
      * Test deleting a Filestack File
      */
     public function testDeleteSuccess()

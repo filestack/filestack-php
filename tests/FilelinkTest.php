@@ -113,6 +113,71 @@ class FilelinkTest extends BaseTest
     }
 
     /**
+     * Test convertAudio() on a filelink
+     */
+    public function testFilelinkConvertAudioSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"uuid" : "some_uuid"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink('Q5eBTKldRfCSuEjUYuAz', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $output_options = [
+            'access'                => 'public',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion'
+        ];
+
+        $uuid = $filelink->convertAudio('mp3', $output_options);
+        $this->assertNotNull($uuid);
+    }
+
+    /**
+     * Test convertVideo() on a filelink
+     */
+    public function testFilelinkConvertVideoSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"uuid" : "some_uuid"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink('Q5eBTKldRfCSuEjUYuAz', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $output_options = [
+            'access'                => 'public',
+            'aspect_mode'           => 'letterbox',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'fps'                   => 60,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion',
+            'video_bitrate'         => 1024,
+            'watermark_top'         => 10,
+            'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
+        ];
+
+        $uuid = $filelink->convertVideo('m4a', $output_options);
+        $this->assertNotNull($uuid);
+    }
+
+    /**
      * Test downloading a filelink
      */
     public function testFilelinkDownloadSuccess()

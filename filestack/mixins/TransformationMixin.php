@@ -137,6 +137,7 @@ trait TransformationMixin
         // handle response
         if ($status_code == 200) {
             $json_response = json_decode($response->getBody(), true);
+
             $url = $json_response['url'];
             $file_handle = substr($url, strrpos($url, '/') + 1);
 
@@ -151,6 +152,46 @@ trait TransformationMixin
         }
 
         return true;
+    }
+
+    /**
+     * Send video_convert request to API
+     *
+     * @param string    $resource           url or filestack handle to convert
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return string (uuid of conversion task)
+     */
+    public function sendVideoConvert($resource, $transform_tasks, $security=null)
+    {
+
+        $tasks_str = $this->createTransformStr($transform_tasks);
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $resource;
+
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
+
+        // call CommonMixin function
+        $response = $this->requestGet($url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            $json_response = json_decode($response->getBody(), true);
+            $uuid = $json_response['uuid'];
+
+            return $uuid;
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        // error if reached
+        return false;
     }
 
     protected function createTransformStr($transform_tasks)
