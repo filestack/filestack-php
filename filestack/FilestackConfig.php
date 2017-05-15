@@ -55,6 +55,11 @@ class FilestackConfig
         'oil_paint' => [
             'a', 'amount'
         ],
+        'output' => [
+            'a', 'b', 'c', 'd', 'f', 'i', 'o', 'p', 'q', 'r', 's', 't',
+            'background', 'colorspace', 'compress', 'density', 'docinfo', 'filetype',
+            'page', 'pageformat', 'pageorientation', 'quality', 'secure', 'strip'
+        ],
         'partial_blur' => [
             'a', 'l', 'o', 't',
             'amount', 'blur', 'objects', 'type'

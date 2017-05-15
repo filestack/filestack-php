@@ -112,12 +112,11 @@ If you have problems, please create a [Github Issue](https://github.com/filestac
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](https://github.com/filestack/filestack-php/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Credits
 
-Thank you to all the [contributors](https://github.com/filestack/filestack-php/graphs/contributors).
-
+Thank you to all the [contributors](https://github.com/filepicker/filestack-php/graphs/contributors).
 
 ## Other Resources
 

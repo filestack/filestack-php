@@ -159,6 +159,43 @@ class FilestackClientTest extends BaseTest
     }
 
     /**
+     * Test calling convertFile() function successfully
+     */
+    public function testconvertFileSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            $this->mock_response_json
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $source = '9K1BZLt6SAyztVaOtAQ4';
+        $output_options = [
+            'background' => 'white',
+            'density' => 50,
+            'compress' => true,
+            'colorspace' => 'input',
+            'quality' => 80,
+            'strip' => true,
+            'pageformat' => 'letter',
+            'pageorientation' => 'landscape'
+        ];
+
+        $filelink = $client->convertFile($source, 'pdf', $output_options);
+
+        $this->assertNotNull($filelink);
+    }
+
+    /**
      * Test deleting a Filestack File
      */
     public function testDeleteSuccess()
