@@ -13,7 +13,9 @@ $security = new FilestackSecurity($test_secret);
 $client = new FilestackClient($test_api_key, $security);
 
 // upload a file
+$filelink = null;
 $options = ['Filename' => 'somefilename.jpg'];
+
 try {
     $filelink = $client->upload($test_filepath, $options);
     var_dump($filelink);
@@ -42,34 +44,3 @@ var_dump($result);
 // overwrite a file
 $filelink2 = $client->overwrite($test_filepath, $filelink->handle);
 var_dump($filelink2);
-
-// transform an image from url
-$url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
-$transform_tasks = [
-    'crop'      => ['dim' => '[10,20,200,250]'],
-    'resize'    => ['w' => '100', 'h' => '100'],
-    'rotate'    => ['b' => '00FF00', 'd' => '45'],
-];
-
-$content = $client->transform($url, $transform_tasks);
-
-// save file to local drive
-$filepath = __DIR__ . '/../tests/testfiles/transformed_file.jpg';
-file_put_contents($filepath, $content);
-
-// transform an image from url with store()
-$url = "https://cdn.filestackcontent.com/vA9vFnjRVGmEbNPy3beQ";
-$transform_tasks = [
-    'resize'    => ['width' => '100', 'height' => '100'],
-    'rotate'    => ['background' => 'red', 'deg' => '45'],
-    'store'     => []
-];
-
-$result = $client->transform($url, $transform_tasks);
-$json = json_decode($result);
-
-var_dump($json);
-
-// delete a file
-$result = $client->delete($filelink->handle);
-var_dump($result);

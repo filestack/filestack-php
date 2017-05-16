@@ -3,6 +3,7 @@ namespace Filestack\Mixins;
 
 use Filestack\FilestackConfig;
 use Filestack\FilestackException;
+use Filestack\Filelink;
 
 trait TransformationMixin
 {
@@ -31,9 +32,12 @@ trait TransformationMixin
 
         // append attributes if exists
         foreach ($process_attrs as $key => $value) {
+            $encoded_value = gettype($value) === 'string' ?
+                urlencode($value) : urlencode(json_encode($value));
+
             $tranform_str .= sprintf('%s:%s,',
                 urlencode($key),
-                urlencode($value));
+                $encoded_value);
         }
 
         // remove last comma
@@ -47,6 +51,7 @@ trait TransformationMixin
     /**
      * Insert a transformation task into existing url
      *
+     * @param string    $url            url to insert task into
      * @param string    $taskname       name of task, e.g. 'crop', 'resize', etc.
      * @param array     $process_attrs  attributes replated to this task
      *
@@ -54,7 +59,7 @@ trait TransformationMixin
      *
      * @return Transformation object
      */
-    protected function insertTransformStr($url, $taskname, $process_attrs)
+    protected function insertTransformStr($url, $taskname, $process_attrs=[])
     {
         $transform_str = $this->getTransformStr($taskname, $process_attrs);
 
@@ -65,19 +70,131 @@ trait TransformationMixin
     }
 
     /**
+     * Send debug call
+     *
+     * @param string    $transform_str           url or filestack handle to transform
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return json object
+     */
+    public function sendDebug($transform_url, $security=null)
+    {
+        $transform_str = str_replace(FilestackConfig::CDN_URL . '/', '', $transform_url);
+        $options = ['transform_str' => $transform_str];
+        $debug_url = FilestackConfig::createUrl('debug', $this->api_key, $options, $security);
+
+        // call CommonMixin function
+        $response = $this->requestGet($debug_url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+
+            $json_response = json_decode($response->getBody(), true);
+            return $json_response;
+
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        // failed if reached
+        return false;
+    }
+
+    /**
      * Applied array of transformation tasks to handle or external url
      *
      * @param string    $resource           url or filestack handle to transform
      * @param array     $transform_tasks    array of transformation tasks and
      *                                      optional attributes per task
-     * @param string   $destination        option real path to where to save
-     *                                      transformed file
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return Filestack\Filelink or contents
      */
-    public function sendTransform($resource, $transform_tasks, $destination=null)
+    public function sendTransform($resource, $transform_tasks, $security=null)
+    {
+        // add store method if one does not exists
+        if (!array_key_exists('store', $transform_tasks)) {
+            $transform_tasks['store'] = [];
+        }
+
+        $tasks_str = $this->createTransformStr($transform_tasks);
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $resource;
+
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
+
+        // call CommonMixin function
+        $response = $this->requestGet($url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            $json_response = json_decode($response->getBody(), true);
+
+            $url = $json_response['url'];
+            $file_handle = substr($url, strrpos($url, '/') + 1);
+
+            $filelink = new Filelink($file_handle, $this->api_key, $security);
+            $filelink->metadata['filename'] = $json_response['filename'];
+            $filelink->metadata['size'] = $json_response['size'];
+            $filelink->metadata['mimetype'] = $json_response['type'];
+
+            return $filelink;
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        return true;
+    }
+
+    /**
+     * Send video_convert request to API
+     *
+     * @param string    $resource           url or filestack handle to convert
+     * @param array     $transform_tasks    array of transformation tasks and
+     *                                      optional attributes per task
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return string (uuid of conversion task)
+     */
+    public function sendVideoConvert($resource, $transform_tasks, $security=null)
+    {
+
+        $tasks_str = $this->createTransformStr($transform_tasks);
+
+        // build url
+        $options['tasks_str'] = $tasks_str;
+        $options['handle'] = $resource;
+
+        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $security);
+
+        // call CommonMixin function
+        $response = $this->requestGet($url);
+        $status_code = $response->getStatusCode();
+
+        // handle response
+        if ($status_code == 200) {
+            $json_response = json_decode($response->getBody(), true);
+            $uuid = $json_response['uuid'];
+
+            return $uuid;
+        } else {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        // error if reached
+        return false;
+    }
+
+    protected function createTransformStr($transform_tasks)
     {
         // build tasks_str
         $tasks_str = '';
@@ -94,34 +211,7 @@ trait TransformationMixin
             $num_tasks_attached++;
         }
 
-        // build url
-        $options['tasks_str'] = $tasks_str;
-        $options['handle'] = $resource;
-        $url = FilestackConfig::createUrl('transform', $this->api_key, $options, $this->security);
-
-        $params = [];
-        $headers = [];
-        $req_options = [];
-
-        if ($destination) {
-            $req_options['sink'] = $destination;
-        };
-
-        // call CommonMixin function
-        $response = $this->requestGet($url, $params, $headers, $req_options);
-        $status_code = $response->getStatusCode();
-
-        // handle response
-        if ($status_code == 200) {
-            if (!$destination) { // return content
-                $content = $response->getBody()->getContents();
-                return $content;
-            }
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        return true;
+        return $tasks_str;
     }
 
     /**

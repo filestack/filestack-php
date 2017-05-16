@@ -122,6 +122,7 @@ class FilestackSecurity
         } catch (FilestackException $e) {
             return false;
         }
+        // TODO - actually ping API server to verify that policy and sig is valid
 
         return true;
     }

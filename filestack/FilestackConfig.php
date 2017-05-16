@@ -7,18 +7,7 @@ namespace Filestack;
 class FilestackConfig
 {
     const API_URL = 'https://www.filestackapi.com/api';
-    const PROCESSING_URL = 'https://cdn.filestackcontent.com';
     const CDN_URL = 'https://cdn.filestackcontent.com';
-
-    const ALLOWED_TRANSFORMATIONS = [
-        'ascii', 'blackwhite', 'blur', 'border',
-        'collage', 'compress', 'circle', 'crop', 'detect_faces', 'enhance',
-        'modulate', 'monochrome', 'negative', 'oil_paint',
-        'partial_blur', 'partial_pixelate', 'pixelate', 'polaroid',
-        'quality', 'redeye', 'resize', 'rounded_corners', 'rotate',
-        'sepia', 'shadow', 'sharpen', 'store',
-        'torn_edges', 'upscale', 'urlscreenshot', 'vignette', 'watermark', 'zip'
-    ];
 
     const ALLOWED_ATTRS = [
         'ascii' => [
@@ -36,8 +25,8 @@ class FilestackConfig
             'background', 'color', 'width'
         ],
         'collage' => [
-            'a', 'c', 'f', 'm', 'w', 'h',
-            'autorotate', 'color', 'files', 'margin', 'width', 'height'
+            'a', 'c', 'f', 'i', 'm', 'w', 'h',
+            'autorotate', 'color', 'files', 'fit', 'margin', 'width', 'height'
         ],
         'circle' => [
             'b', 'background'
@@ -48,8 +37,9 @@ class FilestackConfig
         'crop' => [
             'd', 'dim'
         ],
+        'debug' => [],
         'detect_faces' => [
-            'c', 'e', 'n', 'N',
+            'c', 'e', 'n', 'x',
             'color', 'export', 'minSize', 'maxSize'
         ],
         'enhance' => [
@@ -64,6 +54,11 @@ class FilestackConfig
         ],
         'oil_paint' => [
             'a', 'amount'
+        ],
+        'output' => [
+            'a', 'b', 'c', 'd', 'f', 'i', 'o', 'p', 'q', 'r', 's', 't',
+            'background', 'colorspace', 'compress', 'density', 'docinfo', 'filetype',
+            'page', 'pageformat', 'pageorientation', 'quality', 'secure', 'strip'
         ],
         'partial_blur' => [
             'a', 'l', 'o', 't',
@@ -123,9 +118,19 @@ class FilestackConfig
             'a', 'd', 'm', 'w', 'h',
             'agent', 'delay', 'mode', 'width', 'height'
         ],
+        'video_convert' => [
+            'a', 'b', 'c', 'e', 'f', 'l', 'o', 'p', 'r', 'w', 'h', 's', 't', 'u',
+            'access', 'aspect_mode',
+            'audio_bitrate', 'audio_channels', 'audio_sample_rate',
+            'clip_length', 'clip_offset', 'container', 'extname', 'fps', 'force',
+            'keyframe_interval', 'location', 'path', 'preset', 'title', 'two_pass',
+            'width', 'height', 'upscale', 'video_bitrate',
+            'watermark_bottom', 'watermark_left', 'watermark_right', 'watermark_top',
+            'watermark_width', 'watermark_height', 'watermark_url'
+        ],
         'vignette' => [
             'a', 'b', 'm',
-            'amount', 'background', 'blurmode',
+            'amount', 'background', 'blurmode'
         ],
         'watermark' => [
             'f', 'p', 's',
@@ -149,9 +154,22 @@ class FilestackConfig
     {
         // lower case all keys
         $options = array_change_key_case($options, CASE_LOWER);
-
         $url = '';
+        $append_security = false;
+
         switch ($action) {
+            case 'debug':
+                $url = sprintf('%s/%s/debug/%s',
+                    self::CDN_URL,
+                    $api_key,
+                    $options['transform_str']
+                );
+
+                if ($security) {
+                    $append_security = true;
+                }
+                break;
+
             case 'delete':
             case 'overwrite':
                 $url = sprintf('%s/file/%s?key=%s',
@@ -159,11 +177,16 @@ class FilestackConfig
                     $options['handle'],
                     $api_key
                 );
+
+                if ($security) {
+                    $append_security = true;
+                }
                 break;
 
+            /* transformation calls */
             case 'transform':
                 $base_url = sprintf('%s/%s',
-                    self::PROCESSING_URL,
+                    self::CDN_URL,
                     $api_key);
 
                 // security in a different format for transformations
@@ -171,6 +194,7 @@ class FilestackConfig
                         $security->policy,
                         $security->signature) : '';
 
+                // build url for transform or zip
                 $url = sprintf($base_url . $security_str . '/%s/%s',
                     $options['tasks_str'],
                     $options['handle']
@@ -198,6 +222,10 @@ class FilestackConfig
                         $url .= "&$key=$value";
                     }
                 }
+
+                if ($security) {
+                    $append_security = true;
+                }
                 break;
 
             default:
@@ -205,10 +233,9 @@ class FilestackConfig
         }
 
         /**
-         * sign url if security is passed in, ignoring transform called handle
-         * in case statement above
+         * sign url if security is passed in and flag set
          */
-        if ($security && $action !== 'transform') {
+        if ($security && $append_security) {
             $url = $security->signUrl($url);
         }
 

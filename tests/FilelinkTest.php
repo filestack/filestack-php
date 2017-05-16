@@ -81,6 +81,103 @@ class FilelinkTest extends BaseTest
     }
 
     /**
+     * Test convertFile() on a filelink
+     */
+    public function testFilelinkConvertFileSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            $this->mock_response_json
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $output_options = [
+            'background' => 'white',
+            'density' => 50,
+            'compress' => true,
+            'colorspace' => 'input',
+            'quality' => 80,
+            'strip' => true,
+            'pageformat' => 'letter',
+            'pageorientation' => 'landscape'
+        ];
+
+        $result = $filelink->convertFile('pdf', $output_options);
+        $this->assertNotNull($result);
+    }
+
+    /**
+     * Test convertAudio() on a filelink
+     */
+    public function testFilelinkConvertAudioSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"uuid" : "some_uuid"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink('Q5eBTKldRfCSuEjUYuAz', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $output_options = [
+            'access'                => 'public',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion'
+        ];
+
+        $uuid = $filelink->convertAudio('mp3', $output_options);
+        $this->assertNotNull($uuid);
+    }
+
+    /**
+     * Test convertVideo() on a filelink
+     */
+    public function testFilelinkConvertVideoSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"uuid" : "some_uuid"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink('Q5eBTKldRfCSuEjUYuAz', $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $output_options = [
+            'access'                => 'public',
+            'aspect_mode'           => 'letterbox',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'fps'                   => 60,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion',
+            'video_bitrate'         => 1024,
+            'watermark_top'         => 10,
+            'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
+        ];
+
+        $uuid = $filelink->convertVideo('m4a', $output_options);
+        $this->assertNotNull($uuid);
+    }
+
+    /**
      * Test downloading a filelink
      */
     public function testFilelinkDownloadSuccess()
@@ -257,7 +354,7 @@ class FilelinkTest extends BaseTest
     /**
      * Test calling store() API failed throws exception
      */
-    public function testFilelinkStoreException()
+    public function testFilelinkSaveException()
     {
         $mock_response = new MockHttpResponse(400,
             'Invalid parameters');
@@ -274,6 +371,34 @@ class FilelinkTest extends BaseTest
                         $this->test_security,
                         $stub_http_client);
 
-        $result = $filelink->store();
+        $result = $filelink->save();
+    }
+
+    /**
+     * Test zipping the content of a chained call
+     */
+    public function testFilelinkZipSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content')
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink($this->test_file_handle,
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $destination = __DIR__ . '/testfiles/my-zipped-transformed-file.zip';
+        $transformed_filelink = $filelink->rotate('00FF00', 45)
+                ->zip()
+                ->download($destination);
+
+        $this->assertNotNull($transformed_filelink);
     }
 }
