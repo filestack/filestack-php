@@ -1,5 +1,13 @@
 # Filestack-php Changelog
 
+## 1.0.4 (May 16, 2017)
+- FS-398 added zip() and compress() functionalities
+- FS-406 added screenshot() functionality
+- FS-408 added collage() funcionality
+- FS-94 added debug() call
+- FS-409 added convertFile() functionality
+- FS-410 added Audio and Video conversions
+
 ## 1.0.3 (May 8, 2017)
 - FS-89 Integrated tests with TravisCI
 - FS-90 Implemented Security
