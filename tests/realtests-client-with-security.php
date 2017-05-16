@@ -138,6 +138,40 @@ class RealTestsClientWithSecurity extends BaseTest
         $contents = $filelink->getContent();
         file_put_contents(__DIR__ . '/../tests/testfiles/convert-file-test2.pdf', $contents);
 
+        // transcoding audio
+        $source = 'https://upload.wikimedia.org/wikipedia/commons/b/b5/'.
+            'Op.14%2C_Scherzo_No.2_in_C_minor_for_piano%2C_C._Schumann.ogg';
+        $output_options = [
+            'access'                => 'public',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion'
+        ];
+
+        $uuid = $client->convertAudio($source, 'mp3', $output_options);
+        # echo "\naudio conversion, uuid=$uuid\n";
+
+        // transcoding video
+        $source = 'Q5eBTKldRfCSuEjUYuAz';
+        $output_options = [
+            'access'                => 'public',
+            'aspect_mode'           => 'letterbox',
+            'audio_bitrate'         => 256,
+            'audio_channels'        => 2,
+            'audio_sample_rate'     => 44100,
+            'fps'                   => 60,
+            'force'                 => true,
+            'title'                 => 'test Filestack Audio conversion',
+            'video_bitrate'         => 1024,
+            'watermark_top'         => 10,
+            'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
+        ];
+
+        $uuid = $client->convertVideo($source, 'm4a', $output_options);
+        # echo "\nvideo conversion, uuid=$uuid\n";
+
         // delete a file from storage
         $result = $client->delete($filelink->handle);
         # var_dump($result);
