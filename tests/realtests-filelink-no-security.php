@@ -55,12 +55,13 @@ class RealTestsFilelinkNoSecurity extends BaseTest
         file_put_contents($destination, $transformed_content);
 
         // chaining transformations
+        /**
+         * You HAVE to call save() to save transformation to storage,
+         * otherwise you'll just get a url to the transformation request.
+         */
         $chained_filelink = $filelink->crop(10, 20, 200, 200)
                 ->rotate('red', 45)
-                ->save(); /**
-                            You HAVE to call save() to save transformation to storage,
-                            otherwise you'll just get a url to the transformation call.
-                          */
+                ->save();
 
         $destination = __DIR__ . '/../tests/testfiles/chained-transformation.png';
 

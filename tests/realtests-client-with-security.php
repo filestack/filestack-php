@@ -117,7 +117,28 @@ class RealTestsClientWithSecurity extends BaseTest
         file_put_contents($destination, $contents);
 
         $screenshot_filelink->delete();
-        // delete a file
+
+        // converting a file
+        $output_options = [
+            'background' => 'white',
+            'density' => 50,
+            'compress' => true,
+            'colorspace' => 'input',
+            'quality' => 80,
+            'strip' => true,
+            'pageformat' => 'letter',
+            'pageorientation' => 'landscape'
+        ];
+
+        $filelink = $client->convertFile($filelink->handle, 'pdf', $output_options);
+        # print_r($filelink);
+
+        $result = $filelink->download(__DIR__ . '/../tests/testfiles/convert-file-test.pdf');
+        # or
+        $contents = $filelink->getContent();
+        file_put_contents(__DIR__ . '/../tests/testfiles/convert-file-test2.pdf', $contents);
+
+        // delete a file from storage
         $result = $client->delete($filelink->handle);
         # var_dump($result);
     }

@@ -27,9 +27,9 @@ $transformed_content = $transformed_filelink->getContent();
 file_put_contents($destination, $transformed_content);
 
 /**
-    Chaining transformation tasks, you HAVE to call save() to save transformation to storage,
-    otherwise you'll just get a url to the transformation call.
-*/
+ * Chaining transformation tasks, you HAVE to call save() to save transformation
+ * to storage, otherwise you'll just get a url to the transformation call.
+ */
 
 $chained_filelink = $filelink->crop(10, 20, 200, 200)
         ->rotate('red', 45)

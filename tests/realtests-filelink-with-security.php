@@ -48,6 +48,26 @@ class RealTestsFilelinkWithSecurity extends BaseTest
         // overwrite remote file with local file
         $filelink->overwrite($test_filepath);
 
+        // converting a file
+        $output_options = [
+            'background' => 'white',
+            'density' => 50,
+            'compress' => true,
+            'colorspace' => 'input',
+            'quality' => 80,
+            'strip' => true,
+            'pageformat' => 'letter',
+            'pageorientation' => 'landscape'
+        ];
+
+        $converted_filelink = $filelink->convertFile('pdf', $output_options);
+        # print_r($converted_filelink);
+
+        $result = $converted_filelink->download(__DIR__ . '/../tests/testfiles/convert-filelink-test.pdf');
+        # or
+        $contents = $converted_filelink->getContent();
+        file_put_contents(__DIR__ . '/../tests/testfiles/convert-filelink-test2.pdf', $contents);
+
         // transformations
         $transform_tasks = [
             'crop'      => ['dim' => '[10,20,200,250]'],

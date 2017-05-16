@@ -186,13 +186,13 @@ class Filelink
      *                                  images in the collage are manipulated so that
      *                                  the final collage image will match the height
      *                                  and width parameters you set more closely.
-     *                                  Using crop will produce a result that is closest
+     *                                  Crop will produce a result that is closest
      *                                  to the height and width parameters you set.
      * @param int       $margin         Sets the size of the border between and around
      *                                  the images.  Range is 1 to 100.
      * @param bool      $auto_rotate    Setting this parameter to true automatically
-     *                                  rotates all the images in the collage according
-                                        to their exif orientation data.
+     *                                  rotates all the images in the collage
+     *                                  according to their exif orientation data.
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
@@ -236,6 +236,90 @@ class Filelink
         $this->setTransformUrl('compress', ['m' => $metadata]);
 
         return $this;
+    }
+
+    /**
+     * Convert this filelink to another format.  To see which formats
+     * can be converted, see:
+     * https://www.filestack.com/docs/image-transformations/conversion
+     *
+     * @param string    $resource   url or file handle
+     * @param string    $filetype   The format to which you would like to
+     *                              convert the file. e.g (doc, docx, html, jpg,
+     *                              ods, odt, pdf, png, svg, txt, webp)
+     * @param array     $options    Array of options.
+     *                              background: Set a background color when
+     *                                converting transparent .png files into other
+     *                                file types.  Can be a word or hex value, e.g.
+     *                                ('white' or 'FFFFFF')
+     *                              colorspace: RGB, CMYK or Input
+     *                                By default we convert all the images to the
+     *                                RGB color model in order to be web friendly.
+     *                                However, we have added an option to preserve
+     *                                the original colorspace.  This will work for *                                JPEGs and TIFFs.
+     *                              compress: (bool) You can take advantage of
+     *                                Filestack's image compression which utilizes
+     *                                JPEGtran and OptiPNG. The value for this parameter
+     *                                is boolean. If you want to compress your image
+     *                                then the value should be true. Compression
+     *                                is off/false by default.
+     *                              density: (int, 1 to 500).  You can adjust the
+     *                                density when converting documents like PowerPoint,
+     *                                PDF, AI and EPS files to image formats like
+     *                                JPG or PNG. This can improve the resolution
+     *                                of the output image.
+     *                              docinfo: (bool) Set this to true to get information
+     *                                about a document, such as the number of pages
+     *                                and the dimensions of the file.
+     *                              page: (int, 1 to 10000) If you are converting
+     *                                a file that contains multiple pages such as
+     *                                PDF or powerpoint file, you can extract a
+     *                                specific page using the page parameter.
+     *                              pageformat: set the page size used for the layout
+     *                                of the resultant document. This parameter can
+     *                                be used when converting the format of one
+     *                                document into PDF, PNG, or JPG. Possible values:
+     *                                'A3', 'A4', 'A5', 'B4','B5',
+     *                                'letter', 'legal', 'tabloid'
+     *                              pageorientation: portrait or landscape
+     *                                determine the orientation of the resulting
+     *                                document. This parameter can be used when
+     *                                converting the format of one document into
+     *                                PDF, PNG, or JPG.
+     *                              quality: (int, 1 to 100, or 'input')
+     *                                You can change the quality (and reduce the
+     *                                file size) of JPEG images by using the quality
+     *                                parameter.  The quality is set to 100 by default.
+     *                                A quality setting of 80 provides a nice balance
+     *                                between file size reduction and image quality.
+     *                                If the quality is instead set to "input" the
+     *                                image will not be recompressed and the input
+     *                                compression level of the jpg will be used.
+     *                              secure: (bool)  This parameter applies to conversions
+     *                                of HTML and SVG sources. When the secure parameter
+     *                                is set to true, the HTML or SVG file will be
+     *                                stripped of any insecure tags (HTML sanitization).
+     *                                Default setting is false.
+     *                              strip: (bool)  Set to true to remove any metadata
+     *                                embedded in an image.
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return bool (true = delete success, false = failed)
+     */
+    public function convertFile($filetype, $options=[])
+    {
+        $transform_tasks = [
+            'output' => $options
+        ];
+
+        // set filetype
+        $transform_tasks['output']['f'] = $filetype;
+
+        // call TransformationMixin function
+        $result = $this->sendTransform($this->handle, $transform_tasks, $this->security);
+
+        return $result;
     }
 
     /**
