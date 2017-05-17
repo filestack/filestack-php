@@ -18,14 +18,14 @@ class BaseTest extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-        $this->test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
+        $this->test_api_key = 'YOUR_FILESTACK_API_KEY';
         $this->test_file_handle = 'IIkUk9D8TWKHldxmMVRt';
 
-        $this->test_api_key_no_sec = 'AefuF1HdTzGBlwfxk1FYWz';
+        $this->test_api_key_no_sec = 'YOUR_FILESTACK_API_KEY';
         $this->test_file_handle_no_sec = 'AxBBQ4MFRIyDz6rZn2AW';
 
         $this->test_file_url = FilestackConfig::CDN_URL . '/' . $this->test_file_handle;
-        $this->test_secret = '3UAQ64UWMNCCRF36CY2NSRSPSU';
+        $this->test_secret = 'YOUR_FILESTACK_SECURITY_SECRET';
         $this->test_filepath = __DIR__ . '/testfiles/calvinandhobbes.jpg';
         $this->test_security = new FilestackSecurity($this->test_secret);
 

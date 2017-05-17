@@ -6,7 +6,6 @@ This is the official PHP SDK for Filestack - API and content management system t
 
 * [Filestack](https://www.filestack.com)
 * [Documentation](https://www.filestack.com/docs)
-* [API Reference](https://filestack.github.io/)
 
 ## Installing
 
@@ -26,17 +25,17 @@ or download from GitHub
 
 ## Usage
 
-Filestack library gives you access to two useful classes:
+Filestack library gives you access to three useful classes:
 
 * `FilestackClient` - for easy file upload (creates Filelink objects)
 * `Filelink` - for file handling (downloading, converting etc.)
+* `FileSecurity` - for applying policy and signature values to your API calls
 
 ### Uploading files
 First, you need to create an instance of FilestackClient
 
 ```php
 use Filestack\FilestackClient;
-use Filestack\Filelink;
 
 $client = new FilestackClient('YOUR_API_KEY');
 ```
@@ -57,7 +56,7 @@ $filelink = $client->upload($filepath);
 
 ### Manipulating files
 
-Filelink objects can be created in three ways:
+Filelink objects can be created in two ways:
 
  - by uploading a file with using FilestackClient
  - by initializing Filelink with file handle and api_key
@@ -71,7 +70,7 @@ $file = new Filelink('pGj2wWfBTMuXhWe2J3bL', 'YOUR_API_KEY');
 $transformed_filelink = $filelink
             ->circle()
             ->blur(['amount' => '20'])
-            ->store();
+            ->save();
 ```
 
 For more examples, see the [examples/](examples/) folder in this project.
@@ -116,7 +115,7 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Credits
 
-Thank you to all the [contributors](https://github.com/filepicker/filestack-php/graphs/contributors).
+Thank you to all the [contributors](https://github.com/filestack/filestack-php/graphs/contributors).
 
 ## Other Resources
 

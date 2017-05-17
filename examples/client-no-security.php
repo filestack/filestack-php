@@ -3,7 +3,7 @@ use Filestack\FilestackClient;
 use Filestack\Filelink;
 use Filestack\FilestackException;
 
-$test_api_key = 'AefuF1HdTzGBlwfxk1FYWz';
+$test_api_key = 'YOUR_FILESTACK_API_KEY';
 $test_filepath = __DIR__ . '/../tests/testfiles/calvinandhobbes.jpg';
 
 # Filestack client examples
