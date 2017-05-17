@@ -92,10 +92,8 @@ trait TransformationMixin
 
         // handle response
         if ($status_code == 200) {
-
             $json_response = json_decode($response->getBody(), true);
             return $json_response;
-
         } else {
             throw new FilestackException($response->getBody(), $status_code);
         }
@@ -167,7 +165,6 @@ trait TransformationMixin
      */
     public function sendVideoConvert($resource, $transform_tasks, $security=null)
     {
-
         $tasks_str = $this->createTransformStr($transform_tasks);
 
         // build url

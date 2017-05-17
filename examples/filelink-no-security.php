@@ -2,8 +2,8 @@
 use Filestack\Filelink;
 use Filestack\FilestackException;
 
-$test_api_key = 'AefuF1HdTzGBlwfxk1FYWz';
-$test_handle = 'AxBBQ4MFRIyDz6rZn2AW';
+$test_api_key = 'YOUR_FILESTACK_API_KEY';
+$test_secret = 'YOUR_FILESTACK_SECURITY_SECRET';
 $test_filepath = __DIR__ . '/../tests/testfiles/testing-download.jpg';
 
 # Filestack client examples

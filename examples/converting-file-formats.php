@@ -4,8 +4,8 @@ use Filestack\FilestackSecurity;
 use Filestack\Filelink;
 use Filestack\FilestackException;
 
-$test_api_key = 'A5lEN6zU8SemSBWiwcGJhz';
-$test_secret = '3UAQ64UWMNCCRF36CY2NSRSPSU';
+$test_api_key = 'YOUR_FILESTACK_API_KEY';
+$test_secret = 'YOUR_FILESTACK_SECURITY_SECRET';
 $test_filepath = __DIR__ . '/../tests/testfiles/calvinandhobbes.jpg';
 
 /**
