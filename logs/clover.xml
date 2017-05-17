@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1495051069">
+  <project timestamp="1495051069">
+    <package name="Filestack">
+      <file name="/Users/huey/Sites/filestack-php/filestack/Filelink.php">
+        <class name="Filelink" namespace="Filestack">
+          <metrics complexity="59" methods="49" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="199" coveredstatements="199" elements="248" coveredelements="248"/>
+        </class>
+        <line num="27" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="67"/>
+        <line num="29" type="stmt" count="67"/>
+        <line num="30" type="stmt" count="67"/>
+        <line num="31" type="stmt" count="67"/>
+        <line num="33" type="stmt" count="67"/>
+        <line num="35" type="stmt" count="67"/>
+        <line num="36" type="stmt" count="49"/>
+        <line num="37" type="stmt" count="49"/>
+        <line num="38" type="stmt" count="67"/>
+        <line num="39" type="stmt" count="67"/>
+        <line num="46" type="method" name="__call" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="48" type="stmt" count="1"/>
+        <line num="68" type="method" name="ascii" visibility="public" complexity="3" crap="3" count="1"/>
+        <line num="72" type="stmt" count="1"/>
+        <line num="73" type="stmt" count="1"/>
+        <line num="74" type="stmt" count="1"/>
+        <line num="75" type="stmt" count="1"/>
+        <line num="77" type="stmt" count="1"/>
+        <line num="80" type="stmt" count="1"/>
+        <line num="82" type="stmt" count="1"/>
+        <line num="97" type="method" name="blackWhite" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="100" type="stmt" count="1"/>
+        <line num="102" type="stmt" count="1"/>
+        <line num="115" type="method" name="blur" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="118" type="stmt" count="2"/>
+        <line num="120" type="stmt" count="2"/>
+        <line num="140" type="method" name="border" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="143" type="stmt" count="1"/>
+        <line num="144" type="stmt" count="1"/>
+        <line num="146" type="stmt" count="1"/>
+        <line num="149" type="stmt" count="1"/>
+        <line num="151" type="stmt" count="1"/>
+        <line num="165" type="method" name="circle" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="168" type="stmt" count="2"/>
+        <line num="170" type="stmt" count="2"/>
+        <line num="201" type="method" name="collage" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="205" type="stmt" count="1"/>
+        <line num="206" type="stmt" count="1"/>
+        <line num="207" type="stmt" count="1"/>
+        <line num="208" type="stmt" count="1"/>
+        <line num="209" type="stmt" count="1"/>
+        <line num="210" type="stmt" count="1"/>
+        <line num="212" type="stmt" count="1"/>
+        <line num="215" type="stmt" count="1"/>
+        <line num="217" type="stmt" count="1"/>
+        <line num="233" type="method" name="compress" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="236" type="stmt" count="1"/>
+        <line num="238" type="stmt" count="1"/>
+        <line num="303" type="method" name="convertAudio" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="307" type="stmt" count="1"/>
+        <line num="310" type="stmt" count="1"/>
+        <line num="313" type="stmt" count="1"/>
+        <line num="315" type="stmt" count="1"/>
+        <line num="386" type="method" name="convertFile" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="390" type="stmt" count="1"/>
+        <line num="393" type="stmt" count="1"/>
+        <line num="396" type="stmt" count="1"/>
+        <line num="398" type="stmt" count="1"/>
+        <line num="508" type="method" name="convertVideo" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="512" type="stmt" count="1"/>
+        <line num="515" type="stmt" count="1"/>
+        <line num="518" type="stmt" count="1"/>
+        <line num="520" type="stmt" count="1"/>
+        <line num="535" type="method" name="crop" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="538" type="stmt" count="2"/>
+        <line num="539" type="stmt" count="2"/>
+        <line num="549" type="method" name="debug" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="552" type="stmt" count="1"/>
+        <line num="554" type="stmt" count="1"/>
+        <line num="575" type="method" name="detectFaces" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="578" type="stmt" count="2"/>
+        <line num="579" type="stmt" count="2"/>
+        <line num="580" type="stmt" count="2"/>
+        <line num="582" type="stmt" count="2"/>
+        <line num="585" type="stmt" count="2"/>
+        <line num="587" type="stmt" count="2"/>
+        <line num="597" type="method" name="enhance" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="600" type="stmt" count="1"/>
+        <line num="602" type="stmt" count="1"/>
+        <line num="620" type="method" name="modulate" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="623" type="stmt" count="1"/>
+        <line num="624" type="stmt" count="1"/>
+        <line num="626" type="stmt" count="1"/>
+        <line num="629" type="stmt" count="1"/>
+        <line num="631" type="stmt" count="1"/>
+        <line num="641" type="method" name="monochrome" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="644" type="stmt" count="1"/>
+        <line num="646" type="stmt" count="1"/>
+        <line num="656" type="method" name="negative" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="659" type="stmt" count="1"/>
+        <line num="661" type="stmt" count="1"/>
+        <line num="674" type="method" name="oilPaint" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="677" type="stmt" count="1"/>
+        <line num="679" type="stmt" count="1"/>
+        <line num="704" type="method" name="partialBlur" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="707" type="stmt" count="1"/>
+        <line num="708" type="stmt" count="1"/>
+        <line num="709" type="stmt" count="1"/>
+        <line num="711" type="stmt" count="1"/>
+        <line num="714" type="stmt" count="1"/>
+        <line num="716" type="stmt" count="1"/>
+        <line num="741" type="method" name="partialPixelate" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="744" type="stmt" count="1"/>
+        <line num="745" type="stmt" count="1"/>
+        <line num="746" type="stmt" count="1"/>
+        <line num="748" type="stmt" count="1"/>
+        <line num="751" type="stmt" count="1"/>
+        <line num="753" type="stmt" count="1"/>
+        <line num="765" type="method" name="pixelate" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="768" type="stmt" count="1"/>
+        <line num="770" type="stmt" count="1"/>
+        <line num="788" type="method" name="polaroid" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="791" type="stmt" count="1"/>
+        <line num="792" type="stmt" count="1"/>
+        <line num="794" type="stmt" count="1"/>
+        <line num="797" type="stmt" count="1"/>
+        <line num="799" type="stmt" count="1"/>
+        <line num="819" type="method" name="quality" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="822" type="stmt" count="1"/>
+        <line num="824" type="stmt" count="1"/>
+        <line num="834" type="method" name="redEye" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="837" type="stmt" count="1"/>
+        <line num="839" type="stmt" count="1"/>
+        <line num="875" type="method" name="resize" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="878" type="stmt" count="3"/>
+        <line num="879" type="stmt" count="3"/>
+        <line num="880" type="stmt" count="3"/>
+        <line num="882" type="stmt" count="3"/>
+        <line num="885" type="stmt" count="3"/>
+        <line num="887" type="stmt" count="3"/>
+        <line num="905" type="method" name="roundedCorners" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="908" type="stmt" count="1"/>
+        <line num="909" type="stmt" count="1"/>
+        <line num="911" type="stmt" count="1"/>
+        <line num="914" type="stmt" count="1"/>
+        <line num="916" type="stmt" count="1"/>
+        <line num="942" type="method" name="rotate" visibility="public" complexity="2" crap="2" count="4"/>
+        <line num="945" type="stmt" count="4"/>
+        <line num="946" type="stmt" count="4"/>
+        <line num="947" type="stmt" count="4"/>
+        <line num="948" type="stmt" count="4"/>
+        <line num="951" type="stmt" count="4"/>
+        <line num="953" type="stmt" count="4"/>
+        <line num="966" type="method" name="sepia" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="969" type="stmt" count="2"/>
+        <line num="971" type="stmt" count="2"/>
+        <line num="984" type="method" name="sharpen" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="987" type="stmt" count="1"/>
+        <line num="989" type="stmt" count="1"/>
+        <line num="1012" type="method" name="shadow" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1015" type="stmt" count="1"/>
+        <line num="1016" type="stmt" count="1"/>
+        <line num="1017" type="stmt" count="1"/>
+        <line num="1019" type="stmt" count="1"/>
+        <line num="1022" type="stmt" count="1"/>
+        <line num="1024" type="stmt" count="1"/>
+        <line num="1041" type="method" name="tornEdges" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1044" type="stmt" count="1"/>
+        <line num="1046" type="stmt" count="1"/>
+        <line num="1049" type="stmt" count="1"/>
+        <line num="1051" type="stmt" count="1"/>
+        <line num="1079" type="method" name="upscale" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="1082" type="stmt" count="1"/>
+        <line num="1083" type="stmt" count="1"/>
+        <line num="1084" type="stmt" count="1"/>
+        <line num="1085" type="stmt" count="1"/>
+        <line num="1088" type="stmt" count="1"/>
+        <line num="1090" type="stmt" count="1"/>
+        <line num="1113" type="method" name="vignette" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1116" type="stmt" count="1"/>
+        <line num="1117" type="stmt" count="1"/>
+        <line num="1119" type="stmt" count="1"/>
+        <line num="1122" type="stmt" count="1"/>
+        <line num="1124" type="stmt" count="1"/>
+        <line num="1145" type="method" name="watermark" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1148" type="stmt" count="1"/>
+        <line num="1149" type="stmt" count="1"/>
+        <line num="1151" type="stmt" count="1"/>
+        <line num="1154" type="stmt" count="1"/>
+        <line num="1156" type="stmt" count="1"/>
+        <line num="1166" type="method" name="getContent" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="1169" type="stmt" count="2"/>
+        <line num="1170" type="stmt" count="1"/>
+        <line num="1187" type="method" name="getMetaData" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="1190" type="stmt" count="2"/>
+        <line num="1192" type="stmt" count="1"/>
+        <line num="1193" type="stmt" count="1"/>
+        <line num="1194" type="stmt" count="1"/>
+        <line num="1196" type="stmt" count="1"/>
+        <line num="1207" type="method" name="delete" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="1210" type="stmt" count="2"/>
+        <line num="1211" type="stmt" count="1"/>
+        <line num="1224" type="method" name="download" visibility="public" complexity="1" crap="1" count="4"/>
+        <line num="1227" type="stmt" count="4"/>
+        <line num="1228" type="stmt" count="3"/>
+        <line num="1240" type="method" name="overwrite" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="1242" type="stmt" count="2"/>
+        <line num="1243" type="stmt" count="2"/>
+        <line num="1246" type="stmt" count="1"/>
+        <line num="1247" type="stmt" count="1"/>
+        <line num="1248" type="stmt" count="1"/>
+        <line num="1250" type="stmt" count="1"/>
+        <line num="1258" type="method" name="resetTransform" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1260" type="stmt" count="1"/>
+        <line num="1261" type="stmt" count="1"/>
+        <line num="1272" type="method" name="save" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="1274" type="stmt" count="2"/>
+        <line num="1275" type="stmt" count="2"/>
+        <line num="1278" type="stmt" count="2"/>
+        <line num="1279" type="stmt" count="2"/>
+        <line num="1282" type="stmt" count="2"/>
+        <line num="1283" type="stmt" count="1"/>
+        <line num="1285" type="stmt" count="1"/>
+        <line num="1286" type="stmt" count="1"/>
+        <line num="1288" type="stmt" count="1"/>
+        <line num="1289" type="stmt" count="1"/>
+        <line num="1290" type="stmt" count="1"/>
+        <line num="1291" type="stmt" count="1"/>
+        <line num="1293" type="stmt" count="1"/>
+        <line num="1295" type="stmt" count="1"/>
+        <line num="1311" type="method" name="setTransformUrl" visibility="public" complexity="1" crap="1" count="35"/>
+        <line num="1313" type="stmt" count="35"/>
+        <line num="1314" type="stmt" count="35"/>
+        <line num="1315" type="stmt" count="35"/>
+        <line num="1327" type="method" name="transform" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="1330" type="stmt" count="5"/>
+        <line num="1331" type="stmt" count="5"/>
+        <line num="1333" type="stmt" count="2"/>
+        <line num="1343" type="method" name="zip" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1346" type="stmt" count="1"/>
+        <line num="1348" type="stmt" count="1"/>
+        <line num="1356" type="method" name="url" visibility="public" complexity="1" crap="1" count="9"/>
+        <line num="1358" type="stmt" count="9"/>
+        <line num="1368" type="method" name="signedUrl" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="1370" type="stmt" count="1"/>
+        <line num="1371" type="stmt" count="1"/>
+        <line num="1372" type="stmt" count="1"/>
+        <line num="1373" type="stmt" count="1"/>
+        <line num="1379" type="method" name="initTransformUrl" visibility="protected" complexity="3" crap="3" count="36"/>
+        <line num="1381" type="stmt" count="36"/>
+        <line num="1383" type="stmt" count="36"/>
+        <line num="1384" type="stmt" count="35"/>
+        <line num="1385" type="stmt" count="36"/>
+        <line num="1387" type="stmt" count="36"/>
+        <line num="1388" type="stmt" count="36"/>
+        <line num="1389" type="stmt" count="36"/>
+        <line num="1390" type="stmt" count="36"/>
+        <line num="1391" type="stmt" count="36"/>
+        <metrics loc="1392" ncloc="469" classes="1" methods="49" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="199" coveredstatements="199" elements="248" coveredelements="248"/>
+      </file>
+      <file name="/Users/huey/Sites/filestack-php/filestack/FilestackClient.php">
+        <class name="FilestackClient" namespace="Filestack">
+          <metrics complexity="26" methods="17" coveredmethods="17" conditionals="0" coveredconditionals="0" statements="99" coveredstatements="99" elements="116" coveredelements="116"/>
+        </class>
+        <line num="27" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="31"/>
+        <line num="29" type="stmt" count="31"/>
+        <line num="30" type="stmt" count="31"/>
+        <line num="32" type="stmt" count="31"/>
+        <line num="33" type="stmt" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="35" type="stmt" count="31"/>
+        <line num="36" type="stmt" count="31"/>
+        <line num="43" type="method" name="__call" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="53" type="method" name="getCdnUrl" visibility="public" complexity="1" crap="1" count="3"/>
+        <line num="55" type="stmt" count="3"/>
+        <line num="56" type="stmt" count="3"/>
+        <line num="68" type="method" name="getContent" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="70" type="stmt" count="2"/>
+        <line num="71" type="stmt" count="1"/>
+        <line num="72" type="stmt" count="1"/>
+        <line num="75" type="stmt" count="2"/>
+        <line num="77" type="stmt" count="1"/>
+        <line num="95" type="method" name="getMetaData" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="97" type="stmt" count="2"/>
+        <line num="98" type="stmt" count="1"/>
+        <line num="99" type="stmt" count="1"/>
+        <line num="102" type="stmt" count="2"/>
+        <line num="104" type="stmt" count="1"/>
+        <line num="135" type="method" name="collage" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="140" type="stmt" count="1"/>
+        <line num="143" type="stmt" count="1"/>
+        <line num="144" type="stmt" count="1"/>
+        <line num="145" type="stmt" count="1"/>
+        <line num="146" type="stmt" count="1"/>
+        <line num="147" type="stmt" count="1"/>
+        <line num="148" type="stmt" count="1"/>
+        <line num="150" type="stmt" count="1"/>
+        <line num="154" type="stmt" count="1"/>
+        <line num="156" type="stmt" count="1"/>
+        <line num="157" type="stmt" count="1"/>
+        <line num="158" type="stmt" count="1"/>
+        <line num="161" type="stmt" count="1"/>
+        <line num="163" type="stmt" count="1"/>
+        <line num="229" type="method" name="convertAudio" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="233" type="stmt" count="1"/>
+        <line num="236" type="stmt" count="1"/>
+        <line num="239" type="stmt" count="1"/>
+        <line num="241" type="stmt" count="1"/>
+        <line num="313" type="method" name="convertFile" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="317" type="stmt" count="1"/>
+        <line num="320" type="stmt" count="1"/>
+        <line num="323" type="stmt" count="1"/>
+        <line num="325" type="stmt" count="1"/>
+        <line num="436" type="method" name="convertVideo" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="440" type="stmt" count="2"/>
+        <line num="443" type="stmt" count="2"/>
+        <line num="446" type="stmt" count="2"/>
+        <line num="448" type="stmt" count="1"/>
+        <line num="461" type="method" name="debug" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="463" type="stmt" count="2"/>
+        <line num="466" type="stmt" count="2"/>
+        <line num="467" type="stmt" count="2"/>
+        <line num="469" type="stmt" count="2"/>
+        <line num="472" type="stmt" count="2"/>
+        <line num="474" type="stmt" count="1"/>
+        <line num="486" type="method" name="delete" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="489" type="stmt" count="2"/>
+        <line num="490" type="stmt" count="1"/>
+        <line num="504" type="method" name="download" visibility="public" complexity="2" crap="2" count="5"/>
+        <line num="506" type="stmt" count="5"/>
+        <line num="507" type="stmt" count="1"/>
+        <line num="508" type="stmt" count="1"/>
+        <line num="511" type="stmt" count="5"/>
+        <line num="513" type="stmt" count="2"/>
+        <line num="526" type="method" name="overwrite" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="528" type="stmt" count="2"/>
+        <line num="529" type="stmt" count="1"/>
+        <line num="556" type="method" name="screenshot" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="560" type="stmt" count="2"/>
+        <line num="561" type="stmt" count="2"/>
+        <line num="562" type="stmt" count="2"/>
+        <line num="563" type="stmt" count="2"/>
+        <line num="565" type="stmt" count="2"/>
+        <line num="569" type="stmt" count="2"/>
+        <line num="571" type="stmt" count="2"/>
+        <line num="572" type="stmt" count="1"/>
+        <line num="573" type="stmt" count="1"/>
+        <line num="576" type="stmt" count="2"/>
+        <line num="578" type="stmt" count="2"/>
+        <line num="592" type="method" name="transform" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="595" type="stmt" count="1"/>
+        <line num="596" type="stmt" count="1"/>
+        <line num="619" type="method" name="upload" visibility="public" complexity="3" crap="3" count="4"/>
+        <line num="622" type="stmt" count="4"/>
+        <line num="623" type="stmt" count="4"/>
+        <line num="624" type="stmt" count="4"/>
+        <line num="627" type="stmt" count="4"/>
+        <line num="628" type="stmt" count="4"/>
+        <line num="631" type="stmt" count="4"/>
+        <line num="632" type="stmt" count="4"/>
+        <line num="635" type="stmt" count="4"/>
+        <line num="636" type="stmt" count="3"/>
+        <line num="638" type="stmt" count="3"/>
+        <line num="639" type="stmt" count="3"/>
+        <line num="641" type="stmt" count="3"/>
+        <line num="642" type="stmt" count="3"/>
+        <line num="643" type="stmt" count="3"/>
+        <line num="644" type="stmt" count="3"/>
+        <line num="646" type="stmt" count="3"/>
+        <line num="648" type="stmt" count="1"/>
+        <line num="666" type="method" name="zip" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="669" type="stmt" count="2"/>
+        <line num="670" type="stmt" count="2"/>
+        <line num="672" type="stmt" count="2"/>
+        <line num="673" type="stmt" count="1"/>
+        <line num="674" type="stmt" count="1"/>
+        <line num="676" type="stmt" count="2"/>
+        <line num="679" type="stmt" count="2"/>
+        <line num="680" type="stmt" count="1"/>
+        <metrics loc="682" ncloc="211" classes="1" methods="17" coveredmethods="17" conditionals="0" coveredconditionals="0" statements="99" coveredstatements="99" elements="116" coveredelements="116"/>
+      </file>
+      <file name="/Users/huey/Sites/filestack-php/filestack/FilestackSecurity.php">
+        <class name="FilestackSecurity" namespace="Filestack">
+          <metrics complexity="13" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="39" elements="46" coveredelements="46"/>
+        </class>
+        <line num="44" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="7"/>
+        <line num="46" type="stmt" count="7"/>
+        <line num="47" type="stmt" count="7"/>
+        <line num="48" type="stmt" count="7"/>
+        <line num="50" type="stmt" count="7"/>
+        <line num="51" type="stmt" count="7"/>
+        <line num="54" type="stmt" count="7"/>
+        <line num="55" type="stmt" count="7"/>
+        <line num="56" type="stmt" count="7"/>
+        <line num="57" type="stmt" count="7"/>
+        <line num="59" type="stmt" count="7"/>
+        <line num="61" type="stmt" count="6"/>
+        <line num="62" type="stmt" count="6"/>
+        <line num="63" type="stmt" count="6"/>
+        <line num="75" type="method" name="generate" visibility="private" complexity="2" crap="2" count="7"/>
+        <line num="77" type="stmt" count="7"/>
+        <line num="78" type="stmt" count="1"/>
+        <line num="82" type="stmt" count="7"/>
+        <line num="85" type="stmt" count="6"/>
+        <line num="86" type="stmt" count="6"/>
+        <line num="87" type="stmt" count="6"/>
+        <line num="89" type="stmt" count="6"/>
+        <line num="99" type="method" name="signUrl" visibility="public" complexity="2" crap="2" count="32"/>
+        <line num="101" type="stmt" count="32"/>
+        <line num="103" type="stmt" count="19"/>
+        <line num="104" type="stmt" count="19"/>
+        <line num="105" type="stmt" count="32"/>
+        <line num="106" type="stmt" count="32"/>
+        <line num="118" type="method" name="verify" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="121" type="stmt" count="2"/>
+        <line num="122" type="stmt" count="2"/>
+        <line num="123" type="stmt" count="1"/>
+        <line num="127" type="stmt" count="1"/>
+        <line num="138" type="method" name="createSignature" visibility="protected" complexity="1" crap="1" count="6"/>
+        <line num="140" type="stmt" count="6"/>
+        <line num="141" type="stmt" count="6"/>
+        <line num="153" type="method" name="validateOptions" visibility="protected" complexity="3" crap="3" count="7"/>
+        <line num="155" type="stmt" count="7"/>
+        <line num="156" type="stmt" count="7"/>
+        <line num="157" type="stmt" count="1"/>
+        <line num="159" type="stmt" count="6"/>
+        <line num="161" type="stmt" count="6"/>
+        <line num="167" type="method" name="urlsafeB64encode" visibility="protected" complexity="1" crap="1" count="6"/>
+        <line num="169" type="stmt" count="6"/>
+        <line num="170" type="stmt" count="6"/>
+        <line num="171" type="stmt" count="6"/>
+        <metrics loc="173" ncloc="90" classes="1" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="39" elements="46" coveredelements="46"/>
+      </file>
+    </package>
+    <package name="Filestack\Mixins">
+      <file name="/Users/huey/Sites/filestack-php/filestack/mixins/CommonMixin.php">
+        <class name="CommonMixin" namespace="Filestack\Mixins">
+          <metrics complexity="26" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="96" coveredstatements="96" elements="107" coveredelements="107"/>
+        </class>
+        <line num="25" type="method" name="isUrl" visibility="public" complexity="1" crap="1" count="17"/>
+        <line num="27" type="stmt" count="17"/>
+        <line num="28" type="stmt" count="17"/>
+        <line num="29" type="stmt" count="17"/>
+        <line num="31" type="stmt" count="17"/>
+        <line num="46" type="method" name="sendDelete" visibility="public" complexity="2" crap="2" count="4"/>
+        <line num="48" type="stmt" count="4"/>
+        <line num="49" type="stmt" count="4"/>
+        <line num="50" type="stmt" count="4"/>
+        <line num="51" type="stmt" count="4"/>
+        <line num="54" type="stmt" count="4"/>
+        <line num="55" type="stmt" count="2"/>
+        <line num="57" type="stmt" count="2"/>
+        <line num="77" type="method" name="sendDownload" visibility="protected" complexity="4" crap="4" count="9"/>
+        <line num="79" type="stmt" count="9"/>
+        <line num="81" type="stmt" count="1"/>
+        <line num="82" type="stmt" count="1"/>
+        <line num="83" type="stmt" count="1"/>
+        <line num="84" type="stmt" count="1"/>
+        <line num="87" type="stmt" count="9"/>
+        <line num="88" type="stmt" count="8"/>
+        <line num="89" type="stmt" count="8"/>
+        <line num="92" type="stmt" count="9"/>
+        <line num="93" type="stmt" count="9"/>
+        <line num="95" type="stmt" count="9"/>
+        <line num="96" type="stmt" count="9"/>
+        <line num="99" type="stmt" count="9"/>
+        <line num="100" type="stmt" count="5"/>
+        <line num="102" type="stmt" count="4"/>
+        <line num="120" type="method" name="sendGetContent" visibility="protected" complexity="3" crap="3" count="4"/>
+        <line num="123" type="stmt" count="4"/>
+        <line num="124" type="stmt" count="4"/>
+        <line num="125" type="stmt" count="4"/>
+        <line num="127" type="stmt" count="4"/>
+        <line num="128" type="stmt" count="4"/>
+        <line num="131" type="stmt" count="4"/>
+        <line num="132" type="stmt" count="2"/>
+        <line num="133" type="stmt" count="2"/>
+        <line num="135" type="stmt" count="2"/>
+        <line num="159" type="method" name="sendGetMetaData" visibility="protected" complexity="4" crap="4" count="5"/>
+        <line num="161" type="stmt" count="5"/>
+        <line num="162" type="stmt" count="5"/>
+        <line num="163" type="stmt" count="1"/>
+        <line num="164" type="stmt" count="5"/>
+        <line num="166" type="stmt" count="5"/>
+        <line num="169" type="stmt" count="5"/>
+        <line num="170" type="stmt" count="5"/>
+        <line num="171" type="stmt" count="5"/>
+        <line num="173" type="stmt" count="5"/>
+        <line num="174" type="stmt" count="5"/>
+        <line num="177" type="stmt" count="5"/>
+        <line num="178" type="stmt" count="3"/>
+        <line num="179" type="stmt" count="3"/>
+        <line num="181" type="stmt" count="2"/>
+        <line num="201" type="method" name="sendOverwrite" visibility="public" complexity="2" crap="2" count="4"/>
+        <line num="203" type="stmt" count="4"/>
+        <line num="205" type="stmt" count="4"/>
+        <line num="206" type="stmt" count="4"/>
+        <line num="208" type="stmt" count="4"/>
+        <line num="209" type="stmt" count="4"/>
+        <line num="212" type="stmt" count="4"/>
+        <line num="213" type="stmt" count="2"/>
+        <line num="215" type="stmt" count="2"/>
+        <line num="216" type="stmt" count="2"/>
+        <line num="218" type="stmt" count="2"/>
+        <line num="219" type="stmt" count="2"/>
+        <line num="220" type="stmt" count="2"/>
+        <line num="221" type="stmt" count="2"/>
+        <line num="223" type="stmt" count="2"/>
+        <line num="225" type="stmt" count="2"/>
+        <line num="240" type="method" name="createUploadFileData" visibility="protected" complexity="2" crap="2" count="8"/>
+        <line num="242" type="stmt" count="8"/>
+        <line num="244" type="stmt" count="8"/>
+        <line num="246" type="stmt" count="1"/>
+        <line num="247" type="stmt" count="1"/>
+        <line num="249" type="stmt" count="7"/>
+        <line num="251" type="stmt" count="8"/>
+        <line num="261" type="method" name="requestPost" visibility="protected" complexity="1" crap="1" count="8"/>
+        <line num="263" type="stmt" count="8"/>
+        <line num="265" type="stmt" count="8"/>
+        <line num="266" type="stmt" count="8"/>
+        <line num="268" type="stmt" count="8"/>
+        <line num="269" type="stmt" count="8"/>
+        <line num="279" type="method" name="requestGet" visibility="protected" complexity="4" crap="4" count="38"/>
+        <line num="281" type="stmt" count="38"/>
+        <line num="282" type="stmt" count="38"/>
+        <line num="283" type="stmt" count="38"/>
+        <line num="286" type="stmt" count="38"/>
+        <line num="287" type="stmt" count="1"/>
+        <line num="288" type="stmt" count="1"/>
+        <line num="290" type="stmt" count="38"/>
+        <line num="291" type="stmt" count="9"/>
+        <line num="292" type="stmt" count="38"/>
+        <line num="294" type="stmt" count="38"/>
+        <line num="295" type="stmt" count="38"/>
+        <line num="305" type="method" name="requestDelete" visibility="protected" complexity="1" crap="1" count="4"/>
+        <line num="307" type="stmt" count="4"/>
+        <line num="308" type="stmt" count="4"/>
+        <line num="309" type="stmt" count="4"/>
+        <line num="311" type="stmt" count="4"/>
+        <line num="312" type="stmt" count="4"/>
+        <line num="318" type="method" name="getUserAgentHeader" visibility="protected" complexity="2" crap="2" count="4"/>
+        <line num="320" type="stmt" count="4"/>
+        <line num="321" type="stmt" count="4"/>
+        <line num="322" type="stmt" count="4"/>
+        <line num="323" type="stmt" count="4"/>
+        <line num="324" type="stmt" count="4"/>
+        <metrics loc="326" ncloc="181" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="96" coveredstatements="96" elements="107" coveredelements="107"/>
+      </file>
+      <file name="/Users/huey/Sites/filestack-php/filestack/mixins/TransformationMixin.php">
+        <class name="TransformationMixin" namespace="Filestack\Mixins">
+          <metrics complexity="20" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="78" elements="85" coveredelements="85"/>
+        </class>
+        <line num="20" type="method" name="getTransformStr" visibility="public" complexity="6" crap="6" count="56"/>
+        <line num="22" type="stmt" count="56"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="55"/>
+        <line num="28" type="stmt" count="54"/>
+        <line num="29" type="stmt" count="54"/>
+        <line num="30" type="stmt" count="48"/>
+        <line num="31" type="stmt" count="48"/>
+        <line num="34" type="stmt" count="54"/>
+        <line num="35" type="stmt" count="48"/>
+        <line num="36" type="stmt" count="48"/>
+        <line num="38" type="stmt" count="48"/>
+        <line num="39" type="stmt" count="48"/>
+        <line num="40" type="stmt" count="48"/>
+        <line num="41" type="stmt" count="54"/>
+        <line num="44" type="stmt" count="54"/>
+        <line num="45" type="stmt" count="48"/>
+        <line num="46" type="stmt" count="48"/>
+        <line num="48" type="stmt" count="54"/>
+        <line num="62" type="method" name="insertTransformStr" visibility="protected" complexity="1" crap="1" count="36"/>
+        <line num="64" type="stmt" count="36"/>
+        <line num="67" type="stmt" count="36"/>
+        <line num="69" type="stmt" count="36"/>
+        <line num="83" type="method" name="sendDebug" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="85" type="stmt" count="3"/>
+        <line num="86" type="stmt" count="3"/>
+        <line num="87" type="stmt" count="3"/>
+        <line num="90" type="stmt" count="3"/>
+        <line num="91" type="stmt" count="3"/>
+        <line num="94" type="stmt" count="3"/>
+        <line num="95" type="stmt" count="2"/>
+        <line num="96" type="stmt" count="2"/>
+        <line num="98" type="stmt" count="1"/>
+        <line num="116" type="method" name="sendTransform" visibility="public" complexity="3" crap="3" count="13"/>
+        <line num="119" type="stmt" count="13"/>
+        <line num="120" type="stmt" count="10"/>
+        <line num="121" type="stmt" count="10"/>
+        <line num="123" type="stmt" count="13"/>
+        <line num="126" type="stmt" count="11"/>
+        <line num="127" type="stmt" count="11"/>
+        <line num="129" type="stmt" count="11"/>
+        <line num="132" type="stmt" count="11"/>
+        <line num="133" type="stmt" count="11"/>
+        <line num="136" type="stmt" count="11"/>
+        <line num="137" type="stmt" count="9"/>
+        <line num="139" type="stmt" count="9"/>
+        <line num="140" type="stmt" count="9"/>
+        <line num="142" type="stmt" count="9"/>
+        <line num="143" type="stmt" count="9"/>
+        <line num="144" type="stmt" count="9"/>
+        <line num="145" type="stmt" count="9"/>
+        <line num="147" type="stmt" count="9"/>
+        <line num="149" type="stmt" count="2"/>
+        <line num="166" type="method" name="sendVideoConvert" visibility="public" complexity="2" crap="2" count="5"/>
+        <line num="168" type="stmt" count="5"/>
+        <line num="171" type="stmt" count="5"/>
+        <line num="172" type="stmt" count="5"/>
+        <line num="174" type="stmt" count="5"/>
+        <line num="177" type="stmt" count="5"/>
+        <line num="178" type="stmt" count="5"/>
+        <line num="181" type="stmt" count="5"/>
+        <line num="182" type="stmt" count="4"/>
+        <line num="183" type="stmt" count="4"/>
+        <line num="185" type="stmt" count="4"/>
+        <line num="187" type="stmt" count="1"/>
+        <line num="194" type="method" name="createTransformStr" visibility="protected" complexity="3" crap="3" count="20"/>
+        <line num="197" type="stmt" count="20"/>
+        <line num="198" type="stmt" count="20"/>
+        <line num="199" type="stmt" count="20"/>
+        <line num="201" type="stmt" count="20"/>
+        <line num="203" type="stmt" count="20"/>
+        <line num="205" type="stmt" count="18"/>
+        <line num="206" type="stmt" count="12"/>
+        <line num="207" type="stmt" count="12"/>
+        <line num="208" type="stmt" count="18"/>
+        <line num="209" type="stmt" count="18"/>
+        <line num="211" type="stmt" count="18"/>
+        <line num="224" type="method" name="validateAttributes" visibility="protected" complexity="3" crap="3" count="55"/>
+        <line num="226" type="stmt" count="55"/>
+        <line num="227" type="stmt" count="49"/>
+        <line num="228" type="stmt" count="1"/>
+        <line num="229" type="stmt" count="1"/>
+        <line num="231" type="stmt" count="1"/>
+        <line num="233" type="stmt" count="54"/>
+        <line num="235" type="stmt" count="54"/>
+        <metrics loc="237" ncloc="139" classes="1" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="78" elements="85" coveredelements="85"/>
+      </file>
+    </package>
+    <metrics files="5" loc="2810" ncloc="1090" classes="5" methods="91" coveredmethods="91" conditionals="0" coveredconditionals="0" statements="511" coveredstatements="511" elements="602" coveredelements="602"/>
+  </project>
+</coverage>
