@@ -25,18 +25,3 @@ class MockHttpResponse
         return $this->content;
     }
 }
-
-class MockHttpResponseBody
-{
-    public $content;
-
-    public function __construct($content='')
-    {
-        $this->content = $content;
-    }
-
-    public function getContents()
-    {
-        return $this->content;
-    }
-}

@@ -150,7 +150,7 @@ class FilestackConfig
      *
      * @return string (url)
      */
-    public function createUrl($action, $api_key, $options=[], $security=null)
+    public function createUrl($action, $api_key, $options = [], $security = null)
     {
         // lower case all keys
         $options = array_change_key_case($options, CASE_LOWER);

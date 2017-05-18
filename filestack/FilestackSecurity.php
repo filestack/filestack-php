@@ -41,7 +41,7 @@ class FilestackSecurity
      *                              url: (regex) subset of external URL domains that are
      *                                  allowed to be image/document sources for processing
      */
-    public function __construct($secret, $options=[])
+    public function __construct($secret, $options = [])
     {
         $this->allowed_options = [
             'call', 'container', 'expiry', 'handle', 'maxSize', 'minSize', 'path', 'url'
@@ -72,7 +72,7 @@ class FilestackSecurity
      *
      * @return array ['policy'=>'encrypted_value', 'signature'=>'encrypted_value']
      */
-    private function generate($secret, $options=[])
+    private function generate($secret, $options = [])
     {
         if (!$secret) {
             throw new FilestackException("Secret can not be empty", 400);

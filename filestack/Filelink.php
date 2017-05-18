@@ -26,7 +26,7 @@ class Filelink
      * @param string    $handle     Filestack file handle
      * @param string    $api_key    Filestack API Key
      */
-    public function __construct($handle, $api_key='', $security=null, $http_client=null)
+    public function __construct($handle, $api_key = '', $security = null, $http_client = null)
     {
         $this->handle = $handle;
         $this->api_key = $api_key;
@@ -69,8 +69,8 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function ascii($background='white', $colored=false,
-        $foreground='red', $reverse=false, $size=100)
+    public function ascii($background = 'white', $colored = false,
+        $foreground='red', $reverse = false, $size = 100)
     {
         $options = [
             'b' => $background,
@@ -98,7 +98,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function blackWhite($threshold=50)
+    public function blackWhite($threshold = 50)
     {
         // call TransformationMixin function
         $this->setTransformUrl('blackwhite', ['t' => $threshold]);
@@ -116,7 +116,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function blur($amount=2)
+    public function blur($amount = 2)
     {
         // call TransformationMixin function
         $this->setTransformUrl('blur', ['a' => $amount]);
@@ -141,7 +141,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function border($background='white', $color='black', $width=2)
+    public function border($background = 'white', $color = 'black', $width=2)
     {
         $options = [
             'b' => $background,
@@ -166,7 +166,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function circle($background='black')
+    public function circle($background = 'black')
     {
         // call TransformationMixin function
         $this->setTransformUrl('circle', ['b' => $background]);
@@ -203,7 +203,7 @@ class Filelink
      * @return Filestack/Filelink
      */
     public function collage($files, $width, $height,
-        $color='white', $fit='auto', $margin=10, $auto_rotate=false)
+        $color = 'white', $fit = 'auto', $margin = 10, $auto_rotate = false)
     {
         $options = [
             'f' => json_encode($files),
@@ -234,7 +234,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function compress($metadata=false)
+    public function compress($metadata = false)
     {
         // call TransformationMixin function
         $this->setTransformUrl('compress', ['m' => $metadata]);
@@ -304,7 +304,7 @@ class Filelink
      *
      * @return string (uuid of conversion task)
      */
-    public function convertAudio($format, $options=[])
+    public function convertAudio($format, $options = [])
     {
         $transform_tasks = [
             'video_convert' => $options
@@ -387,7 +387,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function convertFile($filetype, $options=[])
+    public function convertFile($filetype, $options = [])
     {
         $transform_tasks = [
             'output' => $options
@@ -509,7 +509,7 @@ class Filelink
      *
      * @return string (uuid of conversion task)
      */
-    public function convertVideo($format, $options=[])
+    public function convertVideo($format, $options = [])
     {
         $transform_tasks = [
             'video_convert' => $options
@@ -576,7 +576,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function detectFaces($color='dimgray', $export=false, $min_size=0.35, $max_size=0.35)
+    public function detectFaces($color='dimgray', $export = false, $min_size = 0.35, $max_size = 0.35)
     {
         $options = [
             'c' => $color,
@@ -621,7 +621,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function modulate($brightness=100, $hue=0, $saturation=100)
+    public function modulate($brightness = 100, $hue = 0, $saturation = 100)
     {
         $options = [
             'b' => $brightness,
@@ -675,7 +675,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function oilPaint($amount=2)
+    public function oilPaint($amount = 2)
     {
         // call TransformationMixin function
         $this->setTransformUrl('oil_paint', ['a' => $amount]);
@@ -705,7 +705,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function partialBlur($amount=10, $blur=4, $objects=[], $type='rect')
+    public function partialBlur($amount = 10, $blur = 4, $objects = [], $type = 'rect')
     {
         $options = [
             'a' => $amount,
@@ -742,7 +742,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function partialPixelate($amount=10, $blur=4, $objects=[], $type='rect')
+    public function partialPixelate($amount = 10, $blur = 4, $objects = [], $type = 'rect')
     {
 
         // call TransformationMixin function
@@ -761,7 +761,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function pixelate($amount=2)
+    public function pixelate($amount = 2)
     {
         // call TransformationMixin function
         $this->setTransformUrl('pixelate', ['a' => $amount]);
@@ -784,7 +784,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function polaroid($background='white', $color='snow', $rotate=45)
+    public function polaroid($background = 'white', $color = 'snow', $rotate = 45)
     {
         $options = [
             'b' => $background,
@@ -871,7 +871,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function resize($width, $height, $fit='clip', $align='center')
+    public function resize($width, $height, $fit = 'clip', $align = 'center')
     {
         $options = [
             'w' => $width,
@@ -901,7 +901,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function roundedCorners($background='white', $blur=0.3, $radius=10)
+    public function roundedCorners($background = 'white', $blur = 0.3, $radius = 10)
     {
         $options = [
             'b' => $background,
@@ -938,7 +938,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function rotate($background='white', $deg=0, $exif=false)
+    public function rotate($background = 'white', $deg = 0, $exif = false)
     {
         $options = [
             'b' => $background,
@@ -962,7 +962,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function sepia($tone=80)
+    public function sepia($tone = 80)
     {
         // call TransformationMixin function
         $this->setTransformUrl('sepia', ['t' => $tone]);
@@ -980,7 +980,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function sharpen($amount=2)
+    public function sharpen($amount = 2)
     {
         // call TransformationMixin function
         $this->setTransformUrl('sharpen', ['a' => $amount]);
@@ -1008,7 +1008,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function shadow($background='white', $blur=4, $opacity=60, $vector=[4,4])
+    public function shadow($background = 'white', $blur = 4, $opacity = 60, $vector = [4,4])
     {
         $options = [
             'b' => $background,
@@ -1037,7 +1037,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function tornEdges($background='white', $spread=[1,10])
+    public function tornEdges($background = 'white', $spread = [1,10])
     {
         $options = [
             'b' => $background,
@@ -1075,7 +1075,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function upscale($noise='none', $style='photo', $upscale=true)
+    public function upscale($noise = 'none', $style = 'photo', $upscale = true)
     {
         $options = [
             'n' => $noise,
@@ -1109,7 +1109,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function vignette($amount=20, $background='white', $blurmode='gaussian')
+    public function vignette($amount = 20, $background = 'white', $blurmode = 'gaussian')
     {
         $options = [
             'a' => $amount,
@@ -1141,7 +1141,7 @@ class Filelink
      *
      * @return Filestack/Filelink
      */
-    public function watermark($file_handle, $position='center', $size=100)
+    public function watermark($file_handle, $position = 'center', $size = 100)
     {
         $options = [
             'f' => $file_handle,
@@ -1183,7 +1183,7 @@ class Filelink
      *
      * @return array
      */
-    public function getMetaData($fields=[])
+    public function getMetaData($fields = [])
     {
         // call CommonMixin function
         $result = $this->sendGetMetaData($this->url(), $fields, $this->security);
@@ -1268,7 +1268,7 @@ class Filelink
      *
      * @return Filestack\Filelink
      */
-    public function save($options=[])
+    public function save($options = [])
     {
         $this->initTransformUrl();
         $this->transform_url = $this->insertTransformStr($this->transform_url, 'store', $options);
@@ -1289,7 +1289,7 @@ class Filelink
      *
      * @return void
      */
-    public function setTransformUrl($method, $options=[])
+    public function setTransformUrl($method, $options = [])
     {
         $this->initTransformUrl();
         $this->transform_url = $this->insertTransformStr($this->transform_url, $method, $options);

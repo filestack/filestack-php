@@ -26,7 +26,7 @@ class FilestackClient
      * @param GuzzleHttp\Client $http_client    DI http client, will instantiate
      *                                          one if not passed in
      */
-    public function __construct($api_key, $security=null, $http_client=null)
+    public function __construct($api_key, $security = null, $http_client = null)
     {
         $this->api_key = $api_key;
         $this->security = $security;
@@ -95,7 +95,7 @@ class FilestackClient
      *
      * @return array
      */
-    public function getMetaData($url, $fields=[])
+    public function getMetaData($url, $fields = [])
     {
         if (!$this->isUrl($url)) { // CommonMixin
             $url = $this->getCdnUrl($url);
@@ -135,8 +135,8 @@ class FilestackClient
      *
      * @return Filestack/Filelink or contents
      */
-    public function collage($sources, $width, $height, $store_options=[],
-        $color='white', $fit='auto', $margin=10, $auto_rotate=false)
+    public function collage($sources, $width, $height, $store_options = [],
+        $color = 'white', $fit = 'auto', $margin = 10, $auto_rotate = false)
     {
 
         // slice off first source as the filelink
@@ -229,7 +229,7 @@ class FilestackClient
      *
      * @return string (uuid of conversion task)
      */
-    public function convertAudio($resource, $format, $options=[])
+    public function convertAudio($resource, $format, $options = [])
     {
         $transform_tasks = [
             'video_convert' => $options
@@ -313,7 +313,7 @@ class FilestackClient
      *
      * @return Filestack/Filelink
      */
-    public function convertFile($resource, $filetype, $options=[])
+    public function convertFile($resource, $filetype, $options = [])
     {
         $transform_tasks = [
             'output' => $options
@@ -436,7 +436,7 @@ class FilestackClient
      *
      * @return string (uuid of conversion task)
      */
-    public function convertVideo($resource, $format, $options=[])
+    public function convertVideo($resource, $format, $options = [])
     {
         $transform_tasks = [
             'video_convert' => $options
@@ -556,8 +556,8 @@ class FilestackClient
      *
      * @return Filestack/Filelink
      */
-    public function screenshot($url, $store_options=[],
-        $agent='desktop', $mode='all', $width=1024, $height=768, $delay=0)
+    public function screenshot($url, $store_options = [],
+        $agent = 'desktop', $mode = 'all', $width = 1024, $height = 768, $delay = 0)
     {
         $process_attrs = [
             'a' => $agent,
@@ -619,7 +619,7 @@ class FilestackClient
      *
      * @return Filestack\Filelink
      */
-    public function upload($filepath, $options=[])
+    public function upload($filepath, $options = [])
     {
         // set filename to original file if one does not exists
         if (!array_key_exists('filename', $options)) {
@@ -649,7 +649,7 @@ class FilestackClient
      *
      * @return Filestack/Filelink or file content
      */
-    public function zip($sources, $store_options=[])
+    public function zip($sources, $store_options = [])
     {
         $transform_tasks = [
             'zip' => []
