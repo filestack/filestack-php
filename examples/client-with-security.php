@@ -44,3 +44,6 @@ var_dump($result);
 // overwrite a file
 $filelink2 = $client->overwrite($test_filepath, $filelink->handle);
 var_dump($filelink2);
+
+// deleting a file
+$client->delete($filelink->handle);

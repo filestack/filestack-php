@@ -52,6 +52,19 @@ $extras = [
 
 $filepath = '/path/to/file';
 $filelink = $client->upload($filepath);
+
+// get metadata of file
+$metadata = $client->getMetaData($filelink->handle, $fields);
+
+// get content of a file
+$content = $client->getContent($filelink->handle);
+
+// download a file
+$destination = '/path/to/file';
+$result = $client->download($filelink->handle, $destination);
+
+// overwrite a file
+$filelink2 = $client->overwrite('/path/to/file', $filelink->handle);
 ```
 
 ### Manipulating files
@@ -67,10 +80,30 @@ First method was shown above, the second method is also very easy and will creat
 use Filestack\filelink;
 
 $file = new Filelink('pGj2wWfBTMuXhWe2J3bL', 'YOUR_API_KEY');
+
+// transforming an image
 $transformed_filelink = $filelink
             ->circle()
             ->blur(['amount' => '20'])
             ->save();
+
+// get metadata
+$metadata = $filelink->getMetaData();
+
+// get content of a file
+$content = $filelink->getContent();
+
+$filepath = '/path/to/file';
+
+// download a file
+$filelink->download($filepath);
+
+// overwrite remote file with local file
+$filelink->overwrite($filepath);
+
+// delete remote file
+$filelink->delete();
+
 ```
 
 For more examples, see the [examples/](examples/) folder in this project.
