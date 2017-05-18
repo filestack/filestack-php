@@ -3,16 +3,11 @@ engines:
     enabled: true
     config:
       standard: "PSR1,PSR2"
+    rulesets: "phpmd-rules.xml"
 
 ratings:
   paths:
   - "**.php"
-
-checks:
-  Controversial/CamelCaseParameterName:
-    enabled: false
-  CleanCode/BooleanArgumentFlag:
-    enabled: false
 
 exclude_paths:
 - build/*
