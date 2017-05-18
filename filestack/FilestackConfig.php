@@ -150,7 +150,7 @@ class FilestackConfig
      *
      * @return string (url)
      */
-    public static function createUrl($action, $api_key, $options=[], $security=null)
+    public function createUrl($action, $api_key, $options=[], $security=null)
     {
         // lower case all keys
         $options = array_change_key_case($options, CASE_LOWER);
@@ -245,7 +245,7 @@ class FilestackConfig
     /**
      * Get current version of this library (from VERSION file)
      */
-    public static function getVersion()
+    public function getVersion()
     {
         $version = file_get_contents(__DIR__ . '/../VERSION');
         return trim($version);

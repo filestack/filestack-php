@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 1.1.1 (May 18, 2017)
+- Integrated CodeClimate
+
 ## 1.0.6 (May 18, 2017)
 - Linked Travisci and Coveralls to project
 - Soft release

@@ -18,6 +18,8 @@ class Filelink
     public $security;
     public $transform_url;
 
+    private $filestack_config;
+
     /**
      * Filelink constructor
      *
@@ -35,7 +37,9 @@ class Filelink
         if (is_null($http_client)) {
             $http_client = new Client();
         }
+
         $this->http_client = $http_client; // CommonMixin
+        $this->filestack_config = new FilestackConfig();
     }
 
     /**
@@ -523,19 +527,19 @@ class Filelink
     /**
      * Set this Filelink's transform_url to include crop task
      *
-     * @param int   $x      x coordinate to start cropping
-     * @param int   $y      y coordinate to start cropping
-     * @param int   $width  width of crop area
-     * @param int   $height height of corp area
+     * @param int   $x_coordinate       x coordinate to start cropping
+     * @param int   $y_coordinate       y coordinate to start cropping
+     * @param int   $width              width of crop area
+     * @param int   $height             height of corp area
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return Filestack/Filelink
      */
-    public function crop($x, $y, $width, $height)
+    public function crop($x_coordinate, $y_coordinate, $width, $height)
     {
         // call TransformationMixin function
-        $this->setTransformUrl('crop', ["d" => "[$x,$y,$width,$height]"]);
+        $this->setTransformUrl('crop', ["d" => "[$x_coordinate,$y_coordinate,$width,$height]"]);
         return $this;
     }
 
@@ -740,15 +744,10 @@ class Filelink
      */
     public function partialPixelate($amount=10, $blur=4, $objects=[], $type='rect')
     {
-        $options = [
-            'a' => $amount,
-            'l' => $blur,
-            'o' => $objects,
-            't' => $type
-        ];
 
         // call TransformationMixin function
-        $this->setTransformUrl('partial_pixelate', $options);
+        $this->setTransformUrl('partial_pixelate', ['a' => $amount,
+            'l' => $blur, 'o' => $objects, 't' => $type]);
 
         return $this;
     }
@@ -1276,27 +1275,9 @@ class Filelink
 
         // call CommonMixin function
         $response = $this->requestGet($this->transform_url);
-        $status_code = $response->getStatusCode();
+        $filelink = $this->handleResponseCreateFilelink($response);
 
-        // handle response
-        if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), true);
-
-            $url = $json_response['url'];
-            $file_handle = substr($url, strrpos($url, '/') + 1);
-
-            $filelink = new Filelink($file_handle, $this->api_key, $this->security);
-            $filelink->metadata['filename'] = $json_response['filename'];
-            $filelink->metadata['size'] = $json_response['size'];
-            $filelink->metadata['mimetype'] = $json_response['type'];
-
-            return $filelink;
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        // error if reached
-        return false;
+        return $filelink;
     }
 
     /**

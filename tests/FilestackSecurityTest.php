@@ -141,9 +141,9 @@ class FilestackSecurityTest extends BaseTest
         ];
 
         $security = new FilestackSecurity($this->test_secret, $options);
-        $result = $security->verify($options, $security->signature, $this->test_secret);
+        $result = $security->verify($options, $this->test_secret);
 
-        $this->assertTrue($result);
+        $this->assertNotNull($result);
     }
 
     /*
@@ -158,7 +158,7 @@ class FilestackSecurityTest extends BaseTest
         $options = [];
 
         $security = new FilestackSecurity($this->test_secret, $options);
-        $result = $security->verify($options, $security->signature, $secret);
+        $result = $security->verify($options, $secret);
 
         $this->assertFalse($result);
     }

@@ -24,7 +24,8 @@ class FilestackConfigTest extends BaseTest
             $security->policy,
             $security->signature);
 
-        $url = FilestackConfig::createUrl('delete', $this->test_api_key, $options, $security);
+        $filestack_config = new FilestackConfig();
+        $url = $filestack_config->createUrl('delete', $this->test_api_key, $options, $security);
         $this->assertEquals($url, $expected_url);
     }
 
@@ -45,7 +46,8 @@ class FilestackConfigTest extends BaseTest
             $this->test_api_key,
             $options['Filename']);
 
-        $url = FilestackConfig::createUrl('upload', $this->test_api_key, $options, $security);
+        $filestack_config = new FilestackConfig();
+        $url = $filestack_config->createUrl('upload', $this->test_api_key, $options, $security);
 
         $this->assertEquals($url, $expected_url);
     }

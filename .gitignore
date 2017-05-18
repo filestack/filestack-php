@@ -1,5 +1,6 @@
 .DS_Store
 .php_cs.cache
 vendor/
-tests/coverage/
+coverage/
 build/logs/*
+tests/testfiles/*
