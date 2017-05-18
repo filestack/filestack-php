@@ -52,6 +52,19 @@ $extras = [
 
 $filepath = '/path/to/file';
 $filelink = $client->upload($filepath);
+
+// get metadata of file
+$metadata = $client->getMetaData($filelink->handle, $fields);
+
+// get content of a file
+$content = $client->getContent($filelink->handle);
+
+// download a file
+$destination = '/path/to/file';
+$result = $client->download($filelink->handle, $destination);
+
+// overwrite a file
+$filelink2 = $client->overwrite('/path/to/file', $filelink->handle);
 ```
 
 ### Manipulating files
@@ -67,10 +80,30 @@ First method was shown above, the second method is also very easy and will creat
 use Filestack\filelink;
 
 $file = new Filelink('pGj2wWfBTMuXhWe2J3bL', 'YOUR_API_KEY');
+
+// transforming an image
 $transformed_filelink = $filelink
             ->circle()
             ->blur(['amount' => '20'])
             ->save();
+
+// get metadata
+$metadata = $filelink->getMetaData();
+
+// get content of a file
+$content = $filelink->getContent();
+
+$filepath = '/path/to/file';
+
+// download a file
+$filelink->download($filepath);
+
+// overwrite remote file with local file
+$filelink->overwrite($filepath);
+
+// delete remote file
+$filelink->delete();
+
 ```
 
 For more examples, see the [examples/](examples/) folder in this project.
@@ -119,9 +152,6 @@ Thank you to all the [contributors](https://github.com/filestack/filestack-php/g
 
 ## Other Resources
 
-- [travis_ci](http://travis-ci.org/filestack/filestack-php)
-- [travis_ci_badge](https://travis-ci.org/filestack/filestack-php.svg?branch=master)
-- [code_climate](https://codeclimate.com/github/filestack/filestack-php)
-- [code_climate_badge](https://filestack.com/themes/filestack/assets/images/press-articles/color.svg)
-- [coveralls](https://coveralls.io/github/filestack/filestack-php?branch=master)
-- [coveralls_badge](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)
+- [travis_ci](https://travis-ci.org/filestack/filestack-php) [![Travis_ci Status](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)
+
+- [coveralls](https://coveralls.io/github/filestack/filestack-php?branch=master) [![Coverage Status](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)](https://coveralls.io/github/filestack/filestack-php?branch=master)
