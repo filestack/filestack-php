@@ -1,5 +1,9 @@
 # Filestack-php Changelog
 
+## 1.0.6 (May 18, 2017)
+- Linked Travisci and Coveralls to project
+- Soft release
+
 ## 1.0.5 (May 17, 2017)
 - Updated README, prepared to publish to packagist.org
 
