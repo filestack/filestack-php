@@ -152,11 +152,6 @@ Thank you to all the [contributors](https://github.com/filestack/filestack-php/g
 
 ## Other Resources
 
-- [travis_ci](http://travis-ci.org/filestack/filestack-php)
-- [travis_ci_badge](https://travis-ci.org/filestack/filestack-php.svg?branch=master)
+- [travis_ci](https://travis-ci.org/filestack/filestack-php) [![Travis_ci Status](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)
 
-- [code_climate](https://codeclimate.com/github/filestack/filestack-php)
-- [code_climate_badge](https://filestack.com/themes/filestack/assets/images/press-articles/color.svg)
-
-- [coveralls](https://coveralls.io/github/filestack/filestack-php?branch=master)
-- [![Coverage Status](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)](https://coveralls.io/github/filestack/filestack-php?branch=master)
+- [coveralls](https://coveralls.io/github/filestack/filestack-php?branch=master) [![Coverage Status](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)](https://coveralls.io/github/filestack/filestack-php?branch=master)
