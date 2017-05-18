@@ -456,7 +456,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return bool (true = delete success, false = failed)
+     * @return json response
      */
     public function debug($resource, $transform_tasks)
     {
