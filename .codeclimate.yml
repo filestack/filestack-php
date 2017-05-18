@@ -1,8 +1,8 @@
 engines:
-  phpcodesniffer:
+  phpmd:
     enabled: true
-    config:
-      standard: "PSR1,PSR2"
+  config:
+    standard: "PSR1,PSR2"
 
 ratings:
   paths:

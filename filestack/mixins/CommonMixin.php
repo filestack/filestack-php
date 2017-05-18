@@ -71,7 +71,7 @@ trait CommonMixin
      *
      * @return bool (true = download success, false = failed)
      */
-    protected function sendDownload($url, $destination, $security=null)
+    protected function sendDownload($url, $destination, $security = null)
     {
         if (is_dir($destination)) {
             // destination is a folder
@@ -111,7 +111,7 @@ trait CommonMixin
      *
      * @return string (file content)
      */
-    protected function sendGetContent($url, $security=null)
+    protected function sendGetContent($url, $security = null)
     {
         // sign url if security is passed in
         if ($security) {
@@ -148,7 +148,7 @@ trait CommonMixin
      *
      * @return array
      */
-    protected function sendGetMetaData($url, $fields=[], $security=null)
+    protected function sendGetMetaData($url, $fields = [], $security = null)
     {
         $params = [];
         foreach ($fields as $field_name) {
@@ -263,7 +263,7 @@ trait CommonMixin
      * @param array     $data_to_send   data to send
      * @param array     $headers        optional headers to send
      */
-    protected function requestPost($url, $data_to_send, $headers=[])
+    protected function requestPost($url, $data_to_send, $headers = [])
     {
         $headers['User-Agent'] = $this->user_agent_header;
 
@@ -281,7 +281,7 @@ trait CommonMixin
      * @param array     $params     optional params to send
      * @param array     $headers    optional headers to send
      */
-    protected function requestGet($url, $params=[], $headers=[], $options=[])
+    protected function requestGet($url, $params = [], $headers = [], $options = [])
     {
         $headers['User-Agent'] = $this->user_agent_header;
         $options['http_errors'] = false;
@@ -307,7 +307,7 @@ trait CommonMixin
      * @param array     $headers    optional headers to send
      * @param array     $options    optional options to send
      */
-    protected function requestDelete($url, $headers=[], $options=[])
+    protected function requestDelete($url, $headers = [], $options = [])
     {
         $headers['User-Agent'] = $this->getUserAgentHeader();
         $options['http_errors'] = false;

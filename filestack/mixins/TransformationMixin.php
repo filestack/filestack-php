@@ -59,7 +59,7 @@ trait TransformationMixin
      *
      * @return Transformation object
      */
-    protected function insertTransformStr($url, $taskname, $process_attrs=[])
+    protected function insertTransformStr($url, $taskname, $process_attrs = [])
     {
         $transform_str = $this->getTransformStr($taskname, $process_attrs);
 
@@ -80,7 +80,7 @@ trait TransformationMixin
      *
      * @return json object
      */
-    public function sendDebug($transform_url, $security=null)
+    public function sendDebug($transform_url, $security = null)
     {
         $transform_str = str_replace(FilestackConfig::CDN_URL . '/', '', $transform_url);
         $options = ['transform_str' => $transform_str];
@@ -111,7 +111,7 @@ trait TransformationMixin
      *
      * @return Filestack\Filelink
      */
-    public function sendTransform($resource, $transform_tasks, $security=null)
+    public function sendTransform($resource, $transform_tasks, $security = null)
     {
         // add store method if one does not exists
         if (!array_key_exists('store', $transform_tasks)) {
@@ -144,7 +144,7 @@ trait TransformationMixin
      *
      * @return string (uuid of conversion task)
      */
-    public function sendVideoConvert($resource, $transform_tasks, $security=null)
+    public function sendVideoConvert($resource, $transform_tasks, $security = null)
     {
         $tasks_str = $this->createTransformStr($transform_tasks);
 
