@@ -1,0 +1,21 @@
+engines:
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: "PSR1,PSR2"
+
+ratings:
+  paths:
+  - "**.php"
+
+checks:
+  Controversial/CamelCaseParameterName:
+    enabled: false
+  CleanCode/BooleanArgumentFlag:
+    enabled: false
+
+exclude_paths:
+- build/*
+- examples/*
+- vendor/*
+- filestack/FilestackConfig.php

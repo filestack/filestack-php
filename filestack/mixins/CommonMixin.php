@@ -46,19 +46,16 @@ trait CommonMixin
     public function sendDelete($handle, $api_key, $security)
     {
         $options = ['handle' => $handle];
-        $url = FilestackConfig::createUrl('delete', $api_key, $options, $security);
+        $url = $this->filestack_config->createUrl('delete', $api_key, $options, $security);
         $response = $this->requestDelete($url);
         $status_code = $response->getStatusCode();
 
         // handle response
-        if ($status_code == 200) {
-            return true;
-        } else {
+        if ($status_code !== 200) {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
-        // failed if reached
-        return false;
+        return true;
     }
 
     /**
@@ -96,14 +93,11 @@ trait CommonMixin
         $status_code = $response->getStatusCode();
 
         // handle response
-        if ($status_code == 200) {
-            return true;
-        } else {
+        if ($status_code !== 200) {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
-        // failed if reached
-        return false;
+        return true;
     }
 
     /**
@@ -128,15 +122,13 @@ trait CommonMixin
         $status_code = $response->getStatusCode();
 
         // handle response
-        if ($status_code == 200) {
-            $content = $response->getBody()->getContents();
-            return $content;
-        } else {
+        if ($status_code !== 200) {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
-        // failed if reached
-        return false;
+        $content = $response->getBody()->getContents();
+
+        return $content;
     }
 
     /**
@@ -172,17 +164,13 @@ trait CommonMixin
 
         $response = $this->requestGet($url, $params);
         $status_code = $response->getStatusCode();
-
-        // handle response
-        if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), true);
-            return $json_response;
-        } else {
+        if ($status_code !== 200) {
             throw new FilestackException($response->getBody(), $status_code);
         }
 
-        // failed if reached
-        return false;
+        $json_response = json_decode($response->getBody(), true);
+
+        return $json_response;
     }
 
     /**
@@ -203,30 +191,12 @@ trait CommonMixin
         $data_to_send = $this->createUploadFileData($filepath);
 
         $options = ['handle' => $handle];
-        $url = FilestackConfig::createUrl('overwrite', $api_key, $options, $security);
+        $url = $this->filestack_config->createUrl('overwrite', $api_key, $options, $security);
 
         $response = $this->requestPost($url, $data_to_send);
-        $status_code = $response->getStatusCode();
+        $filelink = $this->handleResponseCreateFilelink($response);
 
-        // handle response
-        if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), true);
-
-            $url = $json_response['url'];
-            $file_handle = substr($url, strrpos($url, '/') + 1);
-
-            $filelink = new Filelink($file_handle, $api_key, $security);
-            $filelink->metadata['filename'] = $json_response['filename'];
-            $filelink->metadata['size'] = $json_response['size'];
-            $filelink->metadata['mimetype'] = $json_response['mimetype'];
-
-            return $filelink;
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        // failed if reached
-        return false;
+        return $filelink;
     }
 
     /**
@@ -249,6 +219,41 @@ trait CommonMixin
             $data['body'] = fopen($filepath, 'r');
         }
         return $data;
+    }
+
+    /**
+     * Handle a Filestack response and create a filelink object
+     *
+     * @param   Http\Message\Response    $response    response object
+     *
+     * @throws FilestackException   if statuscode is not OK
+     *
+     * @return Filestack\Filelink
+     */
+    protected function handleResponseCreateFilelink($response)
+    {
+        $status_code = $response->getStatusCode();
+
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        $json_response = json_decode($response->getBody(), true);
+        $url = $json_response['url'];
+        $file_handle = substr($url, strrpos($url, '/') + 1);
+
+        $filelink = new Filelink($file_handle, $this->api_key, $this->security);
+        $filelink->metadata['filename'] = $json_response['filename'];
+        $filelink->metadata['size'] = $json_response['size'];
+        $filelink->metadata['mimetype'] = 'unknown';
+
+        if (isset($json_response['type'])) {
+            $filelink->metadata['mimetype'] = $json_response['type'];
+        } elseif (isset($json_response['mimetype'])) {
+            $filelink->metadata['mimetype'] = $json_response['mimetype'];
+        }
+
+        return $filelink;
     }
 
     /**
@@ -319,7 +324,7 @@ trait CommonMixin
     {
         if (!$this->user_agent_header) {
             $this->user_agent_header = sprintf('filestack-php-%s',
-                FilestackConfig::getVersion());
+                $this->filestack_config->getVersion());
         }
         return $this->user_agent_header;
     }

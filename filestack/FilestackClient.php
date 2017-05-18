@@ -15,6 +15,8 @@ class FilestackClient
     public $api_key;
     public $security;
 
+    private $filestack_config;
+
     /**
      * FilestackClient constructor
      *
@@ -33,6 +35,7 @@ class FilestackClient
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
+        $this->filestack_config = new FilestackConfig();
     }
 
     /**
@@ -466,7 +469,7 @@ class FilestackClient
         $options['tasks_str'] = $tasks_str;
         $options['handle'] = $resource;
 
-        $transform_url = FilestackConfig::createUrl('transform', $this->api_key, $options);
+        $transform_url = $this->filestack_config->createUrl('transform', $this->api_key, $options);
 
         // call TransformationMixin functions
         $json_response = $this->sendDebug($transform_url, $this->security);
@@ -624,31 +627,14 @@ class FilestackClient
         }
 
         // build url and data to send
-        $url = FilestackConfig::createUrl('upload', $this->api_key, $options, $this->security);
+        $url = $this->filestack_config->createUrl('upload', $this->api_key, $options, $this->security);
         $data_to_send = $this->createUploadFileData($filepath);
 
         // send post request
         $response = $this->requestPost($url, $data_to_send);
-        $status_code = $response->getStatusCode();
+        $filelink = $this->handleResponseCreateFilelink($response);
 
-        // handle response
-        if ($status_code == 200) {
-            $json_response = json_decode($response->getBody(), true);
-
-            $url = $json_response['url'];
-            $file_handle = substr($url, strrpos($url, '/') + 1);
-
-            $filelink = new Filelink($file_handle, $this->api_key, $this->security);
-            $filelink->metadata['filename'] = $json_response['filename'];
-            $filelink->metadata['size'] = $json_response['size'];
-            $filelink->metadata['mimetype'] = $json_response['type'];
-
-            return $filelink;
-        } else {
-            throw new FilestackException($response->getBody(), $status_code);
-        }
-
-        return null;
+        return $filelink;
     }
 
     /**

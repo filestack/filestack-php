@@ -81,8 +81,8 @@ class RealTestsFilelinkWithSecurity extends BaseTest
             'title'                 => 'test Filestack Audio conversion'
         ];
 
-        $uuid = $audio_filelink->convertAudio('mp3', $output_options);
-        echo "\naudio conversion, uuid=$uuid\n";
+        //$uuid = $audio_filelink->convertAudio('mp3', $output_options);
+        //echo "\naudio conversion, uuid=$uuid\n";
 
         // converting video file
         $video_filelink = new Filelink('Q5eBTKldRfCSuEjUYuAz', $this->test_api_key,
@@ -102,8 +102,8 @@ class RealTestsFilelinkWithSecurity extends BaseTest
             'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
         ];
 
-        $uuid = $video_filelink->convertVideo('m4a', $output_options);
-        echo "\nvideo conversion, uuid=$uuid\n";
+        //$uuid = $video_filelink->convertVideo('m4a', $output_options);
+        //echo "\nvideo conversion, uuid=$uuid\n";
 
         // transformations
         $transform_tasks = [

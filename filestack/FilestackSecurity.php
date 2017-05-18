@@ -110,21 +110,19 @@ class FilestackSecurity
      * Verify that a policy is valid
      *
      * @param array     $policy                 policy to verify
-     * @param string    $expected_signature     signature to verify
      * @param string?   $secret                 security secret
      *
      * @return bool
      */
-    public function verify($policy, $expected_signature, $secret)
+    public function verify($policy, $secret)
     {
         try {
             $result = $this->generate($secret, $policy);
         } catch (FilestackException $e) {
             return false;
         }
-        // TODO - actually ping API server to verify that policy and sig is valid
 
-        return true;
+        return $result;
     }
 
     /**
@@ -154,7 +152,7 @@ class FilestackSecurity
     {
         foreach ($options as $key => $value) {
             if (!in_array($key, $this->allowed_options)) {
-                throw new FilestackException("Invalid policy option: $key", 400);
+                throw new FilestackException("Invalid policy option: $key:$value", 400);
             }
         }
 

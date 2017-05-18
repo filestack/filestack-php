@@ -124,7 +124,10 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            $this->mock_response_json
+            '{"url": "http://cdn.filestackcontent.com/somehandle",'.
+            '"filename": "somefile.jpg",'.
+            '"size": "1000",'.
+            '"mimetype": "image/jpg"}'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);

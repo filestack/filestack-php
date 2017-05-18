@@ -29,7 +29,7 @@ class RealTestsClientWithSecurity extends BaseTest
         $filelink = null;
         try {
             $filelink = $client->upload($test_filepath, $options);
-            # var_dump($filelink);
+            var_dump($filelink);
         } catch (FilestackException $e) {
             echo $e->getMessage();
             echo $e->getCode();
@@ -150,7 +150,7 @@ class RealTestsClientWithSecurity extends BaseTest
             'title'                 => 'test Filestack Audio conversion'
         ];
 
-        $uuid = $client->convertAudio($source, 'mp3', $output_options);
+        //$uuid = $client->convertAudio($source, 'mp3', $output_options);
         # echo "\naudio conversion, uuid=$uuid\n";
 
         // transcoding video
@@ -169,7 +169,7 @@ class RealTestsClientWithSecurity extends BaseTest
             'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
         ];
 
-        $uuid = $client->convertVideo($source, 'm4a', $output_options);
+        //$uuid = $client->convertVideo($source, 'm4a', $output_options);
         # echo "\nvideo conversion, uuid=$uuid\n";
 
         // delete a file from storage
