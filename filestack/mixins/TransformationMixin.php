@@ -204,7 +204,7 @@ trait TransformationMixin
         foreach ($attrs as $key => $value) {
             if (!in_array($key, FilestackConfig::ALLOWED_ATTRS[$taskname])) {
                 throw new FilestackException(
-                    "Invalid transformation attribute $key for $taskname",
+                    "Invalid transformation attribute $key:$value for $taskname",
                     400
                 );
             }
