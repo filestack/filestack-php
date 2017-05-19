@@ -1,5 +1,9 @@
 # Filestack-php Changelog
 
+## 1.1.3 (May 18, 2017)
+- Added rulesets for PHPMD
+- Cleaned up code
+
 ## 1.1.2 (May 18, 2017)
 - Switched to using PHPMD engine for codeclimate
 
