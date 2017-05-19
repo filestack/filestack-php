@@ -3,7 +3,7 @@ engines:
     enabled: true
     config:
       standard: "PSR1,PSR2"
-    rulesets: "phpmd-rules.xml"
+      rulesets: "phpmd-rules.xml"
 
 ratings:
   paths:
