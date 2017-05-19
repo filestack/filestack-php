@@ -108,7 +108,7 @@ class FilestackTransformTest extends BaseTest
 
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
                         $this->test_security, $stub_http_client);
-        $contents = $filelink->transform($transform_tasks);
+        $filelink->transform($transform_tasks);
     }
 
     /**
@@ -134,7 +134,7 @@ class FilestackTransformTest extends BaseTest
 
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
                         $this->test_security, $stub_http_client);
-        $contents = $filelink->transform($transform_tasks);
+        $filelink->transform($transform_tasks);
     }
 
     /**
@@ -160,7 +160,7 @@ class FilestackTransformTest extends BaseTest
 
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
                         $this->test_security, $stub_http_client);
-        $contents = $filelink->transform($transform_tasks);
+        $filelink->transform($transform_tasks);
     }
 
     /**
@@ -469,11 +469,11 @@ class FilestackTransformTest extends BaseTest
                         $this->test_api_key,
                         $this->test_security);
 
-        $x = 10;
-        $y = 10;
+        $x_coordinate = 10;
+        $y_coordinate = 10;
         $width = 200;
         $height = 200;
-        $filelink->crop($x, $y, $width, $height);
+        $filelink->crop($x_coordinate, $y_coordinate, $width, $height);
 
         $expected_transform_str = 'crop=d:'. urlencode('[10,10,200,200]');
         $expected_url = sprintf('%s/security=policy:%s,signature:%s/%s/%s',

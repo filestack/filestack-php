@@ -37,6 +37,7 @@ class FilestackSecurityTest extends BaseTest
 
         $options = ['some-invalid-option' => 'some-value'];
         $security = new FilestackSecurity($this->test_secret, $options);
+        $this->assertNull($security);
     }
 
     /*
@@ -64,7 +65,7 @@ class FilestackSecurityTest extends BaseTest
         $security = new FilestackSecurity($this->test_secret, $options);
         $client = new FilestackClient(
             $this->test_api_key,
-            $this->test_security,
+            $security,
             $stub_http_client
         );
         $result = $client->download($this->test_file_url, $destination);
@@ -96,7 +97,7 @@ class FilestackSecurityTest extends BaseTest
             null,
             $stub_http_client
         );
-        $result = $client->download($this->test_file_url, $destination);
+        $client->download($this->test_file_url, $destination);
     }
 
     /*
@@ -121,10 +122,10 @@ class FilestackSecurityTest extends BaseTest
         $security = new FilestackSecurity('some-invalid-secret-test');
         $client = new FilestackClient(
             $this->test_api_key,
-            $this->test_security,
+            $security,
             $stub_http_client
         );
-        $result = $client->download($this->test_file_url, $destination);
+        $client->download($this->test_file_url, $destination);
     }
 
     /*

@@ -126,7 +126,7 @@ vendor/bin/phpunit
 ```
 
 - To generate coverage report, run following command (will generage html files under
-directory tests/coverage)
+directory coverage/)
 ```
 vendor/bin/phpunit --coverage-html=coverage
 ```
@@ -138,9 +138,10 @@ php php-cs-fixer-v2.phar fix tests/
 php php-cs-fixer-v2.phar fix examples/
 ```
 
-- Run PHPMD for CodeClimate checks
+- To run PHPMD for CodeClimate checks
 ```
-vendor/bin/phpmd filestack xml phpmd-rules.xml > phpmd-report.xml
+vendor/bin/phpmd filestack xml phpmd-rules.xml > logs/phpmd-report-filestack.xml
+vendor/bin/phpmd tests xml phpmd-rules.xml > logs/phpmd-report-tests.xml
 ```
 ## Issues
 

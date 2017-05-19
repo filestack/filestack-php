@@ -4,5 +4,4 @@ vendor/
 coverage/
 build/logs/*
 tests/testfiles/*
-phpmd-report.xml
 logs/

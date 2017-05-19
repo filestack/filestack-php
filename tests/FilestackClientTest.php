@@ -66,7 +66,7 @@ class FilestackClientTest extends BaseTest
             $this->test_api_key,
             $this->test_security,
             $stub_http_client);
-        $result = $client->getContent('some-bad-file-handle-testing');
+        $client->getContent('some-bad-file-handle-testing');
     }
 
     /**
@@ -114,7 +114,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $filelink = $client->getMetaData('some-bad-file-handle-testing');
+        $client->getMetaData('some-bad-file-handle-testing');
     }
 
     /**
@@ -299,7 +299,7 @@ class FilestackClientTest extends BaseTest
 
         $source = 'Q5eBTKldRfCSuEjUYuAz';
         $output_options = [];
-        $uuid = $client->convertVideo($source, 'm4a', $output_options);
+        $client->convertVideo($source, 'm4a', $output_options);
     }
 
     /**
@@ -346,7 +346,7 @@ class FilestackClientTest extends BaseTest
         );
 
         $test_handle = 'some-bad-file-handle-testing';
-        $result = $client->delete($test_handle);
+        $client->delete($test_handle);
     }
 
     /**
@@ -405,7 +405,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $result = $client->download('some-bad-file-handle-testing', $destination);
+        $client->download('some-bad-file-handle-testing', $destination);
     }
 
     /**
@@ -479,7 +479,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $filelink = $client->upload($this->test_filepath);
+        $client->upload($this->test_filepath);
     }
 
     /**
@@ -531,7 +531,7 @@ class FilestackClientTest extends BaseTest
             'Filename' => 'somefilename.jpg',
         ];
 
-        $filelink = $client->upload($this->test_filepath);
+        $filelink = $client->upload($this->test_filepath, $extras);
 
         $this->assertNotNull($filelink);
     }
@@ -605,10 +605,10 @@ class FilestackClientTest extends BaseTest
             $stub_http_client
         );
 
-        $filelink = $client->overwrite(
-                        $this->test_filepath,
-                        'some-bad-file-handle-testing'
-                    );
+        $client->overwrite(
+            $this->test_filepath,
+            'some-bad-file-handle-testing'
+        );
     }
 
     /**
@@ -700,7 +700,7 @@ class FilestackClientTest extends BaseTest
             'resize'    => ['w' => 'test-value']
         ];
 
-        $json_response = $client->debug($this->test_file_handle, $transform_tasks);
+        $client->debug($this->test_file_handle, $transform_tasks);
     }
 
     /**
@@ -714,7 +714,7 @@ class FilestackClientTest extends BaseTest
         $client = new FilestackClient(
             $this->test_api_key,
             $this->test_security);
-        $result = $client->someInvalidMethod('test');
+        $client->someInvalidMethod('test');
     }
 
     /**
@@ -774,6 +774,6 @@ class FilestackClientTest extends BaseTest
             'some-bad-file-handle-or-url'
         ];
 
-        $contents = $client->zip($sources);
+        $client->zip($sources);
     }
 }

@@ -77,7 +77,7 @@ class FilelinkTest extends BaseTest
         $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
                         $this->test_security, $stub_http_client);
 
-        $result = $filelink->getContent();
+        $filelink->getContent();
     }
 
     /**
@@ -220,7 +220,7 @@ class FilelinkTest extends BaseTest
                         $this->test_security, $stub_http_client);
         $destination = __DIR__ . "/testfiles/test.jpg";
 
-        $result = $filelink->download($destination);
+        $filelink->download($destination);
     }
 
     /**
@@ -264,7 +264,7 @@ class FilelinkTest extends BaseTest
         $filelink = new Filelink('some-bad-file-handle', $this->test_api_key,
                         $this->test_security, $stub_http_client);
 
-        $result = $filelink->getMetaData();
+        $filelink->getMetaData();
     }
 
     /**
@@ -302,7 +302,7 @@ class FilelinkTest extends BaseTest
         $filelink = new Filelink('gQNI9RF1SG2nRmvmQDMU', $this->test_api_key,
             $this->test_security, $stub_http_client);
 
-        $result = $filelink->delete();
+        $filelink->delete();
     }
 
     /**
@@ -371,7 +371,7 @@ class FilelinkTest extends BaseTest
                         $this->test_security,
                         $stub_http_client);
 
-        $result = $filelink->save();
+        $filelink->save();
     }
 
     /**

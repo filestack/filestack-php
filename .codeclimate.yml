@@ -13,4 +13,5 @@ exclude_paths:
 - build/*
 - examples/*
 - vendor/*
+- tests/realtests/*
 - filestack/FilestackConfig.php
