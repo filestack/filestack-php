@@ -3,22 +3,21 @@ engines:
     enabled: true
     config:
       standard: "PSR1,PSR2"
+    checks:
+      Controversial/CamelCaseParameterName:
+        enabled: false
+      CleanCode/BooleanArgumentFlag:
+        enabled: false
+      Design/LongClass:
+        enabled: false
+      Design/TooManyMethods:
+        enabled: false
+      Naming/LongVariable:
+        enabled: false
 
 ratings:
   paths:
   - "**.php"
-
-checks:
-  Controversial/CamelCaseParameterName:
-    enabled: false
-  CleanCode/BooleanArgumentFlag:
-    enabled: false
-  Design/LongClass:
-    enabled: false
-  Design/TooManyMethods:
-    enabled: false
-  Naming/LongVariable:
-    enabled: false
 
 exclude_paths:
 - build/*
