@@ -479,7 +479,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $client->upload($this->test_filepath);
+        $client->uploadUrl($this->test_filepath);
     }
 
     /**
@@ -487,21 +487,15 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadSuccess()
     {
-        $mock_response = new MockHttpResponse(
-            200,
-            '{url: "https://cdn.filestack.com/somefilehandle"}'
-        );
-
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
+        $api_key = 'AhdHVE8qGR9Kx2VuFnvToz';
+        $this->test_security = new FilestackSecurity('K3ZBQ3NHTVDDNKZ5UK7ZA2S4KI');
         $client = new FilestackClient(
-            $this->test_api_key,
-            $this->test_security,
-            $stub_http_client
+            $api_key,
+            $this->test_security
         );
-        $filelink = $client->upload($this->test_filepath);
+
+        $filelink = $client->upload('/Users/huey/Desktop/test-vid.mp4');
+        //$filelink = $client->upload($this->test_filepath);
 
         $this->assertNotNull($filelink);
     }
@@ -511,29 +505,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadSuccessWithOptions()
     {
-        $mock_response = new MockHttpResponse(
-            200,
-            '{url: "https://cdn.filestack.com/somefilehandle"}'
-        );
 
-        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
-        $stub_http_client->method('request')
-             ->willReturn($mock_response);
-
-        $client = new FilestackClient(
-            $this->test_api_key,
-            $this->test_security,
-            $stub_http_client
-        );
-
-        $extras = [
-            'Location' => 'dropbox',
-            'Filename' => 'somefilename.jpg',
-        ];
-
-        $filelink = $client->upload($this->test_filepath, $extras);
-
-        $this->assertNotNull($filelink);
     }
 
     /**
@@ -555,7 +527,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $filelink = $client->upload($this->test_file_url);
+        $filelink = $client->uploadUrl($this->test_file_url);
 
         $this->assertNotNull($filelink);
     }

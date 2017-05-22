@@ -131,13 +131,6 @@ directory coverage/)
 vendor/bin/phpunit --coverage-html=coverage
 ```
 
-- To run lint and code-standard fixer, run bash file ./runfixer.sh or individually:
-```
-php php-cs-fixer-v2.phar fix filestack/
-php php-cs-fixer-v2.phar fix tests/
-php php-cs-fixer-v2.phar fix examples/
-```
-
 - To run PHPMD for CodeClimate checks
 ```
 vendor/bin/phpmd filestack xml phpmd-rules.xml > logs/phpmd-report-filestack.xml
@@ -157,8 +150,8 @@ Thank you to all the [contributors](https://github.com/filestack/filestack-php/g
 
 ## Other Resources
 
-- [travis_ci](https://travis-ci.org/filestack/filestack-php) [![Travis_ci Status](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)
+- [travis_ci](https://travis-ci.org/filestack/filestack-php) [![Travis_ci Status](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)](https://travis-ci.org/filestack/filestack-php)
 
 - [coveralls](https://coveralls.io/github/filestack/filestack-php?branch=master) [![Coverage Status](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)](https://coveralls.io/github/filestack/filestack-php?branch=master)
 
-- [codeclimate](https://codeclimate.com/github/filestack/filestack-php) [![CodeClimate Status](https://codeclimate.com/github/filestack/filestack-php/badges/gpa.svg)](https://codeclimate.com/github/filestack/filestack-php/badges/gpa.svg)
+- [codeclimate](https://codeclimate.com/github/filestack/filestack-php) [![CodeClimate Status](https://codeclimate.com/github/filestack/filestack-php/badges/gpa.svg)](https://codeclimate.com/github/filestack/filestack-php)

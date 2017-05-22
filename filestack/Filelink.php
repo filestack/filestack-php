@@ -18,8 +18,6 @@ class Filelink
     public $security;
     public $transform_url;
 
-    private $filestack_config;
-
     /**
      * Filelink constructor
      *
@@ -39,7 +37,6 @@ class Filelink
         }
 
         $this->http_client = $http_client; // CommonMixin
-        $this->filestack_config = new FilestackConfig();
     }
 
     /**
@@ -553,7 +550,7 @@ class Filelink
     public function debug()
     {
         // call TransformationMixin functions
-        $json_response = $this->sendDebug($this->transform_url, $this->security);
+        $json_response = $this->sendDebug($this->transform_url, $this->api_key, $this->security);
 
         return $json_response;
     }
