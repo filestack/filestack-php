@@ -595,39 +595,57 @@ class FilestackClient
         return $result;
     }
 
+    /**
+     * Upload a file to desired cloud service, defaults to Filestack's S3
+     * storage.
+     *
+     * @param string    $filepath           path to file
+     * @param array     $location           specify location, possible values are:
+     *                                      S3, gcs, azure, rackspace, dropbox
+     * @param string    $filename           explicitly set the filename to store as
+     * @param string    $mimetype           explicityl set the mimetype
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink or file content
+     */
     public function upload($filepath, $location = 's3', $filename = '', $mimetype = '')
     {
+        if (!file_exists($filepath)) {
+            throw new FilestackException("File not found", 400);
+        }
+
         // use existing filename if one isn't passed in
         if (!$filename) {
             $filename = basename($filepath);
         }
-        $filesize = filesize($filepath);
 
         // detect mimetype if one isn't passed in
         if (!$mimetype) {
             $mimetype = mime_content_type($filepath);
         }
 
-        // register job
-        $start_response = $this->sendMultipartStart($this->api_key,
-            $filename, $mimetype, $filesize, $location, $this->security);
+        $metadata = [
+            'filepath' => $filepath,
+            'filename' => $filename,
+            'filesize' => filesize($filepath),
+            'mimetype' => $mimetype,
+            'location' => $location,
+        ];
 
-        $job_uri    = $start_response['uri'];
-        $region     = $start_response['region'];
-        $upload_id  = $start_response['upload_id'];
+        // register job
+        $upload_data = $this->sendMultipartStart($this->api_key,
+            $metadata, $this->security);
 
         // split files into chunks
-        $jobs = $this->createUploadJobs($filename, $filepath, $filesize,
-            $job_uri, $region, $upload_id);
+        $jobs = $this->createUploadJobs($metadata, $upload_data);
 
-        // send chunks
-        $parts_etags = $this->sendMultipartJobs($this->api_key, $filepath, $jobs,
-            $location, $this->security);
+        // process jobs, send chunks
+        $parts_etags = $this->sendMultipartJobs($jobs, $this->security);
 
         // mark job as completed
-        $result = $this->sendMultipartComplete($this->api_key,
-            $job_uri, $region, $upload_id, $parts_etags,
-            $filename, $mimetype, $filesize, $location, $this->security);
+        $result = $this->sendMultipartComplete($this->api_key, $parts_etags,
+            $upload_data, $metadata, $this->security);
 
         return $result;
     }
@@ -720,54 +738,49 @@ class FilestackClient
     }
 
     // privates
-
     /**
      * Take a file and separate it into chunks, creating an array of jobs to
      * process.
      *
-     * @param string    $filename       Filename
-     * @param string    $filepath       Path to file
-     * @param int       $filesize       File size in bytes
-     * @param string    $job_uri        uri of job (from calling multipartStart)
-     * @param string    $region         region of job (from calling multipartStart)
-     * @param string    $upload_id      upload_id of job (from calling multipartStart)
-     *
-     * @throws FilestackException   if API call fails, e.g 404 file not found
+     * @param array     $metadata       Metadata of file: filename, filesize,
+     *                                  mimetype, location
+     * @param array     $upload_data    filestack upload data from multipartStart
+     *                                  call: uri, region, upload_id
      *
      * @return Filestack/Filelink or file content
      */
-    private function createUploadJobs($filename, $filepath, $filesize, $job_uri,
-        $region, $upload_id)
+    private function createUploadJobs($metadata, $upload_data)
     {
         $seek_point = 0;
         $part_num = 1;
         $jobs = [];
 
-        while ($seek_point < $filesize) {
-
-            $chunk = $this->multipartGetChunk($filepath, $seek_point);
+        while ($seek_point < $metadata['filesize']) {
+            $chunk = $this->multipartGetChunk($metadata['filepath'], $seek_point);
 
             $md5_hash = md5($chunk, true);
             $md5_base64_hash = trim(base64_encode($md5_hash));
-            $filesize = strlen($chunk);
+            $chunk_size = strlen($chunk);
 
             $jobs[$part_num] = [
-                'apikey'        => $this->api_key,
+                'api_key'       => $this->api_key,
                 'seek_point'    => $seek_point,
-                'filepath'      => $filepath,
-                'filename'      => $filename,
-                'part_num'      => $part_num,
-                'uri'           => $job_uri,
-                'region'        => $region,
-                'upload_id'     => $upload_id,
                 'md5'           => $md5_base64_hash,
-                'filesize'      => $filesize
+                'part_num'      => $part_num,
+                'chunksize'     => $chunk_size,
+                'uri'           => $upload_data['uri'],
+                'region'        => $upload_data['region'],
+                'upload_id'     => $upload_data['upload_id'],
+                'filepath'      => $metadata['filepath'],
+                'filename'      => $metadata['filename'],
+                'filesize'      => $metadata['filesize'],
+                'mimetype'      => $metadata['mimetype'],
+                'location'      => $metadata['location']
             ];
 
             $part_num++;
             $seek_point += FilestackConfig::UPLOAD_CHUNK_SIZE;
         }
-
         return $jobs;
     }
 }

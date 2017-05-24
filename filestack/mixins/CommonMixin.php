@@ -6,6 +6,10 @@ use Filestack\Filelink;
 use Filestack\FileSecurity;
 use Filestack\FilestackException;
 
+use GuzzleHttp\Pool;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+
 /**
  * Mixin for common functionalities used by most Filestack objects
  *
@@ -13,6 +17,7 @@ use Filestack\FilestackException;
 trait CommonMixin
 {
     protected $http_client;
+    protected $http_promises;
     protected $user_agent_header;
 
     /**
@@ -216,28 +221,32 @@ trait CommonMixin
      * Trigger the start of a multipart upload
      *
      * @param string        $api_key        Filestack API Key
-     * @param string        $filename       explicitly set the filename
-     * @param string        $mimetype       explicitly set the mimetype
-     * @param int           $size           explicitly set the size in bytes
-     * @param string        $store_location storage location, 's3' by default
-     * @param FilestackSecurity $security       Filestack security object if
-     *                                          security settings is turned on
+     * @param string        $metadata       metadata of file: filename, filesize,
+     *                                      mimetype, location
+     * @param FilestackSecurity $security   Filestack security object if
+     *                                      security settings is turned on
      *
      * @throws FilestackException   if API call fails
      *
      * @return json
      */
-    public function sendMultipartStart($api_key, $filename, $mimetype, $size,
-        $location = 's3', $security = null)
+    public function sendMultipartStart($api_key, $metadata, $security = null)
     {
         $data = [];
-        array_push($data, ['name' => 'apikey',          'contents' => $api_key]);
-        array_push($data, ['name' => 'filename',        'contents' => $filename]);
-        array_push($data, ['name' => 'mimetype',        'contents' => $mimetype]);
-        array_push($data, ['name' => 'size',            'contents' => $size]);
-        array_push($data, ['name' => 'store_location',  'contents' => $location]);
+        array_push($data, ['name' => 'apikey',      'contents' => $api_key]);
+        array_push($data, ['name' => 'filename',    'contents' => $metadata['filename']]);
+        array_push($data, ['name' => 'mimetype',    'contents' => $metadata['mimetype']]);
+        array_push($data, ['name' => 'size',        'contents' => $metadata['filesize']]);
 
-        array_push($data, ['name' => 'files', 'contents' => '', 'filename' => $filename]);
+        array_push($data, ['name' => 'store_location',
+            'contents' => $metadata['location']
+        ]);
+
+        array_push($data, ['name' => 'files',
+            'contents' => '',
+            'filename' => $metadata['filename']
+        ]);
+
         $this->multipartApplySecurity($data, $security);
 
         $url = FilestackConfig::UPLOAD_URL . '/multipart/start';
@@ -250,8 +259,7 @@ trait CommonMixin
     /**
      * Upload a chunk of the file to server.
      *
-     * @param string    $api_key        Filestack API Key
-     * @param array     $jobs           array of jobs to process
+     * @param array             $jobs           array of jobs to process
      * @param FilestackSecurity $security       Filestack security object if
      *                                          security settings is turned on
      *
@@ -259,56 +267,50 @@ trait CommonMixin
      *
      * @return json
      */
-    public function sendMultipartJobs($api_key, $filepath, $jobs,
-        $location = 's3', $security = null)
+    public function sendMultipartJobs($jobs, $security = null)
     {
+        $headers = [
+            'User-Agent' => $this->getUserAgentHeader()
+        ];
+
+        $num_jobs = count($jobs);
         $parts_etags = [];
-        $promises = [];
 
-        foreach ($jobs as $part_num => $job) {
-            // build data
-            $data = $this->createMultipartData($api_key, $job, $location);
-            $this->multipartApplySecurity($data, $security);
+        $num_concurrent = FilestackConfig::UPLOAD_CONCURRENT_JOBS;
+        $jobs_completed = 0;
+        $job_start_index = 1;
+        $job_end_index = $num_jobs < $num_concurrent ? $num_jobs : $num_concurrent;
 
-            // append promise
-            $promises[$part_num] = $this->http_client->requestAsync('POST',
-                FilestackConfig::UPLOAD_URL . '/multipart/upload',
-                ['multipart' => $data]);
-        }
+        // loop through jobs and make async concurrent calls
+        while ($jobs_completed < $num_jobs) {
+            $upload_promises = [];
+            $s3_promises = [];
 
-        // settle promises (concurrent async requests to filestack upload api)
-        $upload_results = \GuzzleHttp\Promise\settle($promises)->wait();
-echo "\nDONE with calliing uploads-api.  Calling s3 apis ....";
+            $this->appendUploadPromises($jobs, $job_start_index, $job_end_index,
+                $upload_promises, $jobs_completed, $headers, $security);
 
-        $s3_promises = [];
-        foreach ($upload_results as $result) {
-            $json = $this->handleResponseDecodeJson($result['value']);
+            // settle promises (concurrent async requests to upload api)
+            $upload_results = \GuzzleHttp\Promise\settle($upload_promises)->wait();
 
-            $query = parse_url($json['url'], PHP_URL_QUERY);
+            $this->appendS3Promises($jobs, $upload_results, $s3_promises);
 
-            parse_str($query, $params);
-            $part_num = $params['partNumber'];
-echo "\npart_num: $part_num\n";
+            // settle promises (concurrent async requests to s3 api)
+            $s3_results = \GuzzleHttp\Promise\settle($s3_promises)->wait();
+            $this->multipartGetTags($s3_results, $parts_etags);
 
-            $headers = $json['headers'];
-            $chunk = $this->multipartGetChunk($filepath, $jobs[$part_num]['seek_point']);
+            // clear arrays
+            unset($upload_promises);
+            unset($s3_promises);
+            unset($upload_results);
+            unset($s3_results);
 
-            $s3_promises[] = $this->http_client->requestAsync('PUT', $json['url'], [
-                'body' => $chunk,
-                'headers' => $headers
-            ]);
-        }
-
-        // settle promises (concurrent async requests to s3 api)
-        $s3_results = \GuzzleHttp\Promise\settle($s3_promises)->wait();
-echo "\nDONE wiht putting files to s3\n";
-
-        foreach ($s3_results as $result) {
-            $etag = $result['value']->getHeader('ETag')[0];
-            $part_etag = sprintf('%s:%s', $job['part_num'], $etag);
-            array_push($parts_etags, $part_etag);
-        }
-
+            // increment jobs start and end indexes
+            $job_start_index += $num_concurrent;
+            $job_end_index += $num_concurrent;
+            if ($job_end_index > $jobs_completed) {
+                $job_end_index += $num_jobs - $jobs_completed;
+            }
+        } // end_while
         $parts_etags = implode(';', $parts_etags);
 
         return $parts_etags;
@@ -329,20 +331,23 @@ echo "\nDONE wiht putting files to s3\n";
      *
      * @return json
      */
-    public function sendMultipartComplete($api_key, $job_uri, $region, $upload_id,
-        $parts, $filename, $mimetype, $size, $location = 's3', $security = null)
+    public function sendMultipartComplete($api_key, $parts, $upload_data, $metadata, $security = null)
     {
         $data = [];
-        array_push($data, ['name' => 'apikey',          'contents' => $api_key]);
-        array_push($data, ['name' => 'parts',           'contents' => $parts]);
-        array_push($data, ['name' => 'uri',             'contents' => $job_uri]);
-        array_push($data, ['name' => 'region',          'contents' => $region]);
-        array_push($data, ['name' => 'upload_id',       'contents' => $upload_id]);
-        array_push($data, ['name' => 'filename',        'contents' => $filename]);
-        array_push($data, ['name' => 'mimetype',        'contents' => $mimetype]);
-        array_push($data, ['name' => 'size',            'contents' => $size]);
-        array_push($data, ['name' => 'store_location',  'contents' => $location]);
-        array_push($data, ['name' => 'files', 'contents' => '', 'filename' => $filename]);
+        array_push($data, ['name' => 'apikey',      'contents' => $api_key]);
+        array_push($data, ['name' => 'parts',       'contents' => $parts]);
+        array_push($data, ['name' => 'uri',         'contents' => $upload_data['uri']]);
+        array_push($data, ['name' => 'region',      'contents' => $upload_data['region']]);
+        array_push($data, ['name' => 'upload_id',   'contents' => $upload_data['upload_id']]);
+        array_push($data, ['name' => 'filename',    'contents' => $metadata['filename']]);
+        array_push($data, ['name' => 'mimetype',    'contents' => $metadata['mimetype']]);
+        array_push($data, ['name' => 'size',        'contents' => $metadata['filesize']]);
+
+        array_push($data, ['name' => 'store_location',
+            'contents' => $metadata['location']]);
+        array_push($data, ['name' => 'files',
+            'contents' => '',
+            'filename' => $metadata['filename']]);
 
         $this->multipartApplySecurity($data, $security);
 
@@ -408,28 +413,12 @@ echo "\nDONE wiht putting files to s3\n";
      */
     protected function requestPost($url, $data_to_send, $headers = [])
     {
-        $headers['User-Agent'] = $this->user_agent_header;
+        $headers['User-Agent'] = $this->getUserAgentHeader();
 
         $data_to_send['headers'] = $headers;
         $data_to_send['http_errors'] = false;
 
         $response = $this->http_client->request('POST', $url, $data_to_send);
-        return $response;
-    }
-
-    /**
-     * Send PUT request
-     *
-     * @param string    $url            url to post to
-     * @param array     $data_to_send   data to send
-     * @param array     $headers        optional headers to send
-     */
-    protected function requestPut($url, $data_to_send, $headers = [])
-    {
-        $data_to_send['headers'] = $headers;
-        $data_to_send['http_errors'] = false;
-
-        $response = $this->http_client->request('PUT', $url, $data_to_send);
         return $response;
     }
 
@@ -442,7 +431,7 @@ echo "\nDONE wiht putting files to s3\n";
      */
     protected function requestGet($url, $params = [], $headers = [], $options = [])
     {
-        $headers['User-Agent'] = $this->user_agent_header;
+        $headers['User-Agent'] = $this->getUserAgentHeader();
         $options['http_errors'] = false;
         $options['headers'] = $headers;
 
@@ -489,23 +478,33 @@ echo "\nDONE wiht putting files to s3\n";
         return $this->user_agent_header;
     }
 
-    private function createMultipartData($api_key, $job, $location)
-    {
-        $region     = $job['region'];
-        $upload_id  = $job['upload_id'];
-        $job_uri    = $job['uri'];
-        $part_num   = $job['part_num'];
-        $filename   = $job['filename'];
+    /**
+     * Get a chunk from a file given starting seek point.
+     */
+    protected function multipartGetChunk($filepath, $seek_point) {
+        $handle = fopen($filepath, 'r');
+        fseek($handle, $seek_point);
+        $chunk = fread($handle, FilestackConfig::UPLOAD_CHUNK_SIZE);
+        fclose($handle);
+        $handle = null;
 
+        return $chunk;
+    }
+
+    /**
+     * Create data multipart data for multipart upload api request
+     */
+    protected function createMultipartData($job)
+    {
         $data = [];
-        array_push($data, ['name' => 'apikey',          'contents' => $api_key]);
+        array_push($data, ['name' => 'apikey',          'contents' => $job['api_key']]);
         array_push($data, ['name' => 'md5',             'contents' => $job['md5']]);
-        array_push($data, ['name' => 'size',            'contents' => $job['filesize']]);
+        array_push($data, ['name' => 'size',            'contents' => $job['chunksize']]);
         array_push($data, ['name' => 'region',          'contents' => $job['region']]);
         array_push($data, ['name' => 'upload_id',       'contents' => $job['upload_id']]);
         array_push($data, ['name' => 'uri',             'contents' => $job['uri']]);
         array_push($data, ['name' => 'part',            'contents' => $job['part_num']]);
-        array_push($data, ['name' => 'store_location',  'contents' => $location]);
+        array_push($data, ['name' => 'store_location',  'contents' => $job['location']]);
 
         array_push($data, [
             'name'      => 'files',
@@ -515,21 +514,89 @@ echo "\nDONE wiht putting files to s3\n";
         return $data;
     }
 
-    protected function multipartGetChunk($filepath, $seek_point) {
-        $fp = fopen($filepath, 'r');
-        fseek($fp, $seek_point);
-        $chunk = fread($fp, FilestackConfig::UPLOAD_CHUNK_SIZE);
-        fclose($fp);
-        $fp = null;
+    /**
+     * append promises for multipart async concurrent calls
+     */
+    protected function appendUploadPromises($jobs, $start_index, $end_index,
+        &$upload_promises, &$jobs_completed, $headers, $security)
+    {
+        $num_jobs = count($jobs);
 
-        return $chunk;
+        // loop from current start of concurrent jobs to end of of concurrent jobs
+        for ($i=$start_index; $i <= $end_index; $i++) {
+            if ($i > $num_jobs) {
+                break;
+            }
+
+            $job = $jobs[$i];
+            $data = $this->createMultipartData($job);
+            $this->multipartApplySecurity($data, $security);
+
+            // build promises to execute concurrent POST requests to upload api
+            $upload_promises[] = $this->http_client->requestAsync('POST',
+                FilestackConfig::UPLOAD_URL . '/multipart/upload', [
+                'headers' => $headers,
+                'multipart' => $data
+            ]);
+            $jobs_completed++;
+        }
     }
 
-    private function multipartApplySecurity(&$data, $security)
+    /**
+     * append promises for multipart async concurrent calls
+     */
+    protected function appendS3Promises($jobs, $upload_results, &$s3_promises)
+    {
+        foreach ($upload_results as $result) {
+            if (isset($result['value'])) {
+                $json = json_decode($result['value']->getBody(), true);
+                $query = parse_url($json['url'], PHP_URL_QUERY);
+                parse_str($query, $params);
+                $part_num = intval($params['partNumber']);
+
+                $headers = $json['headers'];
+                $seek_point = $jobs[$part_num]['seek_point'];
+                $chunk = $this->multipartGetChunk($jobs[$part_num]['filepath'], $seek_point);
+
+                // build promises to execute concurrent PUT requests to s3
+                $s3_promises[$part_num] = $this->http_client->requestAsync('PUT', $json['url'], [
+                    'body' => $chunk,
+                    'headers' => $headers
+                ]);
+            }
+        }
+    }
+
+    /**
+     * apppend security policy and signature to request data if security is on
+     */
+    protected function multipartApplySecurity(&$data, $security)
     {
         if ($security) {
-            array_push($data, ['name' => 'policy', 'contents' => $security->policy]);
-            array_push($data, ['name' => 'signature', 'contents' => $security->signature]);
+            array_push($data, [
+                'name' => 'policy',
+                'contents' => $security->policy
+            ]);
+
+            array_push($data, [
+                'name' => 'signature',
+                'contents' => $security->signature
+            ]);
+        }
+    }
+
+    protected function multipartGetTags($s3_results, &$parts_etags)
+    {
+        foreach ($s3_results as $part_num => $result) {
+            try {
+                $etag = $result['value']->getHeader('ETag')[0];
+                $part_etag = sprintf('%s:%s', $part_num, $etag);
+                array_push($parts_etags, $part_etag);
+            } catch (\Exception $e) {
+                throw new FilestackException(
+                    "Error encountered getting eTags: " . $e->getMessage(),
+                    500);
+            }
         }
     }
 }

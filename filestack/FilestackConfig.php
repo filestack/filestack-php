@@ -10,5 +10,6 @@ class FilestackConfig
     const CDN_URL = 'https://cdn.filestackcontent.com';
     const UPLOAD_URL = 'https://upload.filestackapi.com';
 
-    const UPLOAD_CHUNK_SIZE = 1024 * 1024 * 10; // 10MB
+    const UPLOAD_CHUNK_SIZE = 1024 * 1024 * 25; // last_digit=MB
+    const UPLOAD_CONCURRENT_JOBS = 30;
 }
