@@ -4,9 +4,111 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bd05ef777c282cb29d17ffb6021ea298",
-    "content-hash": "d1cabe7d95d5c1444eca8c0ab775bda3",
+    "hash": "23667133bf3f444b46d8ac734997ed05",
+    "content-hash": "d53bec71aa5dce2df1e8f355669a856b",
     "packages": [
+        {
+            "name": "amphp/amp",
+            "version": "v0.17.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/amp.git",
+                "reference": "f58a53fb089e048969670788adbdebdf91c0d294"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/f58a53fb089e048969670788adbdebdf91c0d294",
+                "reference": "f58a53fb089e048969670788adbdebdf91c0d294",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "suggest": {
+                "pecl/libevent": "Extension for libevent backends (high performance use cases).",
+                "php-uv": "Extension for libuv backends (high performance use cases)."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\": "lib/"
+                },
+                "files": [
+                    "lib/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@php.net",
+                    "role": "Creator / Lead Developer"
+                }
+            ],
+            "description": "A non-blocking concurrency framework for PHP applications",
+            "homepage": "https://github.com/amphp/amp",
+            "keywords": [
+                "async",
+                "concurrency",
+                "future",
+                "libevent",
+                "libuv",
+                "non-blocking",
+                "promise"
+            ],
+            "time": "2015-04-27 18:56:59"
+        },
+        {
+            "name": "amphp/thread",
+            "version": "v0.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/thread.git",
+                "reference": "9078104d33bbed495161c2f3add388998ea95a1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/thread/zipball/9078104d33bbed495161c2f3add388998ea95a1f",
+                "reference": "9078104d33bbed495161c2f3add388998ea95a1f",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "~0.12",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Thread\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@gmail.com",
+                    "role": "Creator / Lead Developer"
+                }
+            ],
+            "description": "Non-blocking thread pool task dispatch",
+            "homepage": "https://github.com/amphp/thread",
+            "keywords": [
+                "amp",
+                "async",
+                "concurrency",
+                "non-blocking",
+                "parallelization",
+                "pthreads",
+                "threads"
+            ],
+            "time": "2014-10-23 02:33:32"
+        },
         {
             "name": "guzzle/guzzle",
             "version": "v3.9.3",

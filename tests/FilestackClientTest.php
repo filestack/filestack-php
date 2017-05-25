@@ -1,5 +1,5 @@
 <?php
-namespace Filestack\Test;
+namespace Filestack\Tests;
 
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;
@@ -479,7 +479,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $client->upload($this->test_filepath);
+        $client->uploadUrl($this->test_filepath);
     }
 
     /**
@@ -487,9 +487,16 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadSuccess()
     {
-        $mock_response = new MockHttpResponse(
-            200,
-            '{url: "https://cdn.filestack.com/somefilehandle"}'
+        $mock_response = new MockHttpResponse(200,
+            json_encode([
+                'filename'  => 'somefilename.jpg',
+                'size'      => '1000',
+                'type'      => 'image/jpg',
+                'url'       => 'https://cdn.filestack.com/somefilehandle',
+                'uri'       => 'https://uploaduri/handle&partNum=1',
+                'region'    => 'us-east-1',
+                'upload_id' => 'test-upload-id'
+            ])
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -501,6 +508,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
+
         $filelink = $client->upload($this->test_filepath);
 
         $this->assertNotNull($filelink);
@@ -511,9 +519,16 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadSuccessWithOptions()
     {
-        $mock_response = new MockHttpResponse(
-            200,
-            '{url: "https://cdn.filestack.com/somefilehandle"}'
+        $mock_response = new MockHttpResponse(200,
+            json_encode([
+                'filename'  => 'somefilename.jpg',
+                'size'      => '1000',
+                'type'      => 'image/jpg',
+                'url'       => 'https://cdn.filestack.com/somefilehandle',
+                'uri'       => 'https://uploaduri/handle&partNum=1',
+                'region'    => 'us-east-1',
+                'upload_id' => 'test-upload-id'
+            ])
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -526,14 +541,29 @@ class FilestackClientTest extends BaseTest
             $stub_http_client
         );
 
-        $extras = [
-            'Location' => 'dropbox',
-            'Filename' => 'somefilename.jpg',
-        ];
-
-        $filelink = $client->upload($this->test_filepath, $extras);
+        $location = 's3';
+        $filename = 'php-testfile.txt';
+        $mimetype = 'text/plain';
+        $filelink = $client->upload($this->test_filepath, $location, $filename, $mimetype);
 
         $this->assertNotNull($filelink);
+    }
+
+    /**
+     * Test calling the upload function throws exception if file not found
+     */
+    public function testUploadFileNotFound()
+    {
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(400);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+        $client->upload('/some/bad/filepath');
     }
 
     /**
@@ -555,7 +585,7 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $filelink = $client->upload($this->test_file_url);
+        $filelink = $client->uploadUrl($this->test_file_url, ['location' => 's3']);
 
         $this->assertNotNull($filelink);
     }
@@ -609,6 +639,29 @@ class FilestackClientTest extends BaseTest
             $this->test_filepath,
             'some-bad-file-handle-testing'
         );
+    }
+
+    /**
+     * Test overwriting a Filestack File with external url
+     */
+    public function testOverwriteUrlSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{url: "https://cdn.filestack.com/somefilehandle"}');
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $filelink = $client->overwrite($this->test_file_url, $this->test_file_handle);
+        $this->assertNotNull($filelink);
     }
 
     /**

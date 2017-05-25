@@ -6,6 +6,10 @@ use Filestack\Filelink;
 use Filestack\FileSecurity;
 use Filestack\FilestackException;
 
+use GuzzleHttp\Pool;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+
 /**
  * Mixin for common functionalities used by most Filestack objects
  *
@@ -13,6 +17,7 @@ use Filestack\FilestackException;
 trait CommonMixin
 {
     protected $http_client;
+    protected $http_promises;
     protected $user_agent_header;
 
     /**
@@ -35,7 +40,7 @@ trait CommonMixin
      * Delete a file from cloud storage
      *
      * @param string            $handle         Filestack file handle to delete
-     * @param string                $api_key    Filestack API Key
+     * @param string            $api_key        Filestack API Key
      * @param FilestackSecurity $security       Filestack security object is
      *                                          required for this call
      *
@@ -45,8 +50,12 @@ trait CommonMixin
      */
     public function sendDelete($handle, $api_key, $security)
     {
-        $options = ['handle' => $handle];
-        $url = $this->filestack_config->createUrl('delete', $api_key, $options, $security);
+        $url = sprintf('%s/file/%s?key=%s', FilestackConfig::API_URL, $handle, $api_key);
+
+        if ($security) {
+            $url = $security->signUrl($url);
+        }
+
         $response = $this->requestDelete($url);
         $status_code = $response->getStatusCode();
 
@@ -176,7 +185,7 @@ trait CommonMixin
     /**
      * Overwrite a file in cloud storage
      *
-     * @param string            $filepath   real path to file
+     * @param string            $resource   url or filepath
      * @param string            $handle     Filestack file handle to overwrite
      * @param string            $api_key    Filestack API Key
      * @param FilestackSecurity $security   Filestack security object is
@@ -186,39 +195,167 @@ trait CommonMixin
      *
      * @return Filestack\Filelink
      */
-    public function sendOverwrite($filepath, $handle, $api_key, $security)
+    public function sendOverwrite($resource, $handle, $api_key, $security)
     {
-        $data_to_send = $this->createUploadFileData($filepath);
+        $url = sprintf('%s/file/%s?key=%s', FilestackConfig::API_URL, $handle, $api_key);
+        if ($security) {
+            $url = $security->signUrl($url);
+        }
 
-        $options = ['handle' => $handle];
-        $url = $this->filestack_config->createUrl('overwrite', $api_key, $options, $security);
+        if ($this->isUrl($resource)) {
+            // external source (passing url instead of filepath)
+            $data['form_params'] = ['url' => $resource];
+        }
+        else {
+            // local file
+            $data['body'] = fopen($resource, 'r');
+        }
 
-        $response = $this->requestPost($url, $data_to_send);
+        $response = $this->requestPost($url, $data);
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
     }
 
     /**
-     * Creates data array to send to request based on if filepath is
-     * real filepath or url
+     * Trigger the start of a multipart upload
      *
-     * @param   string  $filepath    filepath or url
+     * @param string        $api_key        Filestack API Key
+     * @param string        $metadata       metadata of file: filename, filesize,
+     *                                      mimetype, location
+     * @param FilestackSecurity $security   Filestack security object if
+     *                                      security settings is turned on
      *
-     * @return array
+     * @throws FilestackException   if API call fails
+     *
+     * @return json
      */
-    protected function createUploadFileData($filepath)
+    public function sendMultipartStart($api_key, $metadata, $security = null)
     {
         $data = [];
+        array_push($data, ['name' => 'apikey',      'contents' => $api_key]);
+        array_push($data, ['name' => 'filename',    'contents' => $metadata['filename']]);
+        array_push($data, ['name' => 'mimetype',    'contents' => $metadata['mimetype']]);
+        array_push($data, ['name' => 'size',        'contents' => $metadata['filesize']]);
 
-        if ($this->isUrl($filepath)) {
-            // external source (passing url instead of filepath)
-            $data['form_params'] = ['url' => $filepath];
-        } else {
-            // local file
-            $data['body'] = fopen($filepath, 'r');
-        }
-        return $data;
+        array_push($data, ['name' => 'store_location',
+            'contents' => $metadata['location']
+        ]);
+
+        array_push($data, ['name' => 'files',
+            'contents' => '',
+            'filename' => $metadata['filename']
+        ]);
+
+        $this->multipartApplySecurity($data, $security);
+
+        $url = FilestackConfig::UPLOAD_URL . '/multipart/start';
+        $response = $this->requestPost($url, ['multipart' => $data]);
+        $json = $this->handleResponseDecodeJson($response);
+
+        return $json;
+    }
+
+    /**
+     * Upload a chunk of the file to server.
+     *
+     * @param array             $jobs           array of jobs to process
+     * @param FilestackSecurity $security       Filestack security object if
+     *                                          security settings is turned on
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return json
+     */
+    public function sendMultipartJobs($jobs, $security = null)
+    {
+        $headers = [
+            'User-Agent' => $this->getUserAgentHeader()
+        ];
+
+        $num_jobs = count($jobs);
+        $parts_etags = [];
+
+        $num_concurrent = FilestackConfig::UPLOAD_CONCURRENT_JOBS;
+        $jobs_completed = 0;
+        $job_start_index = 1;
+        $job_end_index = $num_jobs < $num_concurrent ? $num_jobs : $num_concurrent;
+
+        // loop through jobs and make async concurrent calls
+        while ($jobs_completed < $num_jobs) {
+            $upload_promises = [];
+            $s3_promises = [];
+
+            $this->appendUploadPromises($jobs, $job_start_index, $job_end_index,
+                $upload_promises, $jobs_completed, $headers, $security);
+
+            // settle promises (concurrent async requests to upload api)
+            $upload_results = \GuzzleHttp\Promise\settle($upload_promises)->wait();
+
+            $this->appendS3Promises($jobs, $upload_results, $s3_promises);
+
+            // settle promises (concurrent async requests to s3 api)
+            $s3_results = \GuzzleHttp\Promise\settle($s3_promises)->wait();
+            $this->multipartGetTags($s3_results, $parts_etags);
+
+            // clear arrays
+            unset($upload_promises);
+            unset($s3_promises);
+            unset($upload_results);
+            unset($s3_results);
+
+            // increment jobs start and end indexes
+            $job_start_index += $num_concurrent;
+            $job_end_index += $num_concurrent;
+            if ($job_end_index > $jobs_completed) {
+                $job_end_index += $num_jobs - $jobs_completed;
+            }
+        } // end_while
+        $parts_etags = implode(';', $parts_etags);
+
+        return $parts_etags;
+    }
+
+    /**
+     * Trigger the end of a multipart upload
+     *
+     * @param string            $api_key        Filestack API Key
+     * @param string            $job_uri        uri of job to mark as complete
+     * @param string            $region         job region
+     * @param string            $upload_id      upload id of job to marke as complete
+     * @param string            $parts          parts of jobs and etags, semicolon separated
+     * @param FilestackSecurity $security       Filestack security object if
+     *                                          security settings is turned on
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return json
+     */
+    public function sendMultipartComplete($api_key, $parts, $upload_data, $metadata, $security = null)
+    {
+        $data = [];
+        array_push($data, ['name' => 'apikey',      'contents' => $api_key]);
+        array_push($data, ['name' => 'parts',       'contents' => $parts]);
+        array_push($data, ['name' => 'uri',         'contents' => $upload_data['uri']]);
+        array_push($data, ['name' => 'region',      'contents' => $upload_data['region']]);
+        array_push($data, ['name' => 'upload_id',   'contents' => $upload_data['upload_id']]);
+        array_push($data, ['name' => 'filename',    'contents' => $metadata['filename']]);
+        array_push($data, ['name' => 'mimetype',    'contents' => $metadata['mimetype']]);
+        array_push($data, ['name' => 'size',        'contents' => $metadata['filesize']]);
+
+        array_push($data, ['name' => 'store_location',
+            'contents' => $metadata['location']]);
+        array_push($data, ['name' => 'files',
+            'contents' => '',
+            'filename' => $metadata['filename']]);
+
+        $this->multipartApplySecurity($data, $security);
+
+        $url = FilestackConfig::UPLOAD_URL . '/multipart/complete';
+        $response = $this->requestPost($url, ['multipart' => $data]);
+        $json = $this->handleResponseCreateFilelink($response);
+
+        return $json;
     }
 
     /**
@@ -256,6 +393,17 @@ trait CommonMixin
         return $filelink;
     }
 
+    protected function handleResponseDecodeJson($response)
+    {
+        $status_code = $response->getStatusCode();
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        $json_response = json_decode($response->getBody(), true);
+        return $json_response;
+    }
+
     /**
      * Send POST request
      *
@@ -265,7 +413,7 @@ trait CommonMixin
      */
     protected function requestPost($url, $data_to_send, $headers = [])
     {
-        $headers['User-Agent'] = $this->user_agent_header;
+        $headers['User-Agent'] = $this->getUserAgentHeader();
 
         $data_to_send['headers'] = $headers;
         $data_to_send['http_errors'] = false;
@@ -283,7 +431,7 @@ trait CommonMixin
      */
     protected function requestGet($url, $params = [], $headers = [], $options = [])
     {
-        $headers['User-Agent'] = $this->user_agent_header;
+        $headers['User-Agent'] = $this->getUserAgentHeader();
         $options['http_errors'] = false;
         $options['headers'] = $headers;
 
@@ -323,9 +471,132 @@ trait CommonMixin
     protected function getUserAgentHeader()
     {
         if (!$this->user_agent_header) {
+            $version = trim(file_get_contents(__DIR__ . '/../../VERSION'));
             $this->user_agent_header = sprintf('filestack-php-%s',
-                $this->filestack_config->getVersion());
+                $version);
         }
         return $this->user_agent_header;
+    }
+
+    /**
+     * Get a chunk from a file given starting seek point.
+     */
+    protected function multipartGetChunk($filepath, $seek_point) {
+        $handle = fopen($filepath, 'r');
+        fseek($handle, $seek_point);
+        $chunk = fread($handle, FilestackConfig::UPLOAD_CHUNK_SIZE);
+        fclose($handle);
+        $handle = null;
+
+        return $chunk;
+    }
+
+    /**
+     * Create data multipart data for multipart upload api request
+     */
+    protected function createMultipartData($job)
+    {
+        $data = [];
+        array_push($data, ['name' => 'apikey',          'contents' => $job['api_key']]);
+        array_push($data, ['name' => 'md5',             'contents' => $job['md5']]);
+        array_push($data, ['name' => 'size',            'contents' => $job['chunksize']]);
+        array_push($data, ['name' => 'region',          'contents' => $job['region']]);
+        array_push($data, ['name' => 'upload_id',       'contents' => $job['upload_id']]);
+        array_push($data, ['name' => 'uri',             'contents' => $job['uri']]);
+        array_push($data, ['name' => 'part',            'contents' => $job['part_num']]);
+        array_push($data, ['name' => 'store_location',  'contents' => $job['location']]);
+
+        array_push($data, [
+            'name'      => 'files',
+            'contents'  => '',
+            'filename'  => $job['filename']]);
+
+        return $data;
+    }
+
+    /**
+     * append promises for multipart async concurrent calls
+     */
+    protected function appendUploadPromises($jobs, $start_index, $end_index,
+        &$upload_promises, &$jobs_completed, $headers, $security)
+    {
+        $num_jobs = count($jobs);
+
+        // loop from current start of concurrent jobs to end of of concurrent jobs
+        for ($i=$start_index; $i <= $end_index; $i++) {
+            if ($i > $num_jobs) {
+                break;
+            }
+
+            $job = $jobs[$i];
+            $data = $this->createMultipartData($job);
+            $this->multipartApplySecurity($data, $security);
+
+            // build promises to execute concurrent POST requests to upload api
+            $upload_promises[] = $this->http_client->requestAsync('POST',
+                FilestackConfig::UPLOAD_URL . '/multipart/upload', [
+                'headers' => $headers,
+                'multipart' => $data
+            ]);
+            $jobs_completed++;
+        }
+    }
+
+    /**
+     * append promises for multipart async concurrent calls
+     */
+    protected function appendS3Promises($jobs, $upload_results, &$s3_promises)
+    {
+        foreach ($upload_results as $result) {
+            if (isset($result['value'])) {
+                $json = json_decode($result['value']->getBody(), true);
+                $query = parse_url($json['url'], PHP_URL_QUERY);
+                parse_str($query, $params);
+                $part_num = intval($params['partNumber']);
+
+                $headers = $json['headers'];
+                $seek_point = $jobs[$part_num]['seek_point'];
+                $chunk = $this->multipartGetChunk($jobs[$part_num]['filepath'], $seek_point);
+
+                // build promises to execute concurrent PUT requests to s3
+                $s3_promises[$part_num] = $this->http_client->requestAsync('PUT', $json['url'], [
+                    'body' => $chunk,
+                    'headers' => $headers
+                ]);
+            }
+        }
+    }
+
+    /**
+     * apppend security policy and signature to request data if security is on
+     */
+    protected function multipartApplySecurity(&$data, $security)
+    {
+        if ($security) {
+            array_push($data, [
+                'name' => 'policy',
+                'contents' => $security->policy
+            ]);
+
+            array_push($data, [
+                'name' => 'signature',
+                'contents' => $security->signature
+            ]);
+        }
+    }
+
+    protected function multipartGetTags($s3_results, &$parts_etags)
+    {
+        foreach ($s3_results as $part_num => $result) {
+            try {
+                $etag = $result['value']->getHeader('ETag')[0];
+                $part_etag = sprintf('%s:%s', $part_num, $etag);
+                array_push($parts_etags, $part_etag);
+            } catch (\Exception $e) {
+                throw new FilestackException(
+                    "Error encountered getting eTags: " . $e->getMessage(),
+                    500);
+            }
+        }
     }
 }
