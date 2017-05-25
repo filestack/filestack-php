@@ -1271,7 +1271,7 @@ class Filelink
         $this->transform_url = $this->insertTransformStr($this->transform_url, 'store', $options);
 
         // call CommonMixin function
-        $response = $this->requestGet($this->transform_url);
+        $response = $this->sendRequest('GET', $this->transform_url);
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;

@@ -84,7 +84,7 @@ trait TransformationMixin
         }
 
         // call CommonMixin function
-        $response = $this->requestGet($debug_url);
+        $response = $this->sendRequest('GET', $debug_url);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -125,7 +125,7 @@ trait TransformationMixin
         );
 
         // call CommonMixin function
-        $response = $this->requestGet($transform_url);
+        $response = $this->sendRequest('GET', $transform_url);
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
@@ -154,7 +154,7 @@ trait TransformationMixin
         );
 
         // call CommonMixin function
-        $response = $this->requestGet($transform_url);
+        $response = $this->sendRequest('GET', $transform_url);
         $status_code = $response->getStatusCode();
 
         // handle response

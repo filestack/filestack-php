@@ -585,7 +585,11 @@ class FilestackClientTest extends BaseTest
             $this->test_security,
             $stub_http_client
         );
-        $filelink = $client->uploadUrl($this->test_file_url, ['location' => 's3']);
+
+        $filelink = $client->uploadUrl($this->test_file_url, [
+            'location' => 's3',
+            'filename' => 'filestack-php-sdk-test.jpg'
+        ]);
 
         $this->assertNotNull($filelink);
     }
