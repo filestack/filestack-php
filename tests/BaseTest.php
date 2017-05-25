@@ -12,7 +12,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     protected $test_file_url;
     protected $test_file_handle;
     protected $test_security;
-    protected $run_real_tests;
 
     protected $mock_response_json;
 
@@ -35,8 +34,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'type'      => 'image/jpg',
             'url'       => 'https://cdn.filestack.com/somefilehandle'
         ]);
-
-        $this->run_real_tests = false; // set to true to run real tests
     }
 
     public function testFileExists()

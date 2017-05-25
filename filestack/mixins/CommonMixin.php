@@ -18,7 +18,7 @@ trait CommonMixin
 {
     protected $http_client;
     protected $http_promises;
-    protected $user_agent_header;
+    protected $source_header;
 
     /**
      * Check if a string is a valid url.
@@ -50,13 +50,14 @@ trait CommonMixin
      */
     public function sendDelete($handle, $api_key, $security)
     {
-        $url = sprintf('%s/file/%s?key=%s', FilestackConfig::API_URL, $handle, $api_key);
+        $url = sprintf('%s/file/%s?key=%s',
+            FilestackConfig::API_URL, $handle, $api_key);
 
         if ($security) {
             $url = $security->signUrl($url);
         }
 
-        $response = $this->requestDelete($url);
+        $response = $this->sendRequest('DELETE', $url);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -84,8 +85,8 @@ trait CommonMixin
     {
         if (is_dir($destination)) {
             // destination is a folder
-            $json_response = $this->sendGetMetaData($url, ["filename"], $security);
-            $remote_filename = $json_response['filename'];
+            $json = $this->sendGetMetaData($url, ["filename"], $security);
+            $remote_filename = $json['filename'];
             $destination .= $remote_filename;
         }
 
@@ -95,10 +96,10 @@ trait CommonMixin
         }
 
         # send request
-        $headers = [];
         $options = ['sink' => $destination];
 
-        $response = $this->requestGet($url, ['dl' => 'true'], $headers, $options);
+        $url .= '&dl=true';
+        $response = $this->sendRequest('GET', $url, $options);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -127,7 +128,7 @@ trait CommonMixin
             $url = $security->signUrl($url);
         }
 
-        $response = $this->requestGet($url);
+        $response = $this->sendRequest('GET', $url);
         $status_code = $response->getStatusCode();
 
         // handle response
@@ -147,8 +148,8 @@ trait CommonMixin
      * @param                   $url        url of file
      * @param                   $fields     optional, specific fields to retrieve.
      *                                      values are: mimetype, filename, size,
-     *                                      width, height,location, path, container,
-     *                                      exif, uploaded (timestamp),
+     *                                      width, height,location, path,
+     *                                      container, exif, uploaded (timestamp),
      *                                      writable, cloud, source_url
      * @param FilestackSecurity $security   Filestack security object if
      *                                      security settings is turned on
@@ -159,20 +160,21 @@ trait CommonMixin
      */
     protected function sendGetMetaData($url, $fields = [], $security = null)
     {
+        $url .= "/metadata?";
+
         $params = [];
         foreach ($fields as $field_name) {
-            $params[$field_name] = "true";
+            $url .= "&$field_name=true";
         }
-
-        $url .= "/metadata";
 
         // sign url if security is passed in
         if ($security) {
             $url = $security->signUrl($url);
         }
 
-        $response = $this->requestGet($url, $params);
+        $response = $this->sendRequest('GET', $url);
         $status_code = $response->getStatusCode();
+
         if ($status_code !== 200) {
             throw new FilestackException($response->getBody(), $status_code);
         }
@@ -197,7 +199,9 @@ trait CommonMixin
      */
     public function sendOverwrite($resource, $handle, $api_key, $security)
     {
-        $url = sprintf('%s/file/%s?key=%s', FilestackConfig::API_URL, $handle, $api_key);
+        $url = sprintf('%s/file/%s?key=%s',
+            FilestackConfig::API_URL, $handle, $api_key);
+
         if ($security) {
             $url = $security->signUrl($url);
         }
@@ -211,7 +215,7 @@ trait CommonMixin
             $data['body'] = fopen($resource, 'r');
         }
 
-        $response = $this->requestPost($url, $data);
+        $response = $this->sendRequest('POST', $url, $data);
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
@@ -233,24 +237,20 @@ trait CommonMixin
     public function sendMultipartStart($api_key, $metadata, $security = null)
     {
         $data = [];
-        array_push($data, ['name' => 'apikey',      'contents' => $api_key]);
-        array_push($data, ['name' => 'filename',    'contents' => $metadata['filename']]);
-        array_push($data, ['name' => 'mimetype',    'contents' => $metadata['mimetype']]);
-        array_push($data, ['name' => 'size',        'contents' => $metadata['filesize']]);
-
-        array_push($data, ['name' => 'store_location',
-            'contents' => $metadata['location']
-        ]);
+        $this->addMultipartData($data, 'apikey',         $api_key);
+        $this->addMultipartData($data, 'filename',       $metadata['filename']);
+        $this->addMultipartData($data, 'mimetype',       $metadata['mimetype']);
+        $this->addMultipartData($data, 'size',           $metadata['filesize']);
+        $this->addMultipartData($data, 'store_location', $metadata['location']);
 
         array_push($data, ['name' => 'files',
             'contents' => '',
             'filename' => $metadata['filename']
         ]);
-
         $this->multipartApplySecurity($data, $security);
 
         $url = FilestackConfig::UPLOAD_URL . '/multipart/start';
-        $response = $this->requestPost($url, ['multipart' => $data]);
+        $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
         $json = $this->handleResponseDecodeJson($response);
 
         return $json;
@@ -269,30 +269,26 @@ trait CommonMixin
      */
     public function sendMultipartJobs($jobs, $security = null)
     {
-        $headers = [
-            'User-Agent' => $this->getUserAgentHeader()
-        ];
-
         $num_jobs = count($jobs);
         $parts_etags = [];
 
         $num_concurrent = FilestackConfig::UPLOAD_CONCURRENT_JOBS;
         $jobs_completed = 0;
-        $job_start_index = 1;
-        $job_end_index = $num_jobs < $num_concurrent ? $num_jobs : $num_concurrent;
+        $start_index = 1;
+        $end_index = $num_jobs < $num_concurrent ? $num_jobs : $num_concurrent;
 
         // loop through jobs and make async concurrent calls
         while ($jobs_completed < $num_jobs) {
             $upload_promises = [];
             $s3_promises = [];
 
-            $this->appendUploadPromises($jobs, $job_start_index, $job_end_index,
-                $upload_promises, $jobs_completed, $headers, $security);
+            $this->appendUploadPromises($jobs, $start_index, $end_index,
+                $upload_promises, $jobs_completed, $security);
 
             // settle promises (concurrent async requests to upload api)
-            $upload_results = \GuzzleHttp\Promise\settle($upload_promises)->wait();
+            $api_results = \GuzzleHttp\Promise\settle($upload_promises)->wait();
 
-            $this->appendS3Promises($jobs, $upload_results, $s3_promises);
+            $this->appendS3Promises($jobs, $api_results, $s3_promises);
 
             // settle promises (concurrent async requests to s3 api)
             $s3_results = \GuzzleHttp\Promise\settle($s3_promises)->wait();
@@ -301,14 +297,12 @@ trait CommonMixin
             // clear arrays
             unset($upload_promises);
             unset($s3_promises);
-            unset($upload_results);
-            unset($s3_results);
 
             // increment jobs start and end indexes
-            $job_start_index += $num_concurrent;
-            $job_end_index += $num_concurrent;
-            if ($job_end_index > $jobs_completed) {
-                $job_end_index += $num_jobs - $jobs_completed;
+            $start_index += $num_concurrent;
+            $end_index += $num_concurrent;
+            if ($end_index > $jobs_completed) {
+                $end_index += $num_jobs - $jobs_completed;
             }
         } // end_while
         $parts_etags = implode(';', $parts_etags);
@@ -322,8 +316,9 @@ trait CommonMixin
      * @param string            $api_key        Filestack API Key
      * @param string            $job_uri        uri of job to mark as complete
      * @param string            $region         job region
-     * @param string            $upload_id      upload id of job to marke as complete
-     * @param string            $parts          parts of jobs and etags, semicolon separated
+     * @param string            $upload_id      upload id of job
+     * @param string            $parts          parts:etags, semicolon separated
+     *                                          e.g. '1:etag_1;2:etag_2;3:etag_3'
      * @param FilestackSecurity $security       Filestack security object if
      *                                          security settings is turned on
      *
@@ -331,28 +326,29 @@ trait CommonMixin
      *
      * @return json
      */
-    public function sendMultipartComplete($api_key, $parts, $upload_data, $metadata, $security = null)
+    public function sendMultipartComplete($api_key, $parts, $upload_data,
+                                          $metadata, $security = null)
     {
         $data = [];
-        array_push($data, ['name' => 'apikey',      'contents' => $api_key]);
-        array_push($data, ['name' => 'parts',       'contents' => $parts]);
-        array_push($data, ['name' => 'uri',         'contents' => $upload_data['uri']]);
-        array_push($data, ['name' => 'region',      'contents' => $upload_data['region']]);
-        array_push($data, ['name' => 'upload_id',   'contents' => $upload_data['upload_id']]);
-        array_push($data, ['name' => 'filename',    'contents' => $metadata['filename']]);
-        array_push($data, ['name' => 'mimetype',    'contents' => $metadata['mimetype']]);
-        array_push($data, ['name' => 'size',        'contents' => $metadata['filesize']]);
+        $this->addMultipartData($data, 'apikey', $api_key);
+        $this->addMultipartData($data, 'parts',  $parts);
 
-        array_push($data, ['name' => 'store_location',
-            'contents' => $metadata['location']]);
+        $this->addMultipartData($data, 'uri',       $upload_data['uri']);
+        $this->addMultipartData($data, 'region',    $upload_data['region']);
+        $this->addMultipartData($data, 'upload_id', $upload_data['upload_id']);
+
+        $this->addMultipartData($data, 'filename',       $metadata['filename']);
+        $this->addMultipartData($data, 'mimetype',       $metadata['mimetype']);
+        $this->addMultipartData($data, 'size',           $metadata['filesize']);
+        $this->addMultipartData($data, 'store_location', $metadata['location']);
+
         array_push($data, ['name' => 'files',
             'contents' => '',
             'filename' => $metadata['filename']]);
-
         $this->multipartApplySecurity($data, $security);
 
         $url = FilestackConfig::UPLOAD_URL . '/multipart/complete';
-        $response = $this->requestPost($url, ['multipart' => $data]);
+        $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
         $json = $this->handleResponseCreateFilelink($response);
 
         return $json;
@@ -405,77 +401,33 @@ trait CommonMixin
     }
 
     /**
-     * Send POST request
-     *
-     * @param string    $url            url to post to
-     * @param array     $data_to_send   data to send
-     * @param array     $headers        optional headers to send
-     */
-    protected function requestPost($url, $data_to_send, $headers = [])
-    {
-        $headers['User-Agent'] = $this->getUserAgentHeader();
-
-        $data_to_send['headers'] = $headers;
-        $data_to_send['http_errors'] = false;
-
-        $response = $this->http_client->request('POST', $url, $data_to_send);
-        return $response;
-    }
-
-    /**
-     * Send GET request
+     * Send request
      *
      * @param string    $url        url to post to
      * @param array     $params     optional params to send
      * @param array     $headers    optional headers to send
      */
-    protected function requestGet($url, $params = [], $headers = [], $options = [])
+    protected function sendRequest($method, $url, $data = [], $headers = [])
     {
-        $headers['User-Agent'] = $this->getUserAgentHeader();
-        $options['http_errors'] = false;
-        $options['headers'] = $headers;
+        $this->addRequestSourceHeader($headers);
+        $data['http_errors'] = false;
+        $data['headers'] = $headers;
 
-        // append question mark if there are optional params and ? doesn't exist
-        if (count($params) > 0 && strrpos($url, '?') === false) {
-            $url .= "?";
-        }
-
-        foreach ($params as $key => $value) {
-            $url .= sprintf('&%s=%s', urlencode($key), urlencode($value));
-        }
-
-        $response = $this->http_client->request('GET', $url, $options);
+        $response = $this->http_client->request($method, $url, $data);
         return $response;
     }
 
     /**
-     * Send DELETE request
-     *
-     * @param string    $url        url to post to
-     * @param array     $headers    optional headers to send
-     * @param array     $options    optional options to send
+     * Get source header
      */
-    protected function requestDelete($url, $headers = [], $options = [])
+    protected function getSourceHeader()
     {
-        $headers['User-Agent'] = $this->getUserAgentHeader();
-        $options['http_errors'] = false;
-        $options['headers'] = $headers;
-
-        $response = $this->http_client->request('DELETE', $url, $options);
-        return $response;
-    }
-
-    /**
-     * Get User Agent Header
-     */
-    protected function getUserAgentHeader()
-    {
-        if (!$this->user_agent_header) {
+        if (!$this->source_header) {
             $version = trim(file_get_contents(__DIR__ . '/../../VERSION'));
-            $this->user_agent_header = sprintf('filestack-php-%s',
+            $this->source_header = sprintf('filestack-php-%s',
                 $version);
         }
-        return $this->user_agent_header;
+        return $this->source_header;
     }
 
     /**
@@ -492,19 +444,37 @@ trait CommonMixin
     }
 
     /**
+     * Append source header to request headers array
+     */
+    protected function addRequestSourceHeader(&$headers)
+    {
+        $source_header = $this->getSourceHeader();
+        $headers['User-Agent'] = $source_header;
+        $headers['X-Filestack-Source'] = $source_header;
+    }
+
+    /**
+     * Add a multipart data item
+     */
+    protected function addMultipartData(&$data, $name, $value)
+    {
+        array_push($data, ['name' => $name, 'contents' => $value]);
+    }
+
+    /**
      * Create data multipart data for multipart upload api request
      */
-    protected function createMultipartData($job)
+    protected function buildMultipartJobData($job)
     {
         $data = [];
-        array_push($data, ['name' => 'apikey',          'contents' => $job['api_key']]);
-        array_push($data, ['name' => 'md5',             'contents' => $job['md5']]);
-        array_push($data, ['name' => 'size',            'contents' => $job['chunksize']]);
-        array_push($data, ['name' => 'region',          'contents' => $job['region']]);
-        array_push($data, ['name' => 'upload_id',       'contents' => $job['upload_id']]);
-        array_push($data, ['name' => 'uri',             'contents' => $job['uri']]);
-        array_push($data, ['name' => 'part',            'contents' => $job['part_num']]);
-        array_push($data, ['name' => 'store_location',  'contents' => $job['location']]);
+        $this->addMultipartData($data, 'apikey',            $job['api_key']);
+        $this->addMultipartData($data, 'md5',               $job['md5']);
+        $this->addMultipartData($data, 'size',              $job['chunksize']);
+        $this->addMultipartData($data, 'region',            $job['region']);
+        $this->addMultipartData($data, 'upload_id',         $job['upload_id']);
+        $this->addMultipartData($data, 'uri',               $job['uri']);
+        $this->addMultipartData($data, 'part',              $job['part_num']);
+        $this->addMultipartData($data, 'store_location',    $job['location']);
 
         array_push($data, [
             'name'      => 'files',
@@ -518,9 +488,11 @@ trait CommonMixin
      * append promises for multipart async concurrent calls
      */
     protected function appendUploadPromises($jobs, $start_index, $end_index,
-        &$upload_promises, &$jobs_completed, $headers, $security)
+        &$upload_promises, &$jobs_completed, $security)
     {
         $num_jobs = count($jobs);
+        $headers = [];
+        $this->addRequestSourceHeader($headers);
 
         // loop from current start of concurrent jobs to end of of concurrent jobs
         for ($i=$start_index; $i <= $end_index; $i++) {
@@ -529,7 +501,7 @@ trait CommonMixin
             }
 
             $job = $jobs[$i];
-            $data = $this->createMultipartData($job);
+            $data = $this->buildMultipartJobData($job);
             $this->multipartApplySecurity($data, $security);
 
             // build promises to execute concurrent POST requests to upload api
@@ -545,9 +517,9 @@ trait CommonMixin
     /**
      * append promises for multipart async concurrent calls
      */
-    protected function appendS3Promises($jobs, $upload_results, &$s3_promises)
+    protected function appendS3Promises($jobs, $api_results, &$s3_promises)
     {
-        foreach ($upload_results as $result) {
+        foreach ($api_results as $result) {
             if (isset($result['value'])) {
                 $json = json_decode($result['value']->getBody(), true);
                 $query = parse_url($json['url'], PHP_URL_QUERY);
@@ -573,18 +545,14 @@ trait CommonMixin
     protected function multipartApplySecurity(&$data, $security)
     {
         if ($security) {
-            array_push($data, [
-                'name' => 'policy',
-                'contents' => $security->policy
-            ]);
-
-            array_push($data, [
-                'name' => 'signature',
-                'contents' => $security->signature
-            ]);
+            $this->addMultipartData($data, 'policy',    $security->policy);
+            $this->addMultipartData($data, 'signature', $security->signature);
         }
     }
 
+    /**
+     * Parse results of s3 calls and append to parts_etags array
+     */
     protected function multipartGetTags($s3_results, &$parts_etags)
     {
         foreach ($s3_results as $part_num => $result) {

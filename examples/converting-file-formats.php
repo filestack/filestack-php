@@ -6,7 +6,8 @@ use Filestack\FilestackException;
 
 $test_api_key = 'YOUR_FILESTACK_API_KEY';
 $test_secret = 'YOUR_FILESTACK_SECURITY_SECRET';
-$test_filepath = __DIR__ . '/../tests/testfiles/calvinandhobbes.jpg';
+$source = 'https://www.wikipedia.org/portal/wikipedia.org/' .
+    'assets/img/Wikipedia-logo-v2@1.5x.png';
 
 /**
  * You can create convert a filelink or url from one format to another,

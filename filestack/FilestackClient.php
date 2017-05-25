@@ -702,7 +702,8 @@ class FilestackClient
         }
 
         // send post request
-        $response = $this->requestPost($url, ['form_params' => ['url' => $resource]]);
+        $data = ['form_params' => ['url' => $resource]];
+        $response = $this->sendRequest('POST', $url, $data);
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
