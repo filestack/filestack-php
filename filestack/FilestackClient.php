@@ -15,8 +15,6 @@ class FilestackClient
     public $api_key;
     public $security;
 
-    private $filestack_config;
-
     /**
      * FilestackClient constructor
      *
@@ -35,7 +33,6 @@ class FilestackClient
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
-        $this->filestack_config = new FilestackConfig();
     }
 
     /**
@@ -463,16 +460,15 @@ class FilestackClient
      */
     public function debug($resource, $transform_tasks)
     {
-        $tasks_str = $this->createTransformStr($transform_tasks);
-
-        // build url
-        $options['tasks_str'] = $tasks_str;
-        $options['handle'] = $resource;
-
-        $transform_url = $this->filestack_config->createUrl('transform', $this->api_key, $options);
-
         // call TransformationMixin functions
-        $json_response = $this->sendDebug($transform_url, $this->security);
+        $tasks_str = $this->createTransformStr($transform_tasks);
+        $transform_url = $this->createTransformUrl(
+            $this->api_key,
+            $resource,
+            $tasks_str,
+            $this->security
+        );
+        $json_response = $this->sendDebug($transform_url, $this->api_key, $this->security);
 
         return $json_response;
     }
@@ -601,10 +597,65 @@ class FilestackClient
 
     /**
      * Upload a file to desired cloud service, defaults to Filestack's S3
+     * storage.
+     *
+     * @param string    $filepath           path to file
+     * @param array     $location           specify location, possible values are:
+     *                                      S3, gcs, azure, rackspace, dropbox
+     * @param string    $filename           explicitly set the filename to store as
+     * @param string    $mimetype           explicityl set the mimetype
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return Filestack\Filelink or file content
+     */
+    public function upload($filepath, $location = 's3', $filename = '', $mimetype = '')
+    {
+        if (!file_exists($filepath)) {
+            throw new FilestackException("File not found", 400);
+        }
+
+        // use existing filename if one isn't passed in
+        if (!$filename) {
+            $filename = basename($filepath);
+        }
+
+        // detect mimetype if one isn't passed in
+        if (!$mimetype) {
+            $mimetype = mime_content_type($filepath);
+        }
+
+        $metadata = [
+            'filepath' => $filepath,
+            'filename' => $filename,
+            'filesize' => filesize($filepath),
+            'mimetype' => $mimetype,
+            'location' => $location,
+        ];
+
+        // register job
+        $upload_data = $this->sendMultipartStart($this->api_key,
+            $metadata, $this->security);
+
+        // split files into chunks
+        $jobs = $this->createUploadJobs($metadata, $upload_data);
+
+        // process jobs, send chunks
+        $parts_etags = $this->sendMultipartJobs($jobs, $this->security);
+
+        // mark job as completed
+        $result = $this->sendMultipartComplete($this->api_key, $parts_etags,
+            $upload_data, $metadata, $this->security);
+
+        return $result;
+    }
+
+    /**
+     * Upload a url to desired cloud service, defaults to Filestack's S3
      * storage.  Set $options['location'] to specify location, possible values are:
      *                                      S3, gcs, azure, rackspace, dropbox
      *
-     * @param string                $filepath   url or filepath
+     * @param string                $url        url of file to upload
      * @param string                $api_key    Filestack API Key
      * @param array                 $options     extra optional params. e.g.
      *                                  location (string, storage location),
@@ -619,19 +670,39 @@ class FilestackClient
      *
      * @return Filestack\Filelink
      */
-    public function upload($filepath, $options = [])
+    public function uploadUrl($resource, $options = [])
     {
+        // lowercase all options
+        $options = array_change_key_case($options, CASE_LOWER);
+
         // set filename to original file if one does not exists
         if (!array_key_exists('filename', $options)) {
-            $options['filename'] = basename($filepath);
+            $options['filename'] = basename($resource);
         }
 
-        // build url and data to send
-        $url = $this->filestack_config->createUrl('upload', $this->api_key, $options, $this->security);
-        $data_to_send = $this->createUploadFileData($filepath);
+        // set location to S3 if not passed in
+        $location = 'S3';
+        if (array_key_exists('location', $options)) {
+            $location = $options['location'];
+        }
+
+        // build endpoint url
+        $url = sprintf('%s/store/%s?key=%s',
+            FilestackConfig::API_URL,
+            $location,
+            $this->api_key);
+
+        foreach ($options as $key => $value) {
+            $url .= "&$key=$value";
+        }
+
+        // append security if exists
+        if ($this->security) {
+            $url = $this->security->signUrl($url);
+        }
 
         // send post request
-        $response = $this->requestPost($url, $data_to_send);
+        $response = $this->requestPost($url, ['form_params' => ['url' => $resource]]);
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
@@ -664,5 +735,52 @@ class FilestackClient
         // call TransformationMixin
         $result = $this->sendTransform($sources_str, $transform_tasks, $this->security);
         return $result;
+    }
+
+    // privates
+    /**
+     * Take a file and separate it into chunks, creating an array of jobs to
+     * process.
+     *
+     * @param array     $metadata       Metadata of file: filename, filesize,
+     *                                  mimetype, location
+     * @param array     $upload_data    filestack upload data from multipartStart
+     *                                  call: uri, region, upload_id
+     *
+     * @return Filestack/Filelink or file content
+     */
+    private function createUploadJobs($metadata, $upload_data)
+    {
+        $seek_point = 0;
+        $part_num = 1;
+        $jobs = [];
+
+        while ($seek_point < $metadata['filesize']) {
+            $chunk = $this->multipartGetChunk($metadata['filepath'], $seek_point);
+
+            $md5_hash = md5($chunk, true);
+            $md5_base64_hash = trim(base64_encode($md5_hash));
+            $chunk_size = strlen($chunk);
+
+            $jobs[$part_num] = [
+                'api_key'       => $this->api_key,
+                'seek_point'    => $seek_point,
+                'md5'           => $md5_base64_hash,
+                'part_num'      => $part_num,
+                'chunksize'     => $chunk_size,
+                'uri'           => $upload_data['uri'],
+                'region'        => $upload_data['region'],
+                'upload_id'     => $upload_data['upload_id'],
+                'filepath'      => $metadata['filepath'],
+                'filename'      => $metadata['filename'],
+                'filesize'      => $metadata['filesize'],
+                'mimetype'      => $metadata['mimetype'],
+                'location'      => $metadata['location']
+            ];
+
+            $part_num++;
+            $seek_point += FilestackConfig::UPLOAD_CHUNK_SIZE;
+        }
+        return $jobs;
     }
 }
