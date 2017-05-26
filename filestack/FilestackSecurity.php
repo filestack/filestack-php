@@ -28,23 +28,26 @@ class FilestackSecurity
      *                              call: The calls that you allow this policy to
      *                                  make, e.g: convert, exif, pick, read, remove,
      *                                  stat, store, write, writeUrl
-     *                              container: (regex) store must match the container that the
-     *                                  files will be stored under
-     *                              expiry: (timestamp) epoch_timestamp expire, defaults to 1hr
+     *                              container: (regex) store must match container
+     *                                  that the files will be stored under
+     *                              expiry: (timestamp) epoch_timestamp expire,
+     *                                  defaults to 1hr
      *                              handle: specific file this policy can access
-     *                              maxSize: (number) maximum file size in bytes that can be stored
-     *                                  by requests with this policy
-     *                              minSize: (number) minimum file size in bytes that can be stored
-     *                                  by requests with this policy
-     *                              path: (regex) store must match the path that the files
-     *                                  will be stored under.
-     *                              url: (regex) subset of external URL domains that are
-     *                                  allowed to be image/document sources for processing
+     *                              maxSize: (number) maximum file size in bytes
+     *                                  that can be stored by requests with policy
+     *                              minSize: (number) minimum file size in bytes
+     *                                  that can be stored by requests with policy
+     *                              path: (regex) store must match the path that
+     *                                  the files will be stored under.
+     *                              url: (regex) subset of external URL domains
+     *                                  that are allowed to be image/document
+     *                                  sources for processing
      */
     public function __construct($secret, $options = [])
     {
         $this->allowed_options = [
-            'call', 'container', 'expiry', 'handle', 'maxSize', 'minSize', 'path', 'url'
+            'call', 'container', 'expiry', 'handle',
+            'maxSize', 'minSize', 'path', 'url'
         ];
 
         $this->secret = $secret;

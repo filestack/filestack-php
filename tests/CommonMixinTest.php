@@ -48,7 +48,6 @@ class CommonMixinTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $expected_upload_id = 'some_upload_id';
         $mock_response = new MockHttpResponse(
             400,
             'bad data format'
@@ -70,7 +69,7 @@ class CommonMixinTest extends BaseTest
             $this->test_security,
             $stub_http_client);
 
-        $json = $common_mixin->sendMultipartStart($this->test_api_key,
+        $common_mixin->sendMultipartStart($this->test_api_key,
             $metadata, $this->test_security);
     }
 

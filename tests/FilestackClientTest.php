@@ -241,7 +241,7 @@ class FilestackClientTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            '{"uuid" : "some_uuid"}'
+            '{"uuid" : "some_uuid", "conversion_url": "http://someurl.com/handle"}'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -262,16 +262,17 @@ class FilestackClientTest extends BaseTest
             'audio_channels'        => 2,
             'audio_sample_rate'     => 44100,
             'fps'                   => 60,
-            'force'                 => true,
             'title'                 => 'test Filestack Audio conversion',
             'video_bitrate'         => 1024,
             'watermark_top'         => 10,
             'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
         ];
 
-        $uuid = $client->convertVideo($source, 'm4a', $output_options);
+        $force = true;
+        $result = $client->convertVideo($source, 'm4a', $output_options, $force);
+        $info = $client->getConvertTaskInfo($result['conversion_url']);
 
-        $this->assertNotNull($uuid);
+        $this->assertNotNull($info);
     }
 
     /**

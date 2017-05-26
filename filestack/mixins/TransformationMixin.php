@@ -66,9 +66,10 @@ trait TransformationMixin
     /**
      * Send debug call
      *
-     * @param string                $transform_url  the transformation url endpoint
+     * @param string                $transform_url  the transformation url
      * @param string                $api_key        Filestack API Key
-     * @param FilestackSecurity     $security       Filestack Security object if needed
+     * @param FilestackSecurity     $security       Filestack Security object if
+     *                                              enabled
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
@@ -77,7 +78,8 @@ trait TransformationMixin
     public function sendDebug($transform_url, $api_key, $security = null)
     {
         $transform_str = str_replace(FilestackConfig::CDN_URL . '/', '', $transform_url);
-        $debug_url = sprintf('%s/%s/debug/%s', FilestackConfig::CDN_URL, $api_key, $transform_str);
+        $debug_url = sprintf('%s/%s/debug/%s', FilestackConfig::CDN_URL,
+            $api_key, $transform_str);
 
         if ($security) {
             $debug_url = $security->signUrl($debug_url);
@@ -100,10 +102,10 @@ trait TransformationMixin
     /**
      * Applied array of transformation tasks to handle or external url
      *
-     * @param string            $resource           url or filestack handle to transform
-     * @param array             $transform_tasks    array of transformation tasks and
-     *                                              optional attributes per task
-     * @param FilestackSecurity $security           Filestack Security object if needed
+     * @param string            $resource           url or filestack handle
+     * @param array             $transform_tasks    array of transformation tasks
+     * @param FilestackSecurity $security           Filestack Security object if
+     *                                              enabled
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
@@ -119,6 +121,7 @@ trait TransformationMixin
         $tasks_str = $this->createTransformStr($transform_tasks);
         $transform_url = $this->createTransformUrl(
             $this->api_key,
+            'image',
             $resource,
             $tasks_str,
             $security
@@ -134,24 +137,31 @@ trait TransformationMixin
     /**
      * Send video_convert request to API
      *
-     * @param string            $resource           url or filestack handle to convert
-     * @param array             $transform_tasks    array of transformation tasks and
-     *                                              optional attributes per task
-     * @param FilestackSecurity $security           Filestack Security object if needed
+     * @param string            $resource           url or filestack handle
+     * @param array             $transform_tasks    array of transformation tasks
+     * @param FilestackSecurity $security           Filestack Security object if
+     *                                              enabled
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return string (uuid of conversion task)
      */
-    public function sendVideoConvert($resource, $transform_tasks, $security = null)
+    public function sendVideoConvert($resource, $transform_tasks,
+                                     $security = null, $force = false)
     {
         $tasks_str = $this->createTransformStr($transform_tasks);
         $transform_url = $this->createTransformUrl(
             $this->api_key,
+            'video',
             $resource,
             $tasks_str,
             $security
         );
+
+        // force restart task?
+        if ($force) {
+            $transform_url .= '&force=true';
+        }
 
         // call CommonMixin function
         $response = $this->sendRequest('GET', $transform_url);
@@ -165,7 +175,27 @@ trait TransformationMixin
         $json_response = json_decode($response->getBody(), true);
         $uuid = $json_response['uuid'];
 
-        return $uuid;
+        return [
+            'uuid'              => $uuid,
+            'conversion_url'    => $transform_url
+        ];
+    }
+
+    /**
+     * Get the info of a conversion task given the conversion url
+     *
+     * @param string     $conversion_url    the conversion task url
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return json
+     */
+    public function getConvertTaskInfo($conversion_url)
+    {
+        $response = $this->sendRequest('GET', $conversion_url);
+        $json = $this->handleResponseDecodeJson($response);
+
+        return $json;
     }
 
     /**
@@ -202,18 +232,24 @@ trait TransformationMixin
      * Create the transform parts of the transformation url
      *
      * @param string            $api_key    Filestack API Key
+     * @param string            $type       Type of transformation:
+     *                                      image, audio, video
      * @param sring             $resource   url or Filestack handle
-     * @param string            $tasks_str  tranformation tasks part of endpoint url
+     * @param string            $tasks_str  tranformation tasks part of url
      * @param FilestackSecurity $security   Filestack Security object if needed
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return string
      */
-    protected function createTransformUrl($api_key, $resource, $tasks_str, $security = null)
+    protected function createTransformUrl($api_key, $type, $resource,
+                                          $tasks_str, $security = null)
     {
+        $api_host = $type == 'image' ?
+            FilestackConfig::CDN_URL : FilestackConfig::PROCESS_URL;
+
         $base_url = sprintf('%s/%s',
-            FilestackConfig::CDN_URL,
+            $api_host,
             $api_key);
 
         // security in a different format for transformations
