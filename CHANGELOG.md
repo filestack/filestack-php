@@ -1,5 +1,9 @@
 # Filestack-php Changelog
 
+## 1.1.4 (May 26, 2017)
+- FS-980 modified upload() function to use multiparts upload api
+- FS-1039 added getConvertTaskInfo() to client and filelink
+
 ## 1.1.3 (May 18, 2017)
 - Added rulesets for PHPMD
 - Cleaned up code
