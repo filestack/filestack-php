@@ -161,8 +161,6 @@ trait CommonMixin
     protected function sendGetMetaData($url, $fields = [], $security = null)
     {
         $url .= "/metadata?";
-
-        $params = [];
         foreach ($fields as $field_name) {
             $url .= "&$field_name=true";
         }
@@ -528,13 +526,18 @@ trait CommonMixin
 
                 $headers = $json['headers'];
                 $seek_point = $jobs[$part_num]['seek_point'];
-                $chunk = $this->multipartGetChunk($jobs[$part_num]['filepath'], $seek_point);
+                $filepath = $jobs[$part_num]['filepath'];
+
+                $chunk = $this->multipartGetChunk($filepath, $seek_point);
 
                 // build promises to execute concurrent PUT requests to s3
-                $s3_promises[$part_num] = $this->http_client->requestAsync('PUT', $json['url'], [
-                    'body' => $chunk,
-                    'headers' => $headers
-                ]);
+                $s3_promises[$part_num] = $this->http_client->requestAsync('PUT',
+                    $json['url'],
+                    [
+                        'body' => $chunk,
+                        'headers' => $headers
+                    ]
+                );
             }
         }
     }

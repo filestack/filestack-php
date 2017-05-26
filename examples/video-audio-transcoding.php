@@ -26,14 +26,23 @@ $output_options = [
     'audio_channels'        => 2,
     'audio_sample_rate'     => 44100,
     'fps'                   => 60,
-    'force'                 => true,
     'title'                 => 'test Filestack Audio conversion',
     'video_bitrate'         => 1024,
     'watermark_top'         => 10,
     'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
 ];
 
-$uuid = $client->convertVideo($source, 'm4a', $output_options);
+$force = true;
+$result = $client->convertVideo($source, 'm4a', $output_options, $force);
+$uuid = $result['uuid'];
+$conversion_url = $result['conversion_url'];
+
+$info = $client->getConvertTaskInfo($conversion_url);
+$status = $info['status'];
+if ($status === 'completed') {
+    $thumbnail = $info['data']['thumb'];
+    $url = $info['data']['url'];
+}
 # echo "\nvideo conversion, uuid=$uuid\n";
 
 // transcoding video with filelink
@@ -46,15 +55,23 @@ $output_options = [
     'audio_channels'        => 2,
     'audio_sample_rate'     => 44100,
     'fps'                   => 60,
-    'force'                 => true,
     'title'                 => 'test Filestack Audio conversion',
     'video_bitrate'         => 1024,
     'watermark_top'         => 10,
     'watermark_url'         => 'Bc2FQwXReueTsaeXB6rO'
 ];
 
-$uuid = $filelink->convertVideo('m4a', $output_options);
-# echo "\nvideo conversion, uuid=$uuid\n";
+$result = $filelink->convertVideo('m4a', $output_options);
+
+// check the status of a conversion task
+$info = $client->getConvertTaskInfo($result['conversion_url']);
+# vardump($info);
+
+$status = $info['status'];
+if ($status === 'completed') {
+    $thumbnail = $info['data']['thumb'];
+    $url = $info['data']['url'];
+}
 
 # Example video transcoding task callback data, which will post to your webhook
 # once the conversion task is completed
@@ -124,7 +141,17 @@ $output_options = [
     'title'                 => 'test Filestack Audio conversion'
 ];
 
-$uuid = $client->convertAudio($source, 'mp3', $output_options);
+$result = $client->convertAudio($source, 'mp3', $output_options);
+
+// check the status of a conversion task
+$info = $client->getConvertTaskInfo($result['conversion_url']);
+# vardump($info);
+
+$status = $info['status'];
+if ($status === 'completed') {
+    $thumbnail = $info['data']['thumb'];
+    $url = $info['data']['url'];
+}
 # echo "\naudio conversion, uuid=$uuid\n";
 
 // audio conversion with filelink
@@ -139,7 +166,17 @@ $output_options = [
     'title'                 => 'test Filestack Audio conversion'
 ];
 
-$uuid = $filelink->convertAudio('mp3', $output_options);
+$result = $filelink->convertAudio('mp3', $output_options);
+
+// check the status of a conversion task
+$info = $filelink->getConvertTaskInfo($result['conversion_url']);
+# vardump($info);
+
+$status = $info['status'];
+if ($status === 'completed') {
+    $thumbnail = $info['data']['thumb'];
+    $url = $info['data']['url'];
+}
 # echo "\naudio conversion, uuid=$uuid\n";
 
 

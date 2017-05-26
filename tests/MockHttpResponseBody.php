@@ -8,7 +8,7 @@ class MockHttpResponseBody
 {
     public $content;
 
-    public function __construct($content = '', $headers = [])
+    public function __construct($content = '')
     {
         $this->content = $content;
     }

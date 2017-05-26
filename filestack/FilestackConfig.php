@@ -7,6 +7,7 @@ namespace Filestack;
 class FilestackConfig
 {
     const API_URL = 'https://www.filestackapi.com/api';
+    const PROCESS_URL = 'https://process.filestackapi.com';
     const CDN_URL = 'https://cdn.filestackcontent.com';
     const UPLOAD_URL = 'https://upload.filestackapi.com';
 
