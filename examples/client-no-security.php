@@ -11,10 +11,9 @@ $client = new FilestackClient($test_api_key);
 
 // upload a file
 $filelink = null;
-$options = ['Filename' => 'somefilename.jpg'];
 
 try {
-    $filelink = $client->upload($test_filepath, $options);
+    $filelink = $client->upload($test_filepath);
     var_dump($filelink);
 } catch (FilestackException $e) {
     echo $e->getMessage();

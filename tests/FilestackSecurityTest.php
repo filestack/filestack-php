@@ -1,5 +1,5 @@
 <?php
-namespace Filestack\Test;
+namespace Filestack\Tests;
 
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;

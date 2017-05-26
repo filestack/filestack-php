@@ -7,7 +7,7 @@ $test_secret = 'YOUR_FILESTACK_SECURITY_SECRET';
 $test_filepath = __DIR__ . '/../tests/testfiles/testing-download.jpg';
 
 # Filestack client examples
-$filelink = new Filelink($test_handle, $test_api_key);
+$filelink = new Filelink('a-filestack-handle', $test_api_key);
 
 // get metadata
 $metadata = $filelink->getMetaData();

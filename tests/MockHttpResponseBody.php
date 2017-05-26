@@ -1,5 +1,5 @@
 <?php
-namespace Filestack\Test;
+namespace Filestack\Tests;
 
 /**
  * A mock Http response body
@@ -8,7 +8,7 @@ class MockHttpResponseBody
 {
     public $content;
 
-    public function __construct($content='')
+    public function __construct($content = '')
     {
         $this->content = $content;
     }
