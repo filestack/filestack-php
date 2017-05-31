@@ -15,12 +15,12 @@ This is the official PHP SDK for Filestack - API and content management system t
 
 Install ``filestack`` with composer, either run
 
-    $ php composer.phar require --prefer-dist filestack/filestack-php "*"
+    $ composer require --prefer-dist filestack/filestack-php "dev-master"
 
 or add
 
 ```
-"filestack/filestack-php": "*"
+"filestack/filestack-php": "dev-master"
 ```
 
 or download from GitHub
