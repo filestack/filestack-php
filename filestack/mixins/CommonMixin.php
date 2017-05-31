@@ -18,6 +18,8 @@ trait CommonMixin
 {
     protected $http_client;
     protected $http_promises;
+
+    protected $user_agent_header;
     protected $source_header;
 
     /**
@@ -418,14 +420,29 @@ trait CommonMixin
     /**
      * Get source header
      */
-    protected function getSourceHeader()
+    protected function getSourceHeaders()
     {
-        if (!$this->source_header) {
+        $headers = [];
+
+        if (!$this->user_agent_header || !$this->source_header) {
             $version = trim(file_get_contents(__DIR__ . '/../../VERSION'));
-            $this->source_header = sprintf('filestack-php-%s',
-                $version);
+
+            if (!$this->user_agent_header) {
+                $this->user_agent_header = sprintf('filestack-php-%s',
+                    $version);
+            }
+
+            if (!$this->source_header) {
+                $this->source_header = sprintf('PHP-%s',
+                    $version);
+            }
         }
-        return $this->source_header;
+
+        $headers['user-agent'] = $this->user_agent_header;
+        $headers['filestack-source'] = $this->source_header;
+
+        //user_agent_header
+        return $headers;
     }
 
     /**
@@ -446,9 +463,9 @@ trait CommonMixin
      */
     protected function addRequestSourceHeader(&$headers)
     {
-        $source_header = $this->getSourceHeader();
-        $headers['User-Agent'] = $source_header;
-        $headers['Filestack-Source'] = $source_header;
+        $source_headers = $this->getSourceHeaders();
+        $headers['User-Agent'] = $source_headers['user-agent'];
+        $headers['Filestack-Source'] = $source_headers['filestack-source'];
     }
 
     /**
