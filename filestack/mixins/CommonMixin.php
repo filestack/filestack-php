@@ -448,7 +448,7 @@ trait CommonMixin
     {
         $source_header = $this->getSourceHeader();
         $headers['User-Agent'] = $source_header;
-        $headers['X-Filestack-Source'] = $source_header;
+        $headers['Filestack-Source'] = $source_header;
     }
 
     /**
