@@ -245,6 +245,88 @@ class FilelinkTest extends BaseTest
     }
 
     /**
+     * Test getting sfw flag of a filelink
+     */
+    public function testFilelinkGetSfwSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"sfw": true}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $result = $filelink->getSafeForWork();
+        $this->assertNotNull($result);
+    }
+
+    /**
+     * Test getting sfw flag of a filelink
+     */
+    public function testFilelinkGetSfwException()
+    {
+        $mock_response = new MockHttpResponse(404);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $filelink->getSafeForWork();
+    }
+
+    /**
+     * Test getting tags of a filelink
+     */
+    public function testFilelinkGetTagsSuccess()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            '{"tags": "some-tags"}'
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $result = $filelink->getTags();
+        $this->assertNotNull($result);
+    }
+
+    /**
+     * Test getting tags of a filelink failed
+     */
+    public function testFilelinkGetTagsException()
+    {
+        $mock_response = new MockHttpResponse(404);
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturn($mock_response);
+
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(404);
+
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key,
+                        $this->test_security, $stub_http_client);
+
+        $filelink->getTags();
+    }
+
+    /**
      * Test getMetaData throws exception for invalid file
      */
     public function testFilelinkGetMetadataException()

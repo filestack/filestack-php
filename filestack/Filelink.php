@@ -1300,6 +1300,32 @@ class Filelink
     }
 
     /**
+     * Get the sfw (safe for work) flag for this filelink
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return json
+     */
+    public function getSafeForWork()
+    {
+        $result = $this->sendGetSafeForWork($this->handle, $this->security);
+        return $result;
+    }
+
+    /**
+     * Get the tags for this filelink
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return json
+     */
+    public function getTags()
+    {
+        $result = $this->sendGetTags($this->handle, $this->security);
+        return $result;
+    }
+
+    /**
      * Applied array of transformation tasks to this file link.
      *
      * @param array     $transform_tasks    array of transformation tasks and
