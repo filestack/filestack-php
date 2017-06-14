@@ -100,7 +100,38 @@ class FilestackClient
 
         // call CommonMixin function
         $result = $this->sendGetMetaData($url, $fields, $this->security);
+        return $result;
+    }
 
+    /**
+     * Get sfw (safe for work) flag of a filelink
+     *
+     * @param string            $handle     Filestack filelink handle
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return json
+     */
+    public function getSafeForWork($handle)
+    {
+        // call CommonMixin function
+        $result = $this->sendGetSafeForWork($handle, $this->security);
+        return $result;
+    }
+
+    /**
+     * Get tags of a filelink
+     *
+     * @param string            $handle     Filestack filelink handle
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return json
+     */
+    public function getTags($handle)
+    {
+        // call CommonMixin function
+        $result = $this->sendGetTags($handle, $this->security);
         return $result;
     }
 
