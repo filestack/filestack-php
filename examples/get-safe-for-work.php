@@ -12,11 +12,11 @@ $client = new FilestackClient($test_api_key, $security);
 
 $file_handle = 'bzjSo5gAT76ra25sjk4c';
 
-# get tags with client
+# get sfw flag with client
 $result_json = $client->getSafeForWork($file_handle);
 var_dump($result_json);
 
-# get tags with filelink
+# get sfw flag with filelink
 $filelink = new Filelink($file_handle,
     $test_api_key, $security);
 
