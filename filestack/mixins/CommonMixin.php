@@ -185,6 +185,68 @@ trait CommonMixin
     }
 
     /**
+     * Get the safe for work (sfw) flag of a filelink.
+     *
+     * @param string            $handle     Filestack file handle
+     * @param FilestackSecurity $security   Filestack security object if
+     *                                      security settings is turned on
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return json
+     */
+    protected function sendGetSafeForWork($handle, $security)
+    {
+        $url = sprintf('%s/sfw/security=policy:%s,signature:%s/%s',
+            FilestackConfig::CDN_URL,
+            $security->policy,
+            $security->signature,
+            $handle);
+
+        $response = $this->sendRequest('GET', $url);
+        $status_code = $response->getStatusCode();
+
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        $json_response = json_decode($response->getBody(), true);
+
+        return $json_response;
+    }
+
+    /**
+     * Get the tags of a filelink.
+     *
+     * @param string            $handle     Filestack file handle
+     * @param FilestackSecurity $security   Filestack security object if
+     *                                      security settings is turned on
+     *
+     * @throws FilestackException   if API call fails, e.g 404 file not found
+     *
+     * @return json
+     */
+    protected function sendGetTags($handle, $security)
+    {
+        $url = sprintf('%s/tags/security=policy:%s,signature:%s/%s',
+            FilestackConfig::CDN_URL,
+            $security->policy,
+            $security->signature,
+            $handle);
+
+        $response = $this->sendRequest('GET', $url);
+        $status_code = $response->getStatusCode();
+
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        $json_response = json_decode($response->getBody(), true);
+
+        return $json_response;
+    }
+
+    /**
      * Overwrite a file in cloud storage
      *
      * @param string            $resource   url or filepath
