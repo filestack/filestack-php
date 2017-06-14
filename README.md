@@ -57,17 +57,17 @@ $extras = [
 $filepath = '/path/to/file';
 $filelink = $client->upload($filepath);
 
-// get metadata of file
+# get metadata of file
 $metadata = $client->getMetaData($filelink->handle, $fields);
 
-// get content of a file
+# get content of a file
 $content = $client->getContent($filelink->handle);
 
-// download a file
+# download a file
 $destination = '/path/to/file';
 $result = $client->download($filelink->handle, $destination);
 
-// overwrite a file
+# overwrite a file
 $filelink2 = $client->overwrite('/path/to/file', $filelink->handle);
 ```
 
@@ -85,28 +85,55 @@ use Filestack\filelink;
 
 $file = new Filelink('pGj2wWfBTMuXhWe2J3bL', 'YOUR_API_KEY');
 
-// transforming an image
+# transforming an image
 $transformed_filelink = $filelink
             ->circle()
             ->blur(['amount' => '20'])
             ->save();
 
-// get metadata
+# get metadata
 $metadata = $filelink->getMetaData();
 
-// get content of a file
+# get content of a file
 $content = $filelink->getContent();
 
 $filepath = '/path/to/file';
 
-// download a file
+# download a file
 $filelink->download($filepath);
 
-// overwrite remote file with local file
+# overwrite remote file with local file
 $filelink->overwrite($filepath);
 
-// delete remote file
+# delete remote file
 $filelink->delete();
+
+```
+
+### Tagging files and detecting safe for work content
+
+```php
+use Filestack\FilestackClient;
+use Filestack\FilestackSecurity;
+
+$security = new FilestackSecurity('YOUR_SECURITY_SECRET');
+$client = new FilestackClient('YOUR_API_KEY', $security);
+
+$file_handle = 'bzjSo5gAT76ra25sjk4c';
+
+# get tags with client
+$result_json = $client->getTags($file_handle);
+
+# get tags with filelink
+$filelink = new Filelink($file_handle, 'YOUR_API_KEY', $security);
+
+$json_result = $filelink->getTags();
+
+# get safe for work flag with client
+$result_json = $client->getSafeForWork($file_handle);
+
+# get safe for work flag with filelink
+$json_result = $filelink->getSafeForWork();
 
 ```
 
