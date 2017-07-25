@@ -1,7 +1,6 @@
 {
     "name": "filestack/filestack-php",
     "description": "A filestack library for PHP",
-    "version": "dev-master",
     "license": "ALv2",
     "source": {
         "url": "git://github.com/filestack/filestack-php.git",
