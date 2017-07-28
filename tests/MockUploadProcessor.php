@@ -5,11 +5,6 @@ use Filestack\UploadProcessor;
 
 class MockUploadProcessor extends UploadProcessor
 {
-    public function setIntelligent($intelligent)
-    {
-      $this->intelligent = $intelligent;
-    }
-
     public function callCreateParts($api_key, $metadata, $upload_data)
     {
         $result = $this->createParts($api_key, $metadata, $upload_data);

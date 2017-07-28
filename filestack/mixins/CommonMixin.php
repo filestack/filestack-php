@@ -383,6 +383,7 @@ trait CommonMixin
     /**
      * Append a data item
      */
+
     protected function appendData(&$data, $name, $value)
     {
         array_push($data, ['name' => $name, 'contents' => $value]);

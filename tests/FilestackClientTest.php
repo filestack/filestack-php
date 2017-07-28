@@ -587,7 +587,8 @@ class FilestackClientTest extends BaseTest
                 'url'       => 'https://cdn.filestack.com/somefilehandle',
                 'uri'       => 'https://uploaduri/handle&partNum=1',
                 'region'    => 'us-east-1',
-                'upload_id' => 'test-upload-id'
+                'upload_id' => 'test-upload-id',
+                'headers'   => []
             ])
         );
 
@@ -652,10 +653,10 @@ class FilestackClientTest extends BaseTest
         );
 
         // $this->test_filepath = __DIR__ . '/testfiles/1gb-testfile.txt';
-        $this->test_filepath = __DIR__ . '/testfiles/38mb_file.txt';
+        $this->test_filepath = __DIR__ . '/testfiles/landscape_24mb_img.jpg';
 
         $filelink = $client->upload($this->test_filepath);
-        print_r($filelink);
+        $this->assertNotNull($filelink);
     }
 
     /**

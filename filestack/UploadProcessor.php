@@ -28,16 +28,22 @@ class UploadProcessor
      * @param GuzzleHttp\Client $http_client    DI http client, will instantiate
      *                                          one if not passed in
      */
-    public function __construct($api_key, $security = null, $http_client = null)
+    public function __construct($api_key, $security = null,
+        $http_client = null, $intelligent = false)
     {
         $this->api_key = $api_key;
         $this->security = $security;
-        $this->intelligent = false;
+        $this->intelligent = $intelligent;
 
         if (is_null($http_client)) {
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
+    }
+
+    public function setIntelligent($intelligent)
+    {
+      $this->intelligent = $intelligent;
     }
 
     /**
@@ -128,7 +134,6 @@ class UploadProcessor
         for ($i=0; $i<$num_parts; $i++) {
 
             // create chunks of file
-            $num_chunks = 1;
             $chunk_offset = 0;
             $chunks = [];
 
@@ -140,7 +145,8 @@ class UploadProcessor
                 while ($num_chunks > 0) {
                     array_push($chunks, [
                         'offset'        => $chunk_offset,
-                        'seek_point'    => $seek_point
+                        'seek_point'    => $seek_point,
+                        'size'          => $max_chunk_size,
                     ]);
 
                     $chunk_offset += $max_chunk_size;
@@ -152,7 +158,8 @@ class UploadProcessor
                 // 1 part = 1 chunk
                 array_push($chunks, [
                     'offset'        => 0,
-                    'seek_point'    => $seek_point
+                    'seek_point'    => $seek_point,
+                    'size'          => $max_part_size
                 ]);
                 $seek_point += $max_part_size;
             }
@@ -168,7 +175,6 @@ class UploadProcessor
                 'filesize'      => $metadata['filesize'],
                 'mimetype'      => $metadata['mimetype'],
                 'location'      => $metadata['location'],
-                'num_chunks'    => $num_chunks,
                 'chunks'        => $chunks
             ]);
         }
@@ -205,20 +211,20 @@ class UploadProcessor
                 $seek_point = $current_chunk['seek_point'];
 
                 $chunk_content = $this->getChunkContent($part['filepath'], $seek_point,
-                    $chunk_max_size);
+                    $current_chunk['size']);
 
-                $chunk_data['md5'] = trim(base64_encode(md5($chunk_content, true)));
-                $chunk_data['size'] = strlen($chunk_content);
-                $part['part_size'] += $chunk_data['size'];
+                $current_chunk['md5'] = trim(base64_encode(md5($chunk_content, true)));
+                $current_chunk['size'] = strlen($chunk_content);
+                $part['part_size'] += $current_chunk['size'];
 
-                $data = $this->buildChunkData($part, $chunk_data);
+                $data = $this->buildChunkData($part, $current_chunk);
 
                 $response = $this->sendRequest('POST', $upload_url, ['multipart' => $data]);
                 $json = $this->handleResponseDecodeJson($response);
 
                 $url = $json['url'];
                 $headers = $json['headers'];
-                $s3_response = $this->uploadChunkToS3($url, $headers, $part, $chunk_content);
+                $s3_response = $this->uploadChunkToS3($url, $headers, $chunk_content);
 
                 if (!$this->intelligent) {
                     $etag = $s3_response->getHeader('ETag')[0];
@@ -250,7 +256,7 @@ class UploadProcessor
         return true;
     }
 
-    protected function uploadChunkToS3($url, $headers, $part, $chunk)
+    protected function uploadChunkToS3($url, $headers, $chunk)
     {
         $query = parse_url($url, PHP_URL_QUERY);
         parse_str($query, $params);
@@ -260,7 +266,14 @@ class UploadProcessor
             $part_num = intval($params['partNumber']);
         }
 
-        $response = $this->sendRequest('PUT', $url, ['body' => $chunk], $headers);
+        $response = $this->http_client->request('PUT',
+            $url,
+            [
+                'body' => $chunk,
+                'headers' => $headers
+            ]
+        );
+
         $status_code = $response->getStatusCode();
         if ($status_code !== 200) {
             throw new FilestackException($response->getBody(),
@@ -338,7 +351,7 @@ class UploadProcessor
 
         if ($this->intelligent) {
             $this->appendData($data, 'multipart', true);
-            $this->appendData($data, 'offset', $chunk['offset']);
+            $this->appendData($data, 'offset', $chunk_data['offset']);
         }
 
         $this->appendSecurity($data);
@@ -356,6 +369,7 @@ class UploadProcessor
         $data = [];
         $this->appendData($data, 'apikey',            $part['api_key']);
         $this->appendData($data, 'uri',               $part['uri']);
+        $this->appendData($data, 'location',          $part['location']);
         $this->appendData($data, 'region',            $part['region']);
         $this->appendData($data, 'upload_id',         $part['upload_id']);
         $this->appendData($data, 'part',              $part['part_num']);
@@ -378,9 +392,9 @@ class UploadProcessor
         $handle = fopen($filepath, 'r');
         fseek($handle, $seek_point);
         $chunk = fread($handle, $chunk_size);
+
         fclose($handle);
         $handle = null;
-
         return $chunk;
     }
 

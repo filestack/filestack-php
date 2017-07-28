@@ -12,7 +12,7 @@ class UploadProcessorTest extends BaseTest
 
     public function __construct()
     {
-        $this->test_filepath = __DIR__ . '/testfiles/38mb_file.txt';
+        $this->test_filepath = __DIR__ . '/testfiles/landscape_24mb_img.jpg';
         $this->file_metadata = [
             'filepath' => $this->test_filepath,
             'filename' => basename($this->test_filepath),

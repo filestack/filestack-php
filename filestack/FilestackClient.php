@@ -690,7 +690,7 @@ class FilestackClient
                 $upload_data['upload_type'] == 'intelligent_ingestion') {
 
             // intelligent ingestion flag enabled
-            $this->upload_processor->intelligent = true;
+            $this->upload_processor->setIntelligent(true);
         }
 
         $result = $this->upload_processor->run($this->api_key,
