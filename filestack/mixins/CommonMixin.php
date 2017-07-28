@@ -601,7 +601,11 @@ trait CommonMixin
                 $json = json_decode($result['value']->getBody(), true);
                 $query = parse_url($json['url'], PHP_URL_QUERY);
                 parse_str($query, $params);
-                $part_num = intval($params['partNumber']);
+
+                $part_num = 1;
+                if (array_key_exists('partNumber', $params)) {
+                    $part_num = intval($params['partNumber']);
+                }
 
                 $headers = $json['headers'];
                 $seek_point = $jobs[$part_num]['seek_point'];
