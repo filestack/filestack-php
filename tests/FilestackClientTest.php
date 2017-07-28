@@ -641,6 +641,23 @@ class FilestackClientTest extends BaseTest
         $this->assertNotNull($filelink);
     }
 
+    public function testUploadIntelligentSuccess()
+    {
+        $this->test_api_key = 'AhdHVE8qGR9Kx2VuFnvToz';
+        $this->test_security = new FilestackSecurity('K3ZBQ3NHTVDDNKZ5UK7ZA2S4KI');
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security
+        );
+
+        // $this->test_filepath = __DIR__ . '/testfiles/1gb-testfile.txt';
+        $this->test_filepath = __DIR__ . '/testfiles/38mb_file.txt';
+
+        $filelink = $client->upload($this->test_filepath);
+        print_r($filelink);
+    }
+
     /**
      * Test calling the upload function throws exception if file not found
      */
