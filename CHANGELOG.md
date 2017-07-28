@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 1.1.7 (July 28, 2017)
+- Small file upload bugfix
+
 ## 1.1.6 (June 14, 2017)
 - Added Image Tagging and Safe For Work functionalities
 
