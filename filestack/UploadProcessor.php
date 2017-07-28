@@ -93,7 +93,7 @@ class UploadProcessor
      *
      * @throws FilestackException   if API call fails
      *
-     * @return json
+     * @return array['statuscode', 'json']
      */
     public function run($api_key, $metadata, $upload_data)
     {
@@ -102,11 +102,27 @@ class UploadProcessor
         // upload parts
         $result = $this->processParts($parts);
 
-        // mark upload as completed
-        $success = $this->registerComplete($api_key, $result,
+        $wait_attempts = FilestackConfig::UPLOAD_WAIT_ATTEMPTS;
+        $wait_time = FilestackConfig::UPLOAD_WAIT_SECONDS;
+        $accepted_not_complete_code = FilestackConfig::ACCEPTED_NOT_COMPLETE_CODE;
+
+        $completed_status_code = $accepted_not_complete_code;
+        $completed_result = ['status_code' => 0, 'json' => []];
+
+        while ($completed_status_code == $accepted_not_complete_code &&
+          $wait_attempts > 0) {
+
+            $completed_result = $this->registerComplete($api_key, $result,
                           $upload_data, $metadata);
 
-        return $success;
+            $completed_status_code = $completed_result['status_code'];
+            if ($completed_status_code == $accepted_not_complete_code) {
+              sleep($wait_time);
+            }
+            $wait_attempts--;
+        }
+
+        return $completed_result;
     }
 
     /**
@@ -137,20 +153,30 @@ class UploadProcessor
             $chunk_offset = 0;
             $chunks = [];
 
-            if ($this->intelligent &&
-                    ($metadata['filesize'] > $max_chunk_size)) {
+            if ($this->intelligent) {
 
                 // split part into chunks
-                $num_chunks = ceil($max_part_size / $max_chunk_size);
+                $num_chunks = 1;
+                $chunk_size = $metadata['filesize'];
+
+                if ($metadata['filesize'] > $max_chunk_size) {
+                    $num_chunks = ceil($max_part_size / $max_chunk_size);
+                    $chunk_size = $max_chunk_size;
+                }
+
                 while ($num_chunks > 0) {
                     array_push($chunks, [
                         'offset'        => $chunk_offset,
                         'seek_point'    => $seek_point,
-                        'size'          => $max_chunk_size,
+                        'size'          => $chunk_size,
                     ]);
 
                     $chunk_offset += $max_chunk_size;
                     $seek_point += $max_chunk_size;
+                    if ($seek_point >= $metadata['filesize']) {
+                        break;
+                    }
+
                     $num_chunks--;
                 }
             }
@@ -193,9 +219,7 @@ class UploadProcessor
      */
     protected function processParts($parts)
     {
-        $chunk_max_size = FilestackConfig::UPLOAD_CHUNK_SIZE;
         $upload_url = FilestackConfig::UPLOAD_URL . '/multipart/upload';
-        $commit_url = FilestackConfig::UPLOAD_URL . '/multipart/commit';
 
         $num_parts = count($parts);
         $parts_etags = [];
@@ -235,15 +259,7 @@ class UploadProcessor
 
             if ($this->intelligent) {
                 // commit part
-                $commit_data = $this->buildCommitData($part);
-                $response = $this->sendRequest('POST', $commit_url,
-                                               ['multipart' => $commit_data]);
-
-                $status_code = $response->getStatusCode();
-                if ($status_code !== 200) {
-                    throw new FilestackException($response->getBody(),
-                        $status_code);
-                }
+                $this->commitPart($part);
             }
 
             $parts_completed++;
@@ -254,6 +270,21 @@ class UploadProcessor
         }
 
         return true;
+    }
+
+    protected function commitPart($part)
+    {
+        $commit_url = FilestackConfig::UPLOAD_URL . '/multipart/commit';
+        $commit_data = $this->buildCommitData($part);
+
+        $response = $this->sendRequest('POST', $commit_url,
+                                       ['multipart' => $commit_data]);
+
+        $status_code = $response->getStatusCode();
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(),
+                $status_code);
+        }
     }
 
     protected function uploadChunkToS3($url, $headers, $chunk)
@@ -311,12 +342,10 @@ class UploadProcessor
         $this->appendData($data, 'filename',        $metadata['filename']);
         $this->appendData($data, 'mimetype',        $metadata['mimetype']);
         $this->appendData($data, 'store_location',  $metadata['location']);
+        $this->appendData($data, 'parts',           $parts_etags);
 
         if ($this->intelligent) {
             $this->appendData($data, 'multipart', true);
-        }
-        else {
-            $this->appendData($data, 'parts', $parts_etags);
         }
 
         array_push($data, ['name' => 'files',
@@ -328,9 +357,14 @@ class UploadProcessor
 
         $url = FilestackConfig::UPLOAD_URL . '/multipart/complete';
         $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
-        $json = $this->handleResponseCreateFilelink($response);
+        $status_code = $response->getStatusCode();
 
-        return $json;
+        $json = [];
+        if ($status_code == 200) {
+            $json = $this->handleResponseCreateFilelink($response);
+        }
+
+        return ['status_code' => $status_code, 'json' => $json];
     }
 
     /**
@@ -369,11 +403,11 @@ class UploadProcessor
         $data = [];
         $this->appendData($data, 'apikey',            $part['api_key']);
         $this->appendData($data, 'uri',               $part['uri']);
-        $this->appendData($data, 'location',          $part['location']);
+        $this->appendData($data, 'store_location',          $part['location']);
         $this->appendData($data, 'region',            $part['region']);
         $this->appendData($data, 'upload_id',         $part['upload_id']);
         $this->appendData($data, 'part',              $part['part_num']);
-        $this->appendData($data, 'size',              $part['part_size']);
+        $this->appendData($data, 'size',              $part['filesize']);
 
         array_push($data, [
             'name'      => 'files',
