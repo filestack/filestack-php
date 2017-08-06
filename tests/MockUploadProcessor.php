@@ -17,6 +17,12 @@ class MockUploadProcessor extends UploadProcessor
         return $result;
     }
 
+    public function callProcessChunks($part, $chunks)
+    {
+        $result = $this->processChunks($part, $chunks);
+        return $result;
+    }
+
     public function callCommitPart($part)
     {
         $result = $this->commitPart($part);
@@ -29,11 +35,22 @@ class MockUploadProcessor extends UploadProcessor
         return $result;
     }
 
+    public function callMultipartGetTags($s3_results, &$parts_etags)
+    {
+        $this->multipartGetTags($s3_results, $parts_etags);
+    }
+
     public function callRegisterComplete($api_key, $parts_etags,
                                          $upload_data, $metadata)
     {
         $result = $this->registerComplete($api_key, $parts_etags,
                                           $upload_data, $metadata);
+        return $result;
+    }
+
+    public function callHandleS3PromisesResult($s3_results)
+    {
+        $result = $this->handleS3PromisesResult($s3_results);
         return $result;
     }
 }

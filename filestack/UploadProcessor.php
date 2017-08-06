@@ -2,6 +2,7 @@
 namespace Filestack;
 
 use Filestack\FilestackConfig;
+use Filestack\HttpStatusCodes;
 
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
@@ -41,9 +42,14 @@ class UploadProcessor
         $this->http_client = $http_client; // CommonMixin
     }
 
+    public function intelligenceEnabled($upload_data) {
+        return (array_key_exists('upload_type', $upload_data) &&
+        $upload_data['upload_type'] == 'intelligent_ingestion');
+    }
+
     public function setIntelligent($intelligent)
     {
-      $this->intelligent = $intelligent;
+        $this->intelligent = $intelligent;
     }
 
     /**
@@ -102,21 +108,22 @@ class UploadProcessor
         // upload parts
         $result = $this->processParts($parts);
 
+        // parts uploaded, register complete and wait for acceptance
         $wait_attempts = FilestackConfig::UPLOAD_WAIT_ATTEMPTS;
         $wait_time = FilestackConfig::UPLOAD_WAIT_SECONDS;
-        $accepted_not_complete_code = FilestackConfig::ACCEPTED_NOT_COMPLETE_CODE;
+        $accepted_code = HttpStatusCodes::HTTP_ACCEPTED;
 
-        $completed_status_code = $accepted_not_complete_code;
+        $completed_status_code = $accepted_code;
         $completed_result = ['status_code' => 0, 'json' => []];
 
-        while ($completed_status_code == $accepted_not_complete_code &&
+        while ($completed_status_code == $accepted_code &&
           $wait_attempts > 0) {
 
             $completed_result = $this->registerComplete($api_key, $result,
                           $upload_data, $metadata);
 
             $completed_status_code = $completed_result['status_code'];
-            if ($completed_status_code == $accepted_not_complete_code) {
+            if ($completed_status_code == $accepted_code) {
               sleep($wait_time);
             }
             $wait_attempts--;
@@ -219,49 +226,38 @@ class UploadProcessor
      */
     protected function processParts($parts)
     {
-        $upload_url = FilestackConfig::UPLOAD_URL . '/multipart/upload';
-
         $num_parts = count($parts);
         $parts_etags = [];
         $parts_completed = 0;
 
+        $max_retries = FilestackConfig::MAX_RETRIES;
+
+        $current_part_index = 0;
         while($parts_completed < $num_parts) {
-            $part = array_shift($parts);
+            $part = $parts[$current_part_index];
             $part['part_size'] = 0;
             $chunks = $part['chunks'];
 
-            for($i=0; $i<count($chunks); $i++) {
-                $current_chunk = $chunks[$i];
-                $seek_point = $current_chunk['seek_point'];
+            // process chunks of current part
+            $promises = $this->processChunks($part, $chunks);
 
-                $chunk_content = $this->getChunkContent($part['filepath'], $seek_point,
-                    $current_chunk['size']);
+            // sends s3 chunks asyncronously
+            $s3_results = $this->settlePromises($promises);
+            $this->handleS3PromisesResult($s3_results);
 
-                $current_chunk['md5'] = trim(base64_encode(md5($chunk_content, true)));
-                $current_chunk['size'] = strlen($chunk_content);
-                $part['part_size'] += $current_chunk['size'];
-
-                $data = $this->buildChunkData($part, $current_chunk);
-
-                $response = $this->sendRequest('POST', $upload_url, ['multipart' => $data]);
-                $json = $this->handleResponseDecodeJson($response);
-
-                $url = $json['url'];
-                $headers = $json['headers'];
-                $s3_response = $this->uploadChunkToS3($url, $headers, $chunk_content);
-
-                if (!$this->intelligent) {
-                    $etag = $s3_response->getHeader('ETag')[0];
-                    $part_etag = sprintf('%s:%s', $part['part_num'], $etag);
-                    array_push($parts_etags, $part_etag);
-                }
-            }
-
+            // handle fulfilled promises
             if ($this->intelligent) {
                 // commit part
                 $this->commitPart($part);
             }
+            else {
+                $this->multipartGetTags($s3_results, $parts_etags);
+            }
 
+            unset($promises);
+            unset($s3_results);
+
+            $current_part_index++;
             $parts_completed++;
         }
 
@@ -272,6 +268,86 @@ class UploadProcessor
         return true;
     }
 
+    /**
+     * Process the chunks of a part the file to server.
+     *
+     * @param object    $part           the part to process
+     * @param array     $chunks         the chunks of part to process
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return Promises to send Asyncronously to s3
+     */
+    protected function processChunks($part, $chunks)
+    {
+        $upload_url = FilestackConfig::UPLOAD_URL . '/multipart/upload';
+        $max_retries = FilestackConfig::MAX_RETRIES;
+
+        $num_retries = 0;
+        $promises = [];
+
+        if (!array_key_exists('part_size', $part)) {
+            $part['part_size'] = 0;
+        }
+
+        for($i=0; $i<count($chunks); $i++) {
+            $current_chunk = $chunks[$i];
+            $seek_point = $current_chunk['seek_point'];
+
+            $chunk_content = $this->getChunkContent($part['filepath'], $seek_point,
+                $current_chunk['size']);
+
+            $current_chunk['md5'] = trim(base64_encode(md5($chunk_content, true)));
+            $current_chunk['size'] = strlen($chunk_content);
+            $part['part_size'] += $current_chunk['size'];
+
+            $data = $this->buildChunkData($part, $current_chunk);
+            $response = $this->sendRequest('POST', $upload_url, ['multipart' => $data]);
+
+            try {
+                $json = $this->handleResponseDecodeJson($response);
+                $url = $json['url'];
+                $headers = $json['headers'];
+
+                $this->appendPromise($promises, 'PUT', $url, [
+                    'body' => $chunk_content,
+                    'headers' => $headers
+                ]);
+            }
+            catch(FilestackException $e) {
+                $status_code = $e->getCode();
+                if ($this->intelligent && $num_retries < $max_retries) {
+                    $num_retries++;
+                    if (HttpStatusCodes::isServerError($status_code)) {
+                        $wait_time = $this->get_retry_miliseconds($num_retries);
+                        usleep($wait_time * 1000);
+                    }
+
+                    if (HttpStatusCodes::isNetworkError($status_code) ||
+                        HttpStatusCodes::isServerError($status_code)) {
+                        // reset index to retry this iteration
+                        $i--;
+                    }
+                    continue;
+                }
+
+                throw new FilestackException($e->getMessage(), $status_code);
+            }
+        }
+
+        return $promises;
+    }
+
+    /**
+     * All chunks of this part has been uploaded.  We have to call commit to
+     * let the uploader API knows.
+     *
+     * @param object    $part           the part to process
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return int status_code
+     */
     protected function commitPart($part)
     {
         $commit_url = FilestackConfig::UPLOAD_URL . '/multipart/commit';
@@ -285,8 +361,19 @@ class UploadProcessor
             throw new FilestackException($response->getBody(),
                 $status_code);
         }
+        return $status_code;
     }
 
+    /**
+     * Upload a chunk of data to S3
+     * @param string    $url        the S3 URL (from the register task call)
+     * @param array     $headers    auth headers from the register task call
+     * @param binary    $chunk      chunk of data to upload
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return int status_code
+     */
     protected function uploadChunkToS3($url, $headers, $chunk)
     {
         $query = parse_url($url, PHP_URL_QUERY);
@@ -432,11 +519,42 @@ class UploadProcessor
         return $chunk;
     }
 
+    /**
+     * Append security params
+     */
     protected function appendSecurity(&$data)
     {
         if ($this->security) {
             $this->appendData($data, 'policy',    $this->security->policy);
             $this->appendData($data, 'signature', $this->security->signature);
+        }
+    }
+
+    /**
+     * Parse results of s3 calls and append to parts_etags array
+     */
+    protected function multipartGetTags($s3_results, &$parts_etags)
+    {
+        foreach ($s3_results as $part_num => $result) {
+            if (isset($result['value']) && $result['value']) {
+                $etag = $result['value']->getHeader('ETag')[0];
+                $part_etag = sprintf('%s:%s', $part_num, $etag);
+                array_push($parts_etags, $part_etag);
+            }
+        }
+    }
+
+    /**
+     * Handle results of promises after async calls
+     */
+    protected function handleS3PromisesResult($s3_results)
+    {
+        foreach ($s3_results as $promise) {
+            if ($promise['state'] !== 'fulfilled') {
+                $response = $promise['value'];
+                $code = $response->getStatusCode();
+                throw new FilestackException("Errored uploading to s3", $code);
+            }
         }
     }
 }

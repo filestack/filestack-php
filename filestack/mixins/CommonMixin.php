@@ -6,6 +6,11 @@ use Filestack\Filelink;
 use Filestack\FileSecurity;
 use Filestack\FilestackException;
 
+use GuzzleHttp\Pool;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+
+
 /**
  * Mixin for common functionalities used by most Filestack objects
  *
@@ -32,6 +37,19 @@ trait CommonMixin
         $url = str_replace($path, implode('/', $encoded_path), $url);
 
         return filter_var($url, FILTER_VALIDATE_URL);
+    }
+
+    /**
+     * Get the miliseconds of exponential backoff retry strategy
+     *
+     * @param   int  $retry_num    the retry number
+     *
+     * @return int
+     */
+    public function get_retry_miliseconds($retry_num)
+    {
+        // (2^retries * 100) milliseconds
+        return pow(2, $retry_num) * 100;
     }
 
     /**
@@ -314,6 +332,16 @@ trait CommonMixin
         return $filelink;
     }
 
+    /**
+     * Handles a response.  decode and return json if 200,
+     * throws exception otherwise.
+     *
+     * @param Response  $response   the response object
+     *
+     * @throws FilestackException   if statuscode is not OK
+     *
+     * @return array (decoded json)
+     */
     protected function handleResponseDecodeJson($response)
     {
         $status_code = $response->getStatusCode();
@@ -337,8 +365,8 @@ trait CommonMixin
         $this->addRequestSourceHeader($headers);
         $data['http_errors'] = false;
         $data['headers'] = $headers;
-
         $response = $this->http_client->request($method, $url, $data);
+
         return $response;
     }
 
@@ -383,9 +411,23 @@ trait CommonMixin
     /**
      * Append a data item
      */
-
     protected function appendData(&$data, $name, $value)
     {
         array_push($data, ['name' => $name, 'contents' => $value]);
+    }
+
+    /**
+     *
+     */
+    protected function appendPromise(&$promises, $method, $url, $to_send)
+    {
+        $promises[] = $this->http_client->requestAsync($method,
+                $url, $to_send);
+    }
+
+    protected function settlePromises($promises)
+    {
+        $api_results = \GuzzleHttp\Promise\settle($promises)->wait();
+        return $api_results;
     }
 }

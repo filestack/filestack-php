@@ -686,8 +686,7 @@ class FilestackClient
             $metadata, $this->security);
 
         // determine if app has intelligent_ingestion enabled
-        if (array_key_exists('upload_type', $upload_data) &&
-                $upload_data['upload_type'] == 'intelligent_ingestion') {
+        if ($this->upload_processor->intelligenceEnabled($upload_data)) {
 
             // intelligent ingestion flag enabled
             $this->upload_processor->setIntelligent(true);

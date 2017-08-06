@@ -14,8 +14,17 @@ class FilestackConfig
 
     const UPLOAD_PART_SIZE = 1024 * 1024 * 8; // last_digit=MB
     const UPLOAD_CHUNK_SIZE = 1024 * 1024 * 1; // last_digit=MB
+    const UPLOAD_MIN_CHUNK_SIZE = 1024 * 32; // last_digit=KB
+
     const UPLOAD_WAIT_ATTEMPTS = 300;
     const UPLOAD_WAIT_SECONDS = 2;
+    const UPLOAD_TIMEOUT_SECONDS = 30;
 
-    const ACCEPTED_NOT_COMPLETE_CODE = 202;
+    const MAX_RETRIES = 5;
+
+    const HTTP_CODE_OK = 200;
+    const HTTP_CODE_ACCEPTED = 202;
+    const HTTP_CODE_UNAUTHORIZED = 401;
+    const HTTP_CODE_FORBIDDEN = 403;
+    const HTTP_CODE_ERROR = 500;
 }

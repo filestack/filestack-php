@@ -666,11 +666,12 @@ class FilestackClientTest extends BaseTest
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
-            ->willReturnOnConsecutiveCalls($mock_response,
+            ->willReturnOnConsecutiveCalls(
                 $mock_response,
                 $mock_response,
                 $mock_response,
                 $mock_response_202,
+                $mock_response,
                 $mock_response);
 
         $client = new FilestackClient(

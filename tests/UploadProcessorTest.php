@@ -281,6 +281,82 @@ class UploadProcessorTest extends BaseTest
         $upload_processor->callProcessParts($parts);
     }
 
+    public function testProcessChunks()
+    {
+        $mock_response1 = new MockHttpResponse(408,  '{"error": "timed out"}');
+        $mock_response2 = new MockHttpResponse(504,  '{"error": "Gateway timed out"}');
+        $mock_response3 = new MockHttpResponse(200,
+            json_encode([
+                'url'       => 'https://some-s3-url/somedata',
+                'part_size' => 1024,
+                'headers'   => []
+            ])
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+             ->willReturnOnConsecutiveCalls($mock_response1, $mock_response2,
+                $mock_response3,
+                $mock_response3,
+                $mock_response3,
+                $mock_response3,
+                $mock_response3,
+                $mock_response3,
+                $mock_response3,
+                $mock_response3);
+
+        $upload_processor = new MockUploadProcessor(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+        $upload_processor->setIntelligent(true);
+
+        $parts = $upload_processor->callCreateParts($this->test_api_key,
+            $this->file_metadata, $this->upload_data);
+
+        $part = $parts[0];
+        $chunks = $part['chunks'];
+
+        $promises = $upload_processor->callProcessChunks($part, $chunks);
+
+        $this->assertTrue(count($promises) > 0);
+    }
+
+    /**
+     * Test handling promises from s3
+     */
+    public function testUnFulfilledPromises()
+    {
+        $this->expectException(FilestackException::class);
+        $this->expectExceptionCode(500);
+
+        $mock_s3_response = new MockHttpResponse(
+            500,
+            new MockHttpResponseBody('{"error": "some-error"}')
+        );
+
+        $s3_results = [
+            [
+                'state' => 'fulfilled',
+                'value' => $mock_s3_response
+            ],
+            [
+                'state' => 'rejected',
+                'value' => $mock_s3_response
+            ]
+        ];
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $upload_processor = new MockUploadProcessor(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $parts = $upload_processor->callHandleS3PromisesResult($s3_results);
+    }
+
     /**
      * Test commitPart
      */
@@ -379,6 +455,31 @@ class UploadProcessorTest extends BaseTest
         $headers = ['Auth' => 'x-some-auth-val'];
         $chunk = "test-content";
         $upload_processor->callUploadChunkToS3($url, $headers, $chunk);
+    }
+
+    /**
+     * Test getting eTags from fulfilled s3 promises from multipart upload calls
+     */
+    public function testMultipartGetTags()
+    {
+        $mock_response = new MockHttpResponse(
+            200,
+            new MockHttpResponseBody('some content'),
+            ['ETag' => ['tag1']]
+        );
+
+        $s3_results = [
+            ['value' => $mock_response]
+        ];
+
+        $upload_processor = new MockUploadProcessor(
+            $this->test_api_key,
+            $this->test_security
+        );
+
+        $parts_etags = [];
+        $upload_processor->callMultipartGetTags($s3_results, $parts_etags);
+        $this->assertNotEmpty($parts_etags);
     }
 
     /**
