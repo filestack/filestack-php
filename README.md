@@ -6,6 +6,10 @@
 <a href="https://www.filestack.com"><img src="https://filestack.com/themes/filestack/assets/images/press-articles/color.svg" align="left" hspace="10" vspace="6"></a>
 This is the official PHP SDK for Filestack - API and content management system that makes it easy to add powerful file uploading and transformation capabilities to any web or mobile application.
 
+## Requirements
+
+* PHP 5.6+
+
 ## Resources
 
 * [Filestack](https://www.filestack.com)
@@ -15,7 +19,7 @@ This is the official PHP SDK for Filestack - API and content management system t
 
 Install ``filestack`` with composer, either run
 
-    $ composer require --prefer-dist filestack/filestack-php "dev-master"
+    $ composer require --prefer-dist filestack/filestack-php
 
 or add
 

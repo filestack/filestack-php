@@ -579,6 +579,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadSuccess()
     {
+        $test_headers = ['ETag' =>['some-etag']];
         $mock_response = new MockHttpResponse(200,
             json_encode([
                 'filename'  => 'somefilename.jpg',
@@ -587,8 +588,10 @@ class FilestackClientTest extends BaseTest
                 'url'       => 'https://cdn.filestack.com/somefilehandle',
                 'uri'       => 'https://uploaduri/handle&partNum=1',
                 'region'    => 'us-east-1',
-                'upload_id' => 'test-upload-id'
-            ])
+                'upload_id' => 'test-upload-id',
+                'headers'   => []
+            ]),
+            $test_headers
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -611,6 +614,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadSuccessWithOptions()
     {
+        $test_headers = ['ETag' =>['some-etag']];
         $mock_response = new MockHttpResponse(200,
             json_encode([
                 'filename'  => 'somefilename.jpg',
@@ -619,8 +623,10 @@ class FilestackClientTest extends BaseTest
                 'url'       => 'https://cdn.filestack.com/somefilehandle',
                 'uri'       => 'https://uploaduri/handle&partNum=1',
                 'region'    => 'us-east-1',
-                'upload_id' => 'test-upload-id'
-            ])
+                'upload_id' => 'test-upload-id',
+                'headers'   => []
+            ]),
+            $test_headers
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -638,6 +644,46 @@ class FilestackClientTest extends BaseTest
         $mimetype = 'text/plain';
         $filelink = $client->upload($this->test_filepath, $location, $filename, $mimetype);
 
+        $this->assertNotNull($filelink);
+    }
+
+    /**
+     * Test uploading using intelligent ingestion flow
+     */
+    public function testUploadIntelligentSuccess()
+    {
+        $mock_response_202 = new MockHttpResponse(202,  '{accepted: true}');
+        $mock_response = new MockHttpResponse(200,
+            json_encode([
+                'filename'  => 'somefilename.jpg',
+                'size'      => '1000',
+                'type'      => 'image/jpg',
+                'url'       => 'https://cdn.filestack.com/somefilehandle',
+                'uri'       => 'https://uploaduri/handle&partNum=1',
+                'region'    => 'us-east-1',
+                'upload_id' => 'test-upload-id',
+                'headers'   => [],
+                'upload_type' => 'intelligent_ingestion' // intelligent flag
+            ])
+        );
+
+        $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
+        $stub_http_client->method('request')
+            ->willReturnOnConsecutiveCalls(
+                $mock_response,
+                $mock_response,
+                $mock_response,
+                $mock_response_202,
+                $mock_response,
+                $mock_response);
+
+        $client = new FilestackClient(
+            $this->test_api_key,
+            $this->test_security,
+            $stub_http_client
+        );
+
+        $filelink = $client->upload($this->test_filepath);
         $this->assertNotNull($filelink);
     }
 

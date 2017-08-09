@@ -2,6 +2,8 @@
 namespace Filestack;
 
 use GuzzleHttp\Client;
+use Filestack\FilestackConfig;
+use Filestack\UploadProcessor;
 
 /**
  * FilestackClient client.  This is the main object to
@@ -14,6 +16,7 @@ class FilestackClient
 
     public $api_key;
     public $security;
+    private $upload_processor;
 
     /**
      * FilestackClient constructor
@@ -23,8 +26,10 @@ class FilestackClient
      *                                          security settings is turned on
      * @param GuzzleHttp\Client $http_client    DI http client, will instantiate
      *                                          one if not passed in
+     * @param UploadProcessor   $upload_processor DI upload_processor object
      */
-    public function __construct($api_key, $security = null, $http_client = null)
+    public function __construct($api_key, $security = null, $http_client = null,
+        $upload_processor = null)
     {
         $this->api_key = $api_key;
         $this->security = $security;
@@ -33,6 +38,11 @@ class FilestackClient
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
+
+        if (is_null($upload_processor)) {
+            $upload_processor = new UploadProcessor($api_key, $security, $http_client);
+        }
+        $this->upload_processor = $upload_processor;
     }
 
     /**
@@ -672,18 +682,19 @@ class FilestackClient
         ];
 
         // register job
-        $upload_data = $this->sendMultipartStart($this->api_key,
+        $upload_data = $this->upload_processor->registerUploadTask($this->api_key,
             $metadata, $this->security);
 
-        // split files into chunks
-        $jobs = $this->createUploadJobs($metadata, $upload_data);
+        // determine if app has intelligent_ingestion enabled
+        if ($this->upload_processor->intelligenceEnabled($upload_data)) {
 
-        // process jobs, send chunks
-        $parts_etags = $this->sendMultipartJobs($jobs, $this->security);
+            // intelligent ingestion flag enabled
+            $this->upload_processor->setIntelligent(true);
+        }
 
-        // mark job as completed
-        $result = $this->sendMultipartComplete($this->api_key, $parts_etags,
-            $upload_data, $metadata, $this->security);
+        $result = $this->upload_processor->run($this->api_key,
+                                               $metadata,
+                                               $upload_data);
 
         return $result;
     }
@@ -774,52 +785,5 @@ class FilestackClient
         // call TransformationMixin
         $result = $this->sendTransform($sources_str, $transform_tasks, $this->security);
         return $result;
-    }
-
-    // privates
-    /**
-     * Take a file and separate it into chunks, creating an array of jobs to
-     * process.
-     *
-     * @param array     $metadata       Metadata of file: filename, filesize,
-     *                                  mimetype, location
-     * @param array     $upload_data    filestack upload data from multipartStart
-     *                                  call: uri, region, upload_id
-     *
-     * @return Filestack/Filelink or file content
-     */
-    private function createUploadJobs($metadata, $upload_data)
-    {
-        $seek_point = 0;
-        $part_num = 1;
-        $jobs = [];
-
-        while ($seek_point < $metadata['filesize']) {
-            $chunk = $this->multipartGetChunk($metadata['filepath'], $seek_point);
-
-            $md5_hash = md5($chunk, true);
-            $md5_base64_hash = trim(base64_encode($md5_hash));
-            $chunk_size = strlen($chunk);
-
-            $jobs[$part_num] = [
-                'api_key'       => $this->api_key,
-                'seek_point'    => $seek_point,
-                'md5'           => $md5_base64_hash,
-                'part_num'      => $part_num,
-                'chunksize'     => $chunk_size,
-                'uri'           => $upload_data['uri'],
-                'region'        => $upload_data['region'],
-                'upload_id'     => $upload_data['upload_id'],
-                'filepath'      => $metadata['filepath'],
-                'filename'      => $metadata['filename'],
-                'filesize'      => $metadata['filesize'],
-                'mimetype'      => $metadata['mimetype'],
-                'location'      => $metadata['location']
-            ];
-
-            $part_num++;
-            $seek_point += FilestackConfig::UPLOAD_CHUNK_SIZE;
-        }
-        return $jobs;
     }
 }
