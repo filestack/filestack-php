@@ -35,9 +35,9 @@ class MockUploadProcessor extends UploadProcessor
         return $result;
     }
 
-    public function callMultipartGetTags($s3_results, &$parts_etags)
+    public function callMultipartGetTags($part_num, $s3_results, &$parts_etags)
     {
-        $this->multipartGetTags($s3_results, $parts_etags);
+        $this->multipartGetTags($part_num, $s3_results, $parts_etags);
     }
 
     public function callRegisterComplete($api_key, $parts_etags,

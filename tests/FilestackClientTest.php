@@ -647,6 +647,9 @@ class FilestackClientTest extends BaseTest
         $this->assertNotNull($filelink);
     }
 
+    /**
+     * Test uploading using intelligent ingestion flow
+     */
     public function testUploadIntelligentSuccess()
     {
         $mock_response_202 = new MockHttpResponse(202,  '{accepted: true}');
@@ -660,7 +663,7 @@ class FilestackClientTest extends BaseTest
                 'region'    => 'us-east-1',
                 'upload_id' => 'test-upload-id',
                 'headers'   => [],
-                'upload_type' => 'intelligent_ingestion'
+                'upload_type' => 'intelligent_ingestion' // intelligent flag
             ])
         );
 

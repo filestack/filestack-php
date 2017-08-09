@@ -251,7 +251,10 @@ class UploadProcessor
                 $this->commitPart($part);
             }
             else {
-                $this->multipartGetTags($s3_results, $parts_etags);
+                $part_num = array_key_exists('part_num', $part) ?
+                    $part['part_num'] : 1;
+
+                $this->multipartGetTags($part_num, $s3_results, $parts_etags);
             }
 
             unset($promises);
@@ -533,9 +536,9 @@ class UploadProcessor
     /**
      * Parse results of s3 calls and append to parts_etags array
      */
-    protected function multipartGetTags($s3_results, &$parts_etags)
+    protected function multipartGetTags($part_num, $s3_results, &$parts_etags)
     {
-        foreach ($s3_results as $part_num => $result) {
+        foreach ($s3_results as $result) {
             if (isset($result['value']) && $result['value']) {
                 $etag = $result['value']->getHeader('ETag')[0];
                 $part_etag = sprintf('%s:%s', $part_num, $etag);
@@ -551,8 +554,11 @@ class UploadProcessor
     {
         foreach ($s3_results as $promise) {
             if ($promise['state'] !== 'fulfilled') {
-                $response = $promise['value'];
-                $code = $response->getStatusCode();
+                $code = HttpStatusCodes::HTTP_SERVICE_UNAVAILABLE;
+                if (array_key_exists('value', $promise)) {
+                    $response = $promise['value'];
+                    $code = $response->getStatusCode();
+                }
                 throw new FilestackException("Errored uploading to s3", $code);
             }
         }

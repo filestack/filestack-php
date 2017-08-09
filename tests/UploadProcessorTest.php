@@ -478,7 +478,7 @@ class UploadProcessorTest extends BaseTest
         );
 
         $parts_etags = [];
-        $upload_processor->callMultipartGetTags($s3_results, $parts_etags);
+        $upload_processor->callMultipartGetTags(1, $s3_results, $parts_etags);
         $this->assertNotEmpty($parts_etags);
     }
 
