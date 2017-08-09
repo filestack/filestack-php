@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 1.1.8 (Aug 8, 2017)
+- Intelligent Ingestion Upload
+
 ## 1.1.7 (July 28, 2017)
 - Small file upload bugfix
 
