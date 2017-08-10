@@ -639,11 +639,13 @@ class FilestackClientTest extends BaseTest
             $stub_http_client
         );
 
-        $location = 's3';
-        $filename = 'php-testfile.txt';
-        $mimetype = 'text/plain';
-        $filelink = $client->upload($this->test_filepath, $location, $filename, $mimetype);
+        $options = [
+            'location' => 's3',
+            'filename' => 'php-testfile.txt',
+            'mimetype' => 'text/plain'
+        ];
 
+        $filelink = $client->upload($this->test_filepath, $options);
         $this->assertNotNull($filelink);
     }
 
@@ -683,7 +685,7 @@ class FilestackClientTest extends BaseTest
             $stub_http_client
         );
 
-        $filelink = $client->upload($this->test_filepath);
+        $filelink = $client->upload($this->test_filepath, ['intelligent' => true]);
         $this->assertNotNull($filelink);
     }
 
