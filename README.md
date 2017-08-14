@@ -24,7 +24,7 @@ Install ``filestack`` with composer, either run
 or add
 
 ```
-"filestack/filestack-php": "dev-master"
+"filestack/filestack-php": ">=1.1.9"
 ```
 
 or download from GitHub
@@ -46,6 +46,14 @@ First, you need to create an instance of FilestackClient
 use Filestack\FilestackClient;
 
 $client = new FilestackClient('YOUR_API_KEY');
+```
+
+Call the upload() function
+
+```php
+
+$filelink = $client->upload('/path/to/file');
+
 ```
 
 ### Storage
@@ -87,7 +95,7 @@ First method was shown above, the second method is also very easy and will creat
 ```php
 use Filestack\filelink;
 
-$file = new Filelink('pGj2wWfBTMuXhWe2J3bL', 'YOUR_API_KEY');
+$file = new Filelink('some-file-handle', 'YOUR_API_KEY');
 
 # transforming an image
 $transformed_filelink = $filelink
@@ -123,7 +131,7 @@ use Filestack\FilestackSecurity;
 $security = new FilestackSecurity('YOUR_SECURITY_SECRET');
 $client = new FilestackClient('YOUR_API_KEY', $security);
 
-$file_handle = 'bzjSo5gAT76ra25sjk4c';
+$file_handle = 'some-file-handle';
 
 # get tags with client
 $result_json = $client->getTags($file_handle);
@@ -142,6 +150,25 @@ $json_result = $filelink->getSafeForWork();
 ```
 
 For more examples, see the [examples/](examples/) folder in this project.
+
+## Intelligent Ingestion
+
+The Intelligent Ingestion feature allows user to upload a file in chunks of
+not precised size. This creates a more stable upload flow that ensures the
+file being uploaded will eventually complete successfully, regardless of
+network latency or timeout errors.
+
+However, the upload process may be slower than the normal upload flow for
+large files, as there are errors are retried using the exponential backoff
+retry strategy.
+
+Lastly, this feature has to be turned on for the apikey being used.  To turn
+on this feature please contact Filestack at support@filestack.com.
+
+```
+$client = new FilestackClient('YOUR_API_KEY');
+$filelink = $client->upload('/path/to/file', ['intelligent' => true]);
+```
 
 ## Versioning
 

@@ -268,7 +268,7 @@ class UploadProcessor
             return implode(';', $parts_etags);
         }
 
-        return true;
+        return $parts_completed;
     }
 
     /**
