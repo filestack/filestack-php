@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 1.1.9 (Aug 8, 2017)
+- Added option param in upload() call for Intelligent Ingestion
+
 ## 1.1.8 (Aug 8, 2017)
 - Intelligent Ingestion Upload
 
