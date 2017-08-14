@@ -647,30 +647,39 @@ class FilestackClient
      * Upload a file to desired cloud service, defaults to Filestack's S3
      * storage.
      *
-     * @param string    $filepath           path to file
-     * @param array     $location           specify location, possible values are:
-     *                                      S3, gcs, azure, rackspace, dropbox
-     * @param string    $filename           explicitly set the filename to store as
-     * @param string    $mimetype           explicityl set the mimetype
+     * @param string    $filepath       path to file
+     * @param array     $options        location: specify location, possible
+     *                                    values are:
+     *                                    S3, gcs, azure, rackspace, dropbox
+     *                                  filename: explicitly set the filename
+     *                                    to store as
+     *                                  mimetype: explicitly set the mimetype
+     *                                  intelligent: set to true to use the
+     *                                    Intelligent Ingestion flow
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
      * @return Filestack\Filelink or file content
      */
-    public function upload($filepath, $location = 's3', $filename = '', $mimetype = '')
+    public function upload($filepath, $options = [])
     {
         if (!file_exists($filepath)) {
             throw new FilestackException("File not found", 400);
         }
 
-        // use existing filename if one isn't passed in
-        if (!$filename) {
-            $filename = basename($filepath);
+        $location = 's3';
+        if (array_key_exists('location', $options)) {
+            $location = $options['location'];
         }
 
-        // detect mimetype if one isn't passed in
-        if (!$mimetype) {
-            $mimetype = mime_content_type($filepath);
+        $filename = basename($filepath);
+        if (array_key_exists('filename', $options)) {
+            $filename = $options['filename'];
+        }
+
+        $mimetype = mime_content_type($filepath);
+        if (array_key_exists('mimetype', $options)) {
+            $mimetype = $options['mimetype'];
         }
 
         $metadata = [
@@ -685,11 +694,11 @@ class FilestackClient
         $upload_data = $this->upload_processor->registerUploadTask($this->api_key,
             $metadata, $this->security);
 
-        // determine if app has intelligent_ingestion enabled
-        if ($this->upload_processor->intelligenceEnabled($upload_data)) {
+        // Intelligent Ingestion option
+        if (array_key_exists('intelligent', $options) &&
+            $this->upload_processor->intelligenceEnabled($upload_data)) {
 
-            // intelligent ingestion flag enabled
-            $this->upload_processor->setIntelligent(true);
+            $this->upload_processor->setIntelligent($options['intelligent']);
         }
 
         $result = $this->upload_processor->run($this->api_key,
