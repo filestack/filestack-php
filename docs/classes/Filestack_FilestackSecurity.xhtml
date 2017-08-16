@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackSecurity</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Filestack">Filestack</a>
+          </li>
+          <li class="separator">FilestackSecurity</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/FilestackSecurity.php.xhtml#line10">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\</small>FilestackSecurity</h1>
+        <h4>Class representing a Filestack Security object.  Use this clas if you have security enabled on your apikey.</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class FilestackSecurity
+            {<br/><ul class="none"><li>// constants</li><li>const DEFAULT_EXPIRY = 3600;</li></ul><ul class="none"><li>// members</li><li>protected  <a href="#members">$allowed_options</a>;
+                    </li><li>protected  <a href="#members">$secret</a>;
+                    </li><li>public  <a href="#members">$policy</a>;
+                    </li><li>public  <a href="#members">$signature</a>;
+                    </li><li>public  <a href="#members">$options</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/__construct.xhtml">__construct</a>()
+                    </li><li>private array <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/generate.xhtml">generate</a>()
+                    </li><li>public string <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/signUrl.xhtml">signUrl</a>()
+                    </li><li>public bool <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/verify.xhtml">verify</a>()
+                    </li><li>protected string <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/createSignature.xhtml">createSignature</a>()
+                    </li><li>protected bool <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/validateOptions.xhtml">validateOptions</a>()
+                    </li><li>protected void <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/urlsafeB64encode.xhtml">urlsafeB64encode</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="DEFAULT_EXPIRY">DEFAULT_EXPIRY</td>
+              <td>3600</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="allowed_options">
+              <strong>$allowed_options</strong>
+            </li>
+            <li id="secret">
+              <strong>$secret</strong>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="options">
+              <strong>$options</strong>
+            </li>
+            <li id="policy">
+              <strong>$policy</strong>
+            </li>
+            <li id="signature">
+              <strong>$signature</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="generate"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/generate.xhtml">generate()</a>
+                — generate a security policy and signature</li>
+          </ul>
+          <h4>protected</h4>
+          <ul>
+            <li id="createSignature"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/createSignature.xhtml">createSignature()</a>
+                — Generate a signature</li>
+            <li id="urlsafeB64encode"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/urlsafeB64encode.xhtml">urlsafeB64encode()</a>
+                — Helper functions</li>
+            <li id="validateOptions"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/validateOptions.xhtml">validateOptions()</a>
+                — Validate options are allowed</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/__construct.xhtml">__construct()</a>
+                — Filestack Security constructor</li>
+            <li id="signUrl"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/signUrl.xhtml">signUrl()</a>
+                — Append policy and signature to url</li>
+            <li id="verify"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/verify.xhtml">verify()</a>
+                — Verify that a policy is valid</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.10.1 - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

@@ -6,7 +6,7 @@ use Filestack\FilestackConfig;
 use Filestack\UploadProcessor;
 
 /**
- * FilestackClient client.  This is the main object to
+ * Filestack client object.  This is the main object to
  * make functional calls to the Filestack API.
  */
 class FilestackClient
