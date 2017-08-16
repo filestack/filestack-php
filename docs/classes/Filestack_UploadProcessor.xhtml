@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\UploadProcessor</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Filestack">Filestack</a>
+          </li>
+          <li class="separator">UploadProcessor</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/UploadProcessor.php.xhtml#line15">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\</small>UploadProcessor</h1>
+        <h4>Object used by the Filestack client to process an upload task.</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class UploadProcessor
+            {<br/><ul class="none"><li>// members</li><li>public  <a href="#members">$api_key</a>;
+                    </li><li>protected  <a href="#members">$security</a>;
+                    </li><li>protected  <a href="#members">$intelligent</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/__construct.xhtml">__construct</a>()
+                    </li><li>public void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/intelligenceEnabled.xhtml">intelligenceEnabled</a>()
+                    </li><li>public void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/setIntelligent.xhtml">setIntelligent</a>()
+                    </li><li>public json <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/registerUploadTask.xhtml">registerUploadTask</a>()
+                    </li><li>public array['statuscode' <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/run.xhtml">run</a>()
+                    </li><li>protected Filestack/Filelink <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/createParts.xhtml">createParts</a>()
+                    </li><li>protected json <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/processParts.xhtml">processParts</a>()
+                    </li><li>protected Promises <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/processChunks.xhtml">processChunks</a>()
+                    </li><li>protected int <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/commitPart.xhtml">commitPart</a>()
+                    </li><li>protected int <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/uploadChunkToS3.xhtml">uploadChunkToS3</a>()
+                    </li><li>protected json <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/registerComplete.xhtml">registerComplete</a>()
+                    </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/buildChunkData.xhtml">buildChunkData</a>()
+                    </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/buildCommitData.xhtml">buildCommitData</a>()
+                    </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/getChunkContent.xhtml">getChunkContent</a>()
+                    </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/appendSecurity.xhtml">appendSecurity</a>()
+                    </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/multipartGetTags.xhtml">multipartGetTags</a>()
+                    </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/handleS3PromisesResult.xhtml">handleS3PromisesResult</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.xhtml">isUrl</a>()
+                        </li><li>public int <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.xhtml">get_retry_miliseconds</a>()
+                        </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.xhtml">sendDelete</a>()
+                        </li><li>protected bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.xhtml">sendDownload</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.xhtml">sendGetContent</a>()
+                        </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.xhtml">sendGetMetaData</a>()
+                        </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.xhtml">sendGetSafeForWork</a>()
+                        </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.xhtml">sendGetTags</a>()
+                        </li><li>public Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.xhtml">sendOverwrite</a>()
+                        </li><li>protected Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.xhtml">handleResponseCreateFilelink</a>()
+                        </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.xhtml">handleResponseDecodeJson</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.xhtml">sendRequest</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.xhtml">getSourceHeaders</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.xhtml">addRequestSourceHeader</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.xhtml">appendData</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.xhtml">appendPromise</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.xhtml">settlePromises</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Uses</h4>
+          <ul>
+            <li>
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin.xhtml">Filestack\Mixins\CommonMixin</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="http_client">
+              <strong>$http_client</strong>
+            </li>
+            <li id="http_promises">
+              <strong>$http_promises</strong>
+            </li>
+            <li id="intelligent">
+              <strong>$intelligent</strong>
+            </li>
+            <li id="security">
+              <strong>$security</strong>
+            </li>
+            <li id="source_header">
+              <strong>$source_header</strong>
+            </li>
+            <li id="user_agent_header">
+              <strong>$user_agent_header</strong>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="api_key">
+              <strong>$api_key</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>protected</h4>
+          <ul>
+            <li id="appendSecurity"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/appendSecurity.xhtml">appendSecurity()</a>
+                — Append security params</li>
+            <li id="buildChunkData"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/buildChunkData.xhtml">buildChunkData()</a>
+                — Create data multipart data for multipart upload api request</li>
+            <li id="buildCommitData">
+              <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/buildCommitData.xhtml">buildCommitData()</a>
+            </li>
+            <li id="commitPart"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/commitPart.xhtml">commitPart()</a>
+                — All chunks of this part has been uploaded.  We have to call commit to let the uploader API knows.</li>
+            <li id="createParts"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/createParts.xhtml">createParts()</a>
+                — Take a file and separate it into parts, creating an array of parts to process.</li>
+            <li id="getChunkContent"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/getChunkContent.xhtml">getChunkContent()</a>
+                — Get a chunk from a file given starting seek point.</li>
+            <li id="handleS3PromisesResult"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/handleS3PromisesResult.xhtml">handleS3PromisesResult()</a>
+                — Handle results of promises after async calls</li>
+            <li id="multipartGetTags"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/multipartGetTags.xhtml">multipartGetTags()</a>
+                — Parse results of s3 calls and append to parts_etags array</li>
+            <li id="processChunks"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/processChunks.xhtml">processChunks()</a>
+                — Process the chunks of a part the file to server.</li>
+            <li id="processParts"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/processParts.xhtml">processParts()</a>
+                — Process the parts of the file to server.</li>
+            <li id="registerComplete"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/registerComplete.xhtml">registerComplete()</a>
+                — Trigger the end of an upload task</li>
+            <li id="uploadChunkToS3"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/uploadChunkToS3.xhtml">uploadChunkToS3()</a>
+                — Upload a chunk of data to S3</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/__construct.xhtml">__construct()</a>
+                — UploadProcessor constructor</li>
+            <li id="intelligenceEnabled">
+              <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/intelligenceEnabled.xhtml">intelligenceEnabled()</a>
+            </li>
+            <li id="registerUploadTask"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/registerUploadTask.xhtml">registerUploadTask()</a>
+                — Trigger the start of an upload task</li>
+            <li id="run"><a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/run.xhtml">run()</a>
+                — Run upload process, including splitting up the file and sending parts concurrently in chunks.</li>
+            <li id="setIntelligent">
+              <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/setIntelligent.xhtml">setIntelligent()</a>
+            </li>
+          </ul>
+          <h3>Inherited from <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin.xhtml">Filestack\Mixins\CommonMixin</a></h3>
+          <h4>protected</h4>
+          <ul>
+            <li id="addRequestSourceHeader"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.xhtml">addRequestSourceHeader()</a>
+                — Append source header to request headers array</li>
+            <li id="appendData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.xhtml">appendData()</a>
+                — Append a data item</li>
+            <li id="appendPromise">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.xhtml">appendPromise()</a>
+            </li>
+            <li id="getSourceHeaders"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.xhtml">getSourceHeaders()</a>
+                — Get source header</li>
+            <li id="handleResponseCreateFilelink"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.xhtml">handleResponseCreateFilelink()</a>
+                — Handle a Filestack response and create a filelink object</li>
+            <li id="handleResponseDecodeJson"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.xhtml">handleResponseDecodeJson()</a>
+                — Handles a response.  decode and return json if 200, throws exception otherwise.</li>
+            <li id="sendDownload"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.xhtml">sendDownload()</a>
+                — Download a file to specified destination given a url</li>
+            <li id="sendGetContent"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.xhtml">sendGetContent()</a>
+                — Get the content of a file.</li>
+            <li id="sendGetMetaData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.xhtml">sendGetMetaData()</a>
+                — Get the metadata of a remote file.  Will only retrieve specific fields if optional fields are passed in</li>
+            <li id="sendGetSafeForWork"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.xhtml">sendGetSafeForWork()</a>
+                — Get the safe for work (sfw) flag of a filelink.</li>
+            <li id="sendGetTags"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.xhtml">sendGetTags()</a>
+                — Get the tags of a filelink.</li>
+            <li id="sendRequest"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.xhtml">sendRequest()</a>
+                — Send request</li>
+            <li id="settlePromises">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.xhtml">settlePromises()</a>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="get_retry_miliseconds"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.xhtml">get_retry_miliseconds()</a>
+                — Get the miliseconds of exponential backoff retry strategy</li>
+            <li id="isUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.xhtml">isUrl()</a>
+                — Check if a string is a valid url.</li>
+            <li id="sendDelete"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.xhtml">sendDelete()</a>
+                — Delete a file from cloud storage</li>
+            <li id="sendOverwrite"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.xhtml">sendOverwrite()</a>
+                — Overwrite a file in cloud storage</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.10.1 - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\Filelink::convertFile</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml#Filestack">Filestack</a>
+          </li>
+          <li class="separator">
+            <a title="Filestack\Filelink" href="../../classes/Filestack_Filelink.xhtml">Filelink</a>
+          </li>
+          <li class="separator">convertFile</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#parameter">Parameter</a>
+          </li>
+          <li>
+            <a href="#return">Return</a>
+          </li>
+          <li>
+            <a href="#throws">Throws</a>
+          </li>
+          <li>
+            <a href="../../source/Filelink.php.xhtml#line389">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Filestack\Filelink::</small>convertFile</h1>
+        <h4>Convert this filelink to another file format.  To see which formats can be converted, see: https://www.filestack.com/docs/image-transformations/conversion</h4>
+        <p/>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function convertFile(string
+        $filetype,
+            [array
+        $options = ] )
+            </code>
+        </div>
+        <h2 id="parameterlist">Parameters</h2>
+        <dl class="styled">
+          <dt><code>$filetype</code>
+                —
+                string</dt>
+          <dd>The format to which you would like to<br/>convert the file. e.g (doc, docx, html, jpg,<br/>                             ods, odt, pdf, png, svg, txt, webp)</dd>
+          <dt><code>$options</code>
+                —
+                array</dt>
+          <dd>Array of options.<br/>background: Set a background color when<br/>converting transparent .png files into other<br/>file types. Can be a word or hex value, e.g.<br/>('white' or 'FFFFFF')<br/>colorspace: RGB, CMYK or Input<br/>By default we convert all the images to the<br/>RGB color model in order to be web friendly.<br/>However, we have added an option to preserve<br/>the original colorspace. This will work for * JPEGs and TIFFs.<br/>compress: (bool) You can take advantage of<br/>Filestack's image compression which utilizes<br/>JPEGtran and OptiPNG. Value for this parameter<br/>is boolean. If you want to compress your image<br/>then the value should be true. Compression<br/>is off/false by default.<br/>density: (int, 1 to 500). You can adjust the<br/>density when converting documents like PowerPoint,<br/>PDF, AI and EPS files to image formats like<br/>JPG or PNG. This can improve the resolution<br/>of the output image.<br/>docinfo: (bool) Set this to true to get information<br/>about a document, such as the number of pages<br/>and the dimensions of the file.<br/>page: (int, 1 to 10000) If you are converting<br/>a file that contains multiple pages such as<br/>PDF or powerpoint file, you can extract a<br/>specific page using the page parameter.<br/>pageformat: set the page size used for the layout<br/>of the resultant document. This parameter can<br/>be used when converting the format of one<br/>document into PDF, PNG, or JPG. Possible values:<br/>'A3', 'A4', 'A5', 'B4','B5',<br/>'letter', 'legal', 'tabloid'<br/>pageorientation: portrait or landscape<br/>determine the orientation of the resulting<br/>document. This parameter can be used when<br/>converting the format of one document into<br/>PDF, PNG, or JPG.<br/>quality: (int, 1 to 100, or 'input')<br/>You can change the quality (and reduce the<br/>file size) of JPEG images by using the quality<br/>parameter. The quality is set to 100 by default.<br/>A quality setting of 80 provides a nice balance<br/>between file size reduction and image quality.<br/>If the quality is instead set to "input" the<br/>image will not be recompressed and the input<br/>compression level of the jpg will be used.<br/>secure: (bool) This parameter applies to conversions<br/>of HTML and SVG sources. When the secure parameter<br/>is set to true, the HTML or SVG file will be<br/>stripped of any insecure tags (HTML sanitization).<br/>Default setting is false.<br/>strip: (bool) Set to true to remove any metadata<br/>                               embedded in an image.</dd>
+        </dl>
+        <h2 id="return">Returns</h2>
+        <dl class="styled">
+          <dt>Filestack/Filelink</dt>
+          <dd><br/>
+        </dd>
+        </dl>
+        <h2 id="throws">Errors/Exceptions</h2>
+        <dl class="styled">
+          <dt>
+            <code>
+              <a title="Filestack\FilestackException" href="../../classes/Filestack_FilestackException.xhtml">FilestackException</a>
+            </code>
+          </dt>
+          <dd>if API call fails, e.g 404 file not found</dd>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.10.1 - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

@@ -1,6 +1,9 @@
 <?php
 namespace Filestack;
 
+/**
+ * Helper Class for Http Statuses
+ */
 class HttpStatusCodes
 {
 

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackClient</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#Filestack">Filestack</a>
+          </li>
+          <li class="separator">FilestackClient</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/FilestackClient.php.xhtml#line12">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\</small>FilestackClient</h1>
+        <h4>Filestack client object.  This is the main object to make functional calls to the Filestack API.</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class FilestackClient
+            {<br/><ul class="none"><li>// members</li><li>public  <a href="#members">$api_key</a>;
+                    </li><li>public  <a href="#members">$security</a>;
+                    </li><li>private  <a href="#members">$upload_processor</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__construct.xhtml">__construct</a>()
+                    </li><li>public void <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__call.xhtml">__call</a>()
+                    </li><li>public void <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getCdnUrl.xhtml">getCdnUrl</a>()
+                    </li><li>public string <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getContent.xhtml">getContent</a>()
+                    </li><li>public array <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getMetaData.xhtml">getMetaData</a>()
+                    </li><li>public json <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getSafeForWork.xhtml">getSafeForWork</a>()
+                    </li><li>public json <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getTags.xhtml">getTags</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/collage.xhtml">collage</a>()
+                    </li><li>public string <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertAudio.xhtml">convertAudio</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertFile.xhtml">convertFile</a>()
+                    </li><li>public string <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertVideo.xhtml">convertVideo</a>()
+                    </li><li>public json <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/debug.xhtml">debug</a>()
+                    </li><li>public bool <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/delete.xhtml">delete</a>()
+                    </li><li>public bool <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/download.xhtml">download</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/overwrite.xhtml">overwrite</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/screenshot.xhtml">screenshot</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/transform.xhtml">transform</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/upload.xhtml">upload</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/uploadUrl.xhtml">uploadUrl</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/zip.xhtml">zip</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.xhtml">isUrl</a>()
+                        </li><li>public int <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.xhtml">get_retry_miliseconds</a>()
+                        </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.xhtml">sendDelete</a>()
+                        </li><li>protected bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.xhtml">sendDownload</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.xhtml">sendGetContent</a>()
+                        </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.xhtml">sendGetMetaData</a>()
+                        </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.xhtml">sendGetSafeForWork</a>()
+                        </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.xhtml">sendGetTags</a>()
+                        </li><li>public Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.xhtml">sendOverwrite</a>()
+                        </li><li>protected Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.xhtml">handleResponseCreateFilelink</a>()
+                        </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.xhtml">handleResponseDecodeJson</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.xhtml">sendRequest</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.xhtml">getSourceHeaders</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.xhtml">addRequestSourceHeader</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.xhtml">appendData</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.xhtml">appendPromise</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.xhtml">settlePromises</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\TransformationMixin">TransformationMixin</span></li><li>public Transformation <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getTransformStr.xhtml">getTransformStr</a>()
+                        </li><li>protected Transformation <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/insertTransformStr.xhtml">insertTransformStr</a>()
+                        </li><li>public json <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendDebug.xhtml">sendDebug</a>()
+                        </li><li>public Filelink <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendTransform.xhtml">sendTransform</a>()
+                        </li><li>public string <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendVideoConvert.xhtml">sendVideoConvert</a>()
+                        </li><li>public json <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getConvertTaskInfo.xhtml">getConvertTaskInfo</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformStr.xhtml">createTransformStr</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformUrl.xhtml">createTransformUrl</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Uses</h4>
+          <ul>
+            <li>
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin.xhtml">Filestack\Mixins\CommonMixin</a>
+            </li>
+            <li>
+              <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin.xhtml">Filestack\Mixins\TransformationMixin</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="upload_processor">
+              <strong>$upload_processor</strong>
+            </li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="http_client">
+              <strong>$http_client</strong>
+            </li>
+            <li id="http_promises">
+              <strong>$http_promises</strong>
+            </li>
+            <li id="source_header">
+              <strong>$source_header</strong>
+            </li>
+            <li id="user_agent_header">
+              <strong>$user_agent_header</strong>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="api_key">
+              <strong>$api_key</strong>
+            </li>
+            <li id="security">
+              <strong>$security</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__construct.xhtml">__construct()</a>
+                — FilestackClient constructor</li>
+            <li id="__call"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__call.xhtml">__call()</a>
+                — Catchall function, throws Filestack Exception if method is not valid</li>
+            <li id="collage"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/collage.xhtml">collage()</a>
+                — Set this Filelink's transform_url to include the collage task</li>
+            <li id="convertAudio"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertAudio.xhtml">convertAudio()</a>
+                — Convert url or filelink handle to another audio format.  IMPORTANT: To use this function, you must setup webhooks to notify you when the transcoding has completed. See our online documentation for more details: https://www.filestack.com/docs/audio-transformations</li>
+            <li id="convertFile"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertFile.xhtml">convertFile()</a>
+                — Convert audio file from url or filelink handle to another format.  To see which format can be converted, see: https://www.filestack.com/docs/image-transformations/conversion</li>
+            <li id="convertVideo"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertVideo.xhtml">convertVideo()</a>
+                — Convert a video file from url or filelink handle to another video format.</li>
+            <li id="debug"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/debug.xhtml">debug()</a>
+                — Debug transform tasks</li>
+            <li id="delete"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/delete.xhtml">delete()</a>
+                — Delete a file from cloud storage</li>
+            <li id="download"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/download.xhtml">download()</a>
+                — Download a file, saving it to specified destination</li>
+            <li id="getCdnUrl"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getCdnUrl.xhtml">getCdnUrl()</a>
+                — Get the cdn url of a filestack file</li>
+            <li id="getContent"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getContent.xhtml">getContent()</a>
+                — Get the content of file</li>
+            <li id="getMetaData"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getMetaData.xhtml">getMetaData()</a>
+                — Get metadata of a file</li>
+            <li id="getSafeForWork"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getSafeForWork.xhtml">getSafeForWork()</a>
+                — Get sfw (safe for work) flag of a filelink</li>
+            <li id="getTags"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getTags.xhtml">getTags()</a>
+                — Get tags of a filelink</li>
+            <li id="overwrite"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/overwrite.xhtml">overwrite()</a>
+                — Overwrite a file in cloud storage</li>
+            <li id="screenshot"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/screenshot.xhtml">screenshot()</a>
+                — Take a screenshot of a URL</li>
+            <li id="transform"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/transform.xhtml">transform()</a>
+                — Applied array of transformation tasks to a url</li>
+            <li id="upload"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/upload.xhtml">upload()</a>
+                — Upload a file to desired cloud service, defaults to Filestack's S3 storage.</li>
+            <li id="uploadUrl"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/uploadUrl.xhtml">uploadUrl()</a>
+                — Upload a url to desired cloud service, defaults to Filestack's S3 storage.  Set $options['location'] to specify location, possible values are:                                      S3, gcs, azure, rackspace, dropbox</li>
+            <li id="zip"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/zip.xhtml">zip()</a>
+                — Bundle an array of files into a zip file.  This task takes the file or files that are passed in the array and compresses them into a zip file.  Sources can be handles, urls, or a mix of both</li>
+          </ul>
+          <h3>Inherited from <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin.xhtml">Filestack\Mixins\CommonMixin</a></h3>
+          <h4>protected</h4>
+          <ul>
+            <li id="addRequestSourceHeader"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.xhtml">addRequestSourceHeader()</a>
+                — Append source header to request headers array</li>
+            <li id="appendData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.xhtml">appendData()</a>
+                — Append a data item</li>
+            <li id="appendPromise">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.xhtml">appendPromise()</a>
+            </li>
+            <li id="getSourceHeaders"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.xhtml">getSourceHeaders()</a>
+                — Get source header</li>
+            <li id="handleResponseCreateFilelink"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.xhtml">handleResponseCreateFilelink()</a>
+                — Handle a Filestack response and create a filelink object</li>
+            <li id="handleResponseDecodeJson"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.xhtml">handleResponseDecodeJson()</a>
+                — Handles a response.  decode and return json if 200, throws exception otherwise.</li>
+            <li id="sendDownload"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.xhtml">sendDownload()</a>
+                — Download a file to specified destination given a url</li>
+            <li id="sendGetContent"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.xhtml">sendGetContent()</a>
+                — Get the content of a file.</li>
+            <li id="sendGetMetaData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.xhtml">sendGetMetaData()</a>
+                — Get the metadata of a remote file.  Will only retrieve specific fields if optional fields are passed in</li>
+            <li id="sendGetSafeForWork"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.xhtml">sendGetSafeForWork()</a>
+                — Get the safe for work (sfw) flag of a filelink.</li>
+            <li id="sendGetTags"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.xhtml">sendGetTags()</a>
+                — Get the tags of a filelink.</li>
+            <li id="sendRequest"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.xhtml">sendRequest()</a>
+                — Send request</li>
+            <li id="settlePromises">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.xhtml">settlePromises()</a>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="get_retry_miliseconds"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.xhtml">get_retry_miliseconds()</a>
+                — Get the miliseconds of exponential backoff retry strategy</li>
+            <li id="isUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.xhtml">isUrl()</a>
+                — Check if a string is a valid url.</li>
+            <li id="sendDelete"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.xhtml">sendDelete()</a>
+                — Delete a file from cloud storage</li>
+            <li id="sendOverwrite"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.xhtml">sendOverwrite()</a>
+                — Overwrite a file in cloud storage</li>
+          </ul>
+          <h3>Inherited from <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin.xhtml">Filestack\Mixins\TransformationMixin</a></h3>
+          <h4>protected</h4>
+          <ul>
+            <li id="createTransformStr"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformStr.xhtml">createTransformStr()</a>
+                — Create the transform parts of the transformation url</li>
+            <li id="createTransformUrl"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformUrl.xhtml">createTransformUrl()</a>
+                — Create the transform parts of the transformation url</li>
+            <li id="insertTransformStr"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/insertTransformStr.xhtml">insertTransformStr()</a>
+                — Insert a transformation task into existing url</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="getConvertTaskInfo"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getConvertTaskInfo.xhtml">getConvertTaskInfo()</a>
+                — Get the info of a conversion task given the conversion url</li>
+            <li id="getTransformStr"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getTransformStr.xhtml">getTransformStr()</a>
+                — Return the URL portion of a transformation task</li>
+            <li id="sendDebug"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendDebug.xhtml">sendDebug()</a>
+                — Send debug call</li>
+            <li id="sendTransform"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendTransform.xhtml">sendTransform()</a>
+                — Applied array of transformation tasks to handle or external url</li>
+            <li id="sendVideoConvert"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendVideoConvert.xhtml">sendVideoConvert()</a>
+                — Send video_convert request to API</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.10.1 - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

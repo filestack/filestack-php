@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 
 /**
- * FilestackClient client.  This is the main object to
- * make functional calls to the Filestack API.
+ * Object used by the Filestack client to process an
+ * upload task.
  */
 class UploadProcessor
 {
