@@ -5,6 +5,9 @@ use Filestack\FilestackConfig;
 use Filestack\FilestackException;
 use Filestack\Filelink;
 
+/**
+ * Mixin for common transformation functionalities
+ */
 trait TransformationMixin
 {
     /**

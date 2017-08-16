@@ -4,7 +4,8 @@ namespace Filestack;
 use Filestack\FilestackException;
 
 /**
- * Class representing a filestack security object
+ * Class representing a Filestack Security object.  Use this clas
+ * if you have security enabled on your apikey.
  */
 class FilestackSecurity
 {

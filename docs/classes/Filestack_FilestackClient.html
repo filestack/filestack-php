@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackClient</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.html">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.html">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.html">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html#Filestack">Filestack</a>
+          </li>
+          <li class="separator">FilestackClient</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="#history">History</a>
+          </li>
+          <li>
+            <a href="../source/FilestackClient.php.html#line12">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\</small>FilestackClient</h1>
+        <h4>Filestack client object.  This is the main object to make functional calls to the Filestack API.</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class FilestackClient
+            {<br/><ul class="none"><li>// members</li><li>public  <a href="#members">$api_key</a>;
+                    </li><li>public  <a href="#members">$security</a>;
+                    </li><li>private  <a href="#members">$upload_processor</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__construct.html">__construct</a>()
+                    </li><li>public void <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__call.html">__call</a>()
+                    </li><li>public void <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getCdnUrl.html">getCdnUrl</a>()
+                    </li><li>public string <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getContent.html">getContent</a>()
+                    </li><li>public array <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getMetaData.html">getMetaData</a>()
+                    </li><li>public json <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getSafeForWork.html">getSafeForWork</a>()
+                    </li><li>public json <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getTags.html">getTags</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/collage.html">collage</a>()
+                    </li><li>public string <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertAudio.html">convertAudio</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertFile.html">convertFile</a>()
+                    </li><li>public string <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertVideo.html">convertVideo</a>()
+                    </li><li>public json <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/debug.html">debug</a>()
+                    </li><li>public bool <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/delete.html">delete</a>()
+                    </li><li>public bool <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/download.html">download</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/overwrite.html">overwrite</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/screenshot.html">screenshot</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/transform.html">transform</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/upload.html">upload</a>()
+                    </li><li>public Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/uploadUrl.html">uploadUrl</a>()
+                    </li><li>public Filestack/Filelink <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/zip.html">zip</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl</a>()
+                        </li><li>public int <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds</a>()
+                        </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.html">sendDelete</a>()
+                        </li><li>protected bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.html">sendDownload</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.html">sendGetContent</a>()
+                        </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.html">sendGetMetaData</a>()
+                        </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.html">sendGetSafeForWork</a>()
+                        </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.html">sendGetTags</a>()
+                        </li><li>public Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.html">sendOverwrite</a>()
+                        </li><li>protected Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.html">handleResponseCreateFilelink</a>()
+                        </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.html">handleResponseDecodeJson</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.html">sendRequest</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.html">getSourceHeaders</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.html">addRequestSourceHeader</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.html">appendData</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.html">appendPromise</a>()
+                        </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.html">settlePromises</a>()
+                        </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\TransformationMixin">TransformationMixin</span></li><li>public Transformation <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getTransformStr.html">getTransformStr</a>()
+                        </li><li>protected Transformation <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/insertTransformStr.html">insertTransformStr</a>()
+                        </li><li>public json <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendDebug.html">sendDebug</a>()
+                        </li><li>public Filelink <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendTransform.html">sendTransform</a>()
+                        </li><li>public string <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendVideoConvert.html">sendVideoConvert</a>()
+                        </li><li>public json <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getConvertTaskInfo.html">getConvertTaskInfo</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformStr.html">createTransformStr</a>()
+                        </li><li>protected string <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformUrl.html">createTransformUrl</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Uses</h4>
+          <ul>
+            <li>
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin.html">Filestack\Mixins\CommonMixin</a>
+            </li>
+            <li>
+              <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin.html">Filestack\Mixins\TransformationMixin</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="upload_processor">
+              <strong>$upload_processor</strong>
+            </li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="http_client">
+              <strong>$http_client</strong>
+            </li>
+            <li id="http_promises">
+              <strong>$http_promises</strong>
+            </li>
+            <li id="source_header">
+              <strong>$source_header</strong>
+            </li>
+            <li id="user_agent_header">
+              <strong>$user_agent_header</strong>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="api_key">
+              <strong>$api_key</strong>
+            </li>
+            <li id="security">
+              <strong>$security</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__construct.html">__construct()</a>
+                — FilestackClient constructor</li>
+            <li id="__call"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/__call.html">__call()</a>
+                — Catchall function, throws Filestack Exception if method is not valid</li>
+            <li id="collage"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/collage.html">collage()</a>
+                — Set this Filelink's transform_url to include the collage task</li>
+            <li id="convertAudio"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertAudio.html">convertAudio()</a>
+                — Convert url or filelink handle to another audio format.  IMPORTANT: To use this function, you must setup webhooks to notify you when the transcoding has completed. See our online documentation for more details: https://www.filestack.com/docs/audio-transformations</li>
+            <li id="convertFile"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertFile.html">convertFile()</a>
+                — Convert audio file from url or filelink handle to another format.  To see which format can be converted, see: https://www.filestack.com/docs/image-transformations/conversion</li>
+            <li id="convertVideo"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/convertVideo.html">convertVideo()</a>
+                — Convert a video file from url or filelink handle to another video format.</li>
+            <li id="debug"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/debug.html">debug()</a>
+                — Debug transform tasks</li>
+            <li id="delete"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/delete.html">delete()</a>
+                — Delete a file from cloud storage</li>
+            <li id="download"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/download.html">download()</a>
+                — Download a file, saving it to specified destination</li>
+            <li id="getCdnUrl"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getCdnUrl.html">getCdnUrl()</a>
+                — Get the cdn url of a filestack file</li>
+            <li id="getContent"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getContent.html">getContent()</a>
+                — Get the content of file</li>
+            <li id="getMetaData"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getMetaData.html">getMetaData()</a>
+                — Get metadata of a file</li>
+            <li id="getSafeForWork"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getSafeForWork.html">getSafeForWork()</a>
+                — Get sfw (safe for work) flag of a filelink</li>
+            <li id="getTags"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/getTags.html">getTags()</a>
+                — Get tags of a filelink</li>
+            <li id="overwrite"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/overwrite.html">overwrite()</a>
+                — Overwrite a file in cloud storage</li>
+            <li id="screenshot"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/screenshot.html">screenshot()</a>
+                — Take a screenshot of a URL</li>
+            <li id="transform"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/transform.html">transform()</a>
+                — Applied array of transformation tasks to a url</li>
+            <li id="upload"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/upload.html">upload()</a>
+                — Upload a file to desired cloud service, defaults to Filestack's S3 storage.</li>
+            <li id="uploadUrl"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/uploadUrl.html">uploadUrl()</a>
+                — Upload a url to desired cloud service, defaults to Filestack's S3 storage.  Set $options['location'] to specify location, possible values are:                                      S3, gcs, azure, rackspace, dropbox</li>
+            <li id="zip"><a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient/zip.html">zip()</a>
+                — Bundle an array of files into a zip file.  This task takes the file or files that are passed in the array and compresses them into a zip file.  Sources can be handles, urls, or a mix of both</li>
+          </ul>
+          <h3>Inherited from <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin.html">Filestack\Mixins\CommonMixin</a></h3>
+          <h4>protected</h4>
+          <ul>
+            <li id="addRequestSourceHeader"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.html">addRequestSourceHeader()</a>
+                — Append source header to request headers array</li>
+            <li id="appendData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.html">appendData()</a>
+                — Append a data item</li>
+            <li id="appendPromise">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.html">appendPromise()</a>
+            </li>
+            <li id="getSourceHeaders"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.html">getSourceHeaders()</a>
+                — Get source header</li>
+            <li id="handleResponseCreateFilelink"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.html">handleResponseCreateFilelink()</a>
+                — Handle a Filestack response and create a filelink object</li>
+            <li id="handleResponseDecodeJson"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.html">handleResponseDecodeJson()</a>
+                — Handles a response.  decode and return json if 200, throws exception otherwise.</li>
+            <li id="sendDownload"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.html">sendDownload()</a>
+                — Download a file to specified destination given a url</li>
+            <li id="sendGetContent"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.html">sendGetContent()</a>
+                — Get the content of a file.</li>
+            <li id="sendGetMetaData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.html">sendGetMetaData()</a>
+                — Get the metadata of a remote file.  Will only retrieve specific fields if optional fields are passed in</li>
+            <li id="sendGetSafeForWork"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.html">sendGetSafeForWork()</a>
+                — Get the safe for work (sfw) flag of a filelink.</li>
+            <li id="sendGetTags"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.html">sendGetTags()</a>
+                — Get the tags of a filelink.</li>
+            <li id="sendRequest"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.html">sendRequest()</a>
+                — Send request</li>
+            <li id="settlePromises">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.html">settlePromises()</a>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="get_retry_miliseconds"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds()</a>
+                — Get the miliseconds of exponential backoff retry strategy</li>
+            <li id="isUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl()</a>
+                — Check if a string is a valid url.</li>
+            <li id="sendDelete"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.html">sendDelete()</a>
+                — Delete a file from cloud storage</li>
+            <li id="sendOverwrite"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.html">sendOverwrite()</a>
+                — Overwrite a file in cloud storage</li>
+          </ul>
+          <h3>Inherited from <a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin.html">Filestack\Mixins\TransformationMixin</a></h3>
+          <h4>protected</h4>
+          <ul>
+            <li id="createTransformStr"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformStr.html">createTransformStr()</a>
+                — Create the transform parts of the transformation url</li>
+            <li id="createTransformUrl"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/createTransformUrl.html">createTransformUrl()</a>
+                — Create the transform parts of the transformation url</li>
+            <li id="insertTransformStr"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/insertTransformStr.html">insertTransformStr()</a>
+                — Insert a transformation task into existing url</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="getConvertTaskInfo"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getConvertTaskInfo.html">getConvertTaskInfo()</a>
+                — Get the info of a conversion task given the conversion url</li>
+            <li id="getTransformStr"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/getTransformStr.html">getTransformStr()</a>
+                — Return the URL portion of a transformation task</li>
+            <li id="sendDebug"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendDebug.html">sendDebug()</a>
+                — Send debug call</li>
+            <li id="sendTransform"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendTransform.html">sendTransform()</a>
+                — Applied array of transformation tasks to handle or external url</li>
+            <li id="sendVideoConvert"><a title="Filestack\Mixins\TransformationMixin" href="../traits/Filestack_Mixins_TransformationMixin/sendVideoConvert.html">sendVideoConvert()</a>
+                — Send video_convert request to API</li>
+          </ul>
+        </div>
+        <h2 id="history">History</h2>
+        <ul class="styled history">
+          <li>
+            <h3>2017-08-16T18:39:59+02:00 (commit #<span title="674be058284f44bdb4f422162acf49a0b51d6106">674be05</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added phpdox for documentation generation</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-10T23:26:53+02:00 (commit #<span title="5c048b4b97492e38d83a3c309e80eb1998e866e5">5c048b4</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">updated Intelligent Ingestion as an option</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-06T21:50:58+02:00 (commit #<span title="a854feeaba053dce85e58dc09ab3a4bfdd6c5f7c">a854fee</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">error handling strategy for intelligent flow</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-07-28T21:46:31+02:00 (commit #<span title="1e77dd61ad542ebcad4fb31fc55e6a24c72d4a96">1e77dd6</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added UploadProcessor with intelligent ingestion logic</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-06-09T21:54:00+02:00 (commit #<span title="30564327d11d659697238145f47985a5bfe293d3">3056432</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added getTags() and getSafeForWork functions to client and flielink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-26T17:52:48+02:00 (commit #<span title="1273bba6dbb9eb90d617dacc255b49aad2c8547c">1273bba</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added getConvertTaskInfo function to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-25T23:37:44+02:00 (commit #<span title="9b61464e70037dcbcae1bc449afff595bbf6f59e">9b61464</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">consolidated sendRequest functions, send X-Filestack-Source header</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-24T23:58:41+02:00 (commit #<span title="35258983a2cbbd7ea1901dc55df1b9692539079d">3525898</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">use async requests and concurrent calls for multipart uploads</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-23T00:55:04+02:00 (commit #<span title="915421e936a119be023d1b7867d6cd9385eb2150">915421e</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">implemented multiparts upload</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T23:54:39+02:00 (commit #<span title="74f4ec3c7285949d0d41a30d4f38bb724cf6b262">74f4ec3</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">switched to use phpmd for codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T23:25:18+02:00 (commit #<span title="39bb65bb9d9b97559a92f55332cab8f27a43872d">39bb65b</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setup codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T17:02:25+02:00 (commit #<span title="1a09902ebbb2ecfe2254d5b51b3b57af6d95be46">1a09902</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">updated README with more examples</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-15T23:12:54+02:00 (commit #<span title="2fea6a0c2e7d456cee774a0908e4bab6a32cfcb0">2fea6a0</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added convertAudio() and convertVideo() to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-15T20:56:10+02:00 (commit #<span title="4be442de6e428a51e38ad95129cab04a4f30a61b">4be442d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added convertFile() functionality to client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-12T02:42:34+02:00 (commit #<span title="373ee050271a954f68d05d49f8b58912f5354709">373ee05</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added debug() call for transformations</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-11T23:27:19+02:00 (commit #<span title="ca5159d915991d78f5e9489e2d03ce47b3ba87b7">ca5159d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added collage() function to client and filelink.  Modified transform calls to return filelink object instead of content.  changed store() to save() on filelink calls.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-11T00:19:18+02:00 (commit #<span title="b389934e59efb2c2e9b5f61e1ebad77fd3588aff">b389934</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added screenshot() function</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-10T22:24:40+02:00 (commit #<span title="5c8f7791a144c33b3ae75f494bd1820a3da903a0">5c8f779</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added zip and compress functionalities</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-09T00:30:51+02:00 (commit #<span title="a96f32db8a1ddaefbd4c34d50b5ee2c73ba88ef1">a96f32d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added Transformations chaining and catchal to Filelink obj
+added transform func to client for external urls</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-05T19:39:21+02:00 (commit #<span title="942180a407a9f1f8957581a7d8db984ed3cde16c">942180a</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">moved security to constructor and removed as parameters for client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T22:33:57+02:00 (commit #<span title="2b25400f5c9b6a3412a91027689fdf2cb118900d">2b25400</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">installed and ran php-cs-fixer.  updated examples, added real tests but marked as skipped</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T20:20:21+02:00 (commit #<span title="fb1b6fda6492dd1d0e76c942cbb31f7e3811e970">fb1b6fd</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added overwrite method to client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T19:16:49+02:00 (commit #<span title="809b3d41ef268e0425096d069fb335033b20bdd3">809b3d4</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added delete function to filelink and client</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T18:22:33+02:00 (commit #<span title="e5e1cad92711668d21f970a35be251ae32b62851">e5e1cad</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added security class</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-03T23:20:04+02:00 (commit #<span title="1337a7fa090a40e2250b4f8a59fdf1729f857d43">1337a7f</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added download, getContent, and getMetaData to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T23:50:52+02:00 (commit #<span title="bf2ef12206a3b934a971aa4cb997ebb507b70e2a">bf2ef12</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added options to store function.  added store functio to Filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T19:11:33+02:00 (commit #<span title="5b565df0c7c118ced08385041461389e8f9c2e3b">5b565df</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added empty line at end of files.  removed test method in filepickerclient</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T00:13:47+02:00 (commit #<span title="61c4278e687f5ca0ca3938a05c67ae2c12e54ca1">61c4278</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">removed ds_store, updated example, updated test with mocks</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-01T03:21:36+02:00 (commit #<span title="8a961cd7e61ede95e6c38d999fb17dc0bd971e21">8a961cd</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setting up project file structure</pre>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

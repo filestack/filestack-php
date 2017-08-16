@@ -2,6 +2,6 @@
 .php_cs.cache
 vendor/
 coverage/
-build/logs/*
+build/*
 tests/testfiles/*
 logs/

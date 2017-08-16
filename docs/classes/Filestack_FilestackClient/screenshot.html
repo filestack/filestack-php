@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackClient::screenshot</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../classes.html">Classes</a>
+        </li>
+        <li>
+          <a href="../../traits.html">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.html">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.html#Filestack">Filestack</a>
+          </li>
+          <li class="separator">
+            <a title="Filestack\FilestackClient" href="../../classes/Filestack_FilestackClient.html">FilestackClient</a>
+          </li>
+          <li class="separator">screenshot</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#parameter">Parameter</a>
+          </li>
+          <li>
+            <a href="#return">Return</a>
+          </li>
+          <li>
+            <a href="#throws">Throws</a>
+          </li>
+          <li>
+            <a href="../../source/FilestackClient.php.html#line603">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Filestack\FilestackClient::</small>screenshot</h1>
+        <h4>Take a screenshot of a URL</h4>
+        <p/>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function screenshot(string
+        $url,
+            [array
+        $store_options = ,
+            [string
+        $agent = 'desktop',
+            [string
+        $mode = 'all',
+            [integer
+        $width = 1024,
+            [integer
+        $height = 768,
+            [integer
+        $delay = 0]]]]]] )
+            </code>
+        </div>
+        <h2 id="parameterlist">Parameters</h2>
+        <dl class="styled">
+          <dt><code>$url</code>
+                —
+                string</dt>
+          <dd>URL to screenshot</dd>
+          <dt><code>$store_options</code>
+                —
+                array</dt>
+          <dd>optional store values</dd>
+          <dt><code>$agent</code>
+                —
+                string</dt>
+          <dd>desktop or mobile</dd>
+          <dt><code>$mode</code>
+                —
+                string</dt>
+          <dd>all or window</dd>
+          <dt><code>$width</code>
+                —
+                integer</dt>
+          <dd>Designate the width of the browser window. The<br/>width is 1024 by default, but can be set to<br/>                                 anywhere between 1 to 1920.</dd>
+          <dt><code>$height</code>
+                —
+                integer</dt>
+          <dd>Designate the height of the browser window.<br/>The height is 768 by default, but can be set<br/>                                 to anywhere between 1 to 1080.</dd>
+          <dt><code>$delay</code>
+                —
+                integer</dt>
+          <dd>Tell URL Screenshot to wait x milliseconds before<br/>capturing the webpage. Sometimes pages take<br/>longer to load, so you may need to delay the<br/>capture in order to make sure the page is<br/>rendered before the screenshot is taken. The<br/>                                 delay must be an integer between 0 and 10000.</dd>
+        </dl>
+        <h2 id="return">Returns</h2>
+        <dl class="styled">
+          <dt>Filestack/Filelink</dt>
+          <dd><br/>
+        </dd>
+        </dl>
+        <h2 id="throws">Errors/Exceptions</h2>
+        <dl class="styled">
+          <dt>
+            <code>
+              <a title="Filestack\FilestackException" href="../../classes/Filestack_FilestackException.html">FilestackException</a>
+            </code>
+          </dt>
+          <dd>if API call fails, e.g 404 file not found</dd>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

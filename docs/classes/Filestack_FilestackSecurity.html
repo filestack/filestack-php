@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackSecurity</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.html">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.html">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.html">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html#Filestack">Filestack</a>
+          </li>
+          <li class="separator">FilestackSecurity</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="#history">History</a>
+          </li>
+          <li>
+            <a href="../source/FilestackSecurity.php.html#line10">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\</small>FilestackSecurity</h1>
+        <h4>Class representing a Filestack Security object.  Use this clas if you have security enabled on your apikey.</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class FilestackSecurity
+            {<br/><ul class="none"><li>// constants</li><li>const DEFAULT_EXPIRY = 3600;</li></ul><ul class="none"><li>// members</li><li>protected  <a href="#members">$allowed_options</a>;
+                    </li><li>protected  <a href="#members">$secret</a>;
+                    </li><li>public  <a href="#members">$policy</a>;
+                    </li><li>public  <a href="#members">$signature</a>;
+                    </li><li>public  <a href="#members">$options</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/__construct.html">__construct</a>()
+                    </li><li>private array <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/generate.html">generate</a>()
+                    </li><li>public string <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/signUrl.html">signUrl</a>()
+                    </li><li>public bool <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/verify.html">verify</a>()
+                    </li><li>protected string <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/createSignature.html">createSignature</a>()
+                    </li><li>protected bool <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/validateOptions.html">validateOptions</a>()
+                    </li><li>protected void <a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/urlsafeB64encode.html">urlsafeB64encode</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="DEFAULT_EXPIRY">DEFAULT_EXPIRY</td>
+              <td>3600</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="allowed_options">
+              <strong>$allowed_options</strong>
+            </li>
+            <li id="secret">
+              <strong>$secret</strong>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="options">
+              <strong>$options</strong>
+            </li>
+            <li id="policy">
+              <strong>$policy</strong>
+            </li>
+            <li id="signature">
+              <strong>$signature</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="generate"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/generate.html">generate()</a>
+                — generate a security policy and signature</li>
+          </ul>
+          <h4>protected</h4>
+          <ul>
+            <li id="createSignature"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/createSignature.html">createSignature()</a>
+                — Generate a signature</li>
+            <li id="urlsafeB64encode"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/urlsafeB64encode.html">urlsafeB64encode()</a>
+                — Helper functions</li>
+            <li id="validateOptions"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/validateOptions.html">validateOptions()</a>
+                — Validate options are allowed</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/__construct.html">__construct()</a>
+                — Filestack Security constructor</li>
+            <li id="signUrl"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/signUrl.html">signUrl()</a>
+                — Append policy and signature to url</li>
+            <li id="verify"><a title="Filestack\FilestackSecurity" href="../classes/Filestack_FilestackSecurity/verify.html">verify()</a>
+                — Verify that a policy is valid</li>
+          </ul>
+        </div>
+        <h2 id="history">History</h2>
+        <ul class="styled history">
+          <li>
+            <h3>2017-08-16T18:39:59+02:00 (commit #<span title="674be058284f44bdb4f422162acf49a0b51d6106">674be05</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added phpdox for documentation generation</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-26T17:52:48+02:00 (commit #<span title="1273bba6dbb9eb90d617dacc255b49aad2c8547c">1273bba</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added getConvertTaskInfo function to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T23:54:39+02:00 (commit #<span title="74f4ec3c7285949d0d41a30d4f38bb724cf6b262">74f4ec3</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">switched to use phpmd for codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T23:25:18+02:00 (commit #<span title="39bb65bb9d9b97559a92f55332cab8f27a43872d">39bb65b</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setup codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-10T23:17:45+02:00 (commit #<span title="515bb43900aeb469319e4942d59a8f5708a6d338">515bb43</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">got rid of PROCESSING_URL and updated all occurrences to use CDN_URL</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-09T19:18:45+02:00 (commit #<span title="5c9df3d85b5e3e297ce7684be014b882647b24bf">5c9df3d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added coverage settings to phpunit.  add tests to reach 100% coverage</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T22:33:57+02:00 (commit #<span title="2b25400f5c9b6a3412a91027689fdf2cb118900d">2b25400</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">installed and ran php-cs-fixer.  updated examples, added real tests but marked as skipped</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T18:22:33+02:00 (commit #<span title="e5e1cad92711668d21f970a35be251ae32b62851">e5e1cad</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added security class</pre>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

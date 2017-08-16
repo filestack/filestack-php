@@ -198,6 +198,12 @@ vendor/bin/phpunit --coverage-html=coverage
 vendor/bin/phpmd filestack xml phpmd-rules.xml > logs/phpmd-report-filestack.xml
 vendor/bin/phpmd tests xml phpmd-rules.xml > logs/phpmd-report-tests.xml
 ```
+
+## Generating documentation
+
+vendor/bin/phploc --log-xml=phploc.xml filestack
+vendor/bin/phpdox
+
 ## Issues
 
 If you have problems, please create a [Github Issue](https://github.com/filestack/filestack-php/issues).

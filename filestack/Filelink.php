@@ -5,7 +5,7 @@ use GuzzleHttp\Client;
 use Filestack\FilestackConfig;
 
 /**
- * Class representing a filestack filelink object
+ * Class representing a Filestack Filelink object
  */
 class Filelink
 {

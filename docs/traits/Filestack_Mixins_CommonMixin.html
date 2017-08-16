@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\Mixins\CommonMixin</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.html">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.html">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.html">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../traits.html">Traits</a>
+          </li>
+          <li class="separator">
+            <a href="../traits.html#Filestack_Mixins">Filestack\Mixins</a>
+          </li>
+          <li class="separator">CommonMixin</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="#history">History</a>
+          </li>
+          <li>
+            <a href="../source/mixins/CommonMixin.php.html#line18">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\Mixins\</small>CommonMixin</h1>
+        <h4>Mixin for common functionalities used by most Filestack objects</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">trait CommonMixin
+            {<br/><ul class="none"><li>// members</li><li>protected  <a href="#members">$http_client</a>;
+                    </li><li>protected  <a href="#members">$http_promises</a>;
+                    </li><li>protected  <a href="#members">$user_agent_header</a>;
+                    </li><li>protected  <a href="#members">$source_header</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl</a>()
+                    </li><li>public int <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds</a>()
+                    </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.html">sendDelete</a>()
+                    </li><li>protected bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.html">sendDownload</a>()
+                    </li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.html">sendGetContent</a>()
+                    </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.html">sendGetMetaData</a>()
+                    </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.html">sendGetSafeForWork</a>()
+                    </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.html">sendGetTags</a>()
+                    </li><li>public Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.html">sendOverwrite</a>()
+                    </li><li>protected Filelink <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.html">handleResponseCreateFilelink</a>()
+                    </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.html">handleResponseDecodeJson</a>()
+                    </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.html">sendRequest</a>()
+                    </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.html">getSourceHeaders</a>()
+                    </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.html">addRequestSourceHeader</a>()
+                    </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.html">appendData</a>()
+                    </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.html">appendPromise</a>()
+                    </li><li>protected void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.html">settlePromises</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Used by</h4>
+          <ul>
+            <li>
+              <a title="Filestack\Filelink" href="../classes/Filestack_Filelink.html">Filestack\Filelink</a>
+            </li>
+            <li>
+              <a title="Filestack\FilestackClient" href="../classes/Filestack_FilestackClient.html">Filestack\FilestackClient</a>
+            </li>
+            <li>
+              <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor.html">Filestack\UploadProcessor</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="http_client">
+              <strong>$http_client</strong>
+            </li>
+            <li id="http_promises">
+              <strong>$http_promises</strong>
+            </li>
+            <li id="source_header">
+              <strong>$source_header</strong>
+            </li>
+            <li id="user_agent_header">
+              <strong>$user_agent_header</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>protected</h4>
+          <ul>
+            <li id="addRequestSourceHeader"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addRequestSourceHeader.html">addRequestSourceHeader()</a>
+                — Append source header to request headers array</li>
+            <li id="appendData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendData.html">appendData()</a>
+                — Append a data item</li>
+            <li id="appendPromise">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.html">appendPromise()</a>
+            </li>
+            <li id="getSourceHeaders"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.html">getSourceHeaders()</a>
+                — Get source header</li>
+            <li id="handleResponseCreateFilelink"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.html">handleResponseCreateFilelink()</a>
+                — Handle a Filestack response and create a filelink object</li>
+            <li id="handleResponseDecodeJson"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseDecodeJson.html">handleResponseDecodeJson()</a>
+                — Handles a response.  decode and return json if 200, throws exception otherwise.</li>
+            <li id="sendDownload"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.html">sendDownload()</a>
+                — Download a file to specified destination given a url</li>
+            <li id="sendGetContent"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.html">sendGetContent()</a>
+                — Get the content of a file.</li>
+            <li id="sendGetMetaData"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.html">sendGetMetaData()</a>
+                — Get the metadata of a remote file.  Will only retrieve specific fields if optional fields are passed in</li>
+            <li id="sendGetSafeForWork"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.html">sendGetSafeForWork()</a>
+                — Get the safe for work (sfw) flag of a filelink.</li>
+            <li id="sendGetTags"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetTags.html">sendGetTags()</a>
+                — Get the tags of a filelink.</li>
+            <li id="sendRequest"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendRequest.html">sendRequest()</a>
+                — Send request</li>
+            <li id="settlePromises">
+              <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/settlePromises.html">settlePromises()</a>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="get_retry_miliseconds"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds()</a>
+                — Get the miliseconds of exponential backoff retry strategy</li>
+            <li id="isUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl()</a>
+                — Check if a string is a valid url.</li>
+            <li id="sendDelete"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.html">sendDelete()</a>
+                — Delete a file from cloud storage</li>
+            <li id="sendOverwrite"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendOverwrite.html">sendOverwrite()</a>
+                — Overwrite a file in cloud storage</li>
+          </ul>
+        </div>
+        <h2 id="history">History</h2>
+        <ul class="styled history">
+          <li>
+            <h3>2017-08-06T21:50:58+02:00 (commit #<span title="a854feeaba053dce85e58dc09ab3a4bfdd6c5f7c">a854fee</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">error handling strategy for intelligent flow</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-07-28T21:52:51+02:00 (commit #<span title="7cc1475e69ed98eef01c2dcc42e1c56f02e99138">7cc1475</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">fixed small file upload no partNum</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-07-28T21:46:31+02:00 (commit #<span title="1e77dd61ad542ebcad4fb31fc55e6a24c72d4a96">1e77dd6</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added UploadProcessor with intelligent ingestion logic</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-06-09T21:54:00+02:00 (commit #<span title="30564327d11d659697238145f47985a5bfe293d3">3056432</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added getTags() and getSafeForWork functions to client and flielink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-31T18:03:10+02:00 (commit #<span title="c2c9d52c0a3453e0d8e8cf30ec43f058f4847af4">c2c9d52</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">updated filestack source headers</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-31T17:09:40+02:00 (commit #<span title="6dc73688e04775e6d33310718c8d7abbe3cb0123">6dc7368</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">updated source header to Filestack-Source</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-26T17:52:48+02:00 (commit #<span title="1273bba6dbb9eb90d617dacc255b49aad2c8547c">1273bba</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added getConvertTaskInfo function to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-25T23:37:44+02:00 (commit #<span title="9b61464e70037dcbcae1bc449afff595bbf6f59e">9b61464</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">consolidated sendRequest functions, send X-Filestack-Source header</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-24T23:58:41+02:00 (commit #<span title="35258983a2cbbd7ea1901dc55df1b9692539079d">3525898</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">use async requests and concurrent calls for multipart uploads</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-23T00:55:04+02:00 (commit #<span title="915421e936a119be023d1b7867d6cd9385eb2150">915421e</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">implemented multiparts upload</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T23:54:39+02:00 (commit #<span title="74f4ec3c7285949d0d41a30d4f38bb724cf6b262">74f4ec3</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">switched to use phpmd for codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T23:25:18+02:00 (commit #<span title="39bb65bb9d9b97559a92f55332cab8f27a43872d">39bb65b</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setup codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-11T23:27:19+02:00 (commit #<span title="ca5159d915991d78f5e9489e2d03ce47b3ba87b7">ca5159d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added collage() function to client and filelink.  Modified transform calls to return filelink object instead of content.  changed store() to save() on filelink calls.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-11T00:19:18+02:00 (commit #<span title="b389934e59efb2c2e9b5f61e1ebad77fd3588aff">b389934</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added screenshot() function</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-09T19:18:45+02:00 (commit #<span title="5c9df3d85b5e3e297ce7684be014b882647b24bf">5c9df3d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added coverage settings to phpunit.  add tests to reach 100% coverage</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-09T00:30:51+02:00 (commit #<span title="a96f32db8a1ddaefbd4c34d50b5ee2c73ba88ef1">a96f32d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added Transformations chaining and catchal to Filelink obj
+added transform func to client for external urls</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-05T19:39:21+02:00 (commit #<span title="942180a407a9f1f8957581a7d8db984ed3cde16c">942180a</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">moved security to constructor and removed as parameters for client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-05T16:08:10+02:00 (commit #<span title="4b837ac36bb83804cfa135b8597c9f6f76e479f2">4b837ac</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">preliminary design of mixin</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T22:33:57+02:00 (commit #<span title="2b25400f5c9b6a3412a91027689fdf2cb118900d">2b25400</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">installed and ran php-cs-fixer.  updated examples, added real tests but marked as skipped</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T20:20:21+02:00 (commit #<span title="fb1b6fda6492dd1d0e76c942cbb31f7e3811e970">fb1b6fd</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added overwrite method to client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T19:16:49+02:00 (commit #<span title="809b3d41ef268e0425096d069fb335033b20bdd3">809b3d4</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added delete function to filelink and client</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T18:22:33+02:00 (commit #<span title="e5e1cad92711668d21f970a35be251ae32b62851">e5e1cad</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added security class</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-03T23:20:04+02:00 (commit #<span title="1337a7fa090a40e2250b4f8a59fdf1729f857d43">1337a7f</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added download, getContent, and getMetaData to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-03T00:26:18+02:00 (commit #<span title="00533b72439ae6091e6cbe8d88c2b07cd73717be">00533b7</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added User-Agent header to http request</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T23:50:52+02:00 (commit #<span title="bf2ef12206a3b934a971aa4cb997ebb507b70e2a">bf2ef12</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added options to store function.  added store functio to Filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T00:13:47+02:00 (commit #<span title="61c4278e687f5ca0ca3938a05c67ae2c12e54ca1">61c4278</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">removed ds_store, updated example, updated test with mocks</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-01T03:21:36+02:00 (commit #<span title="8a961cd7e61ede95e6c38d999fb17dc0bd971e21">8a961cd</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setting up project file structure</pre>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>
