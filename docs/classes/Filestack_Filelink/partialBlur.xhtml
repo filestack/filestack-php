@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\Filelink::partialBlur</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.xhtml#Filestack">Filestack</a>
+          </li>
+          <li class="separator">
+            <a title="Filestack\Filelink" href="../../classes/Filestack_Filelink.xhtml">Filelink</a>
+          </li>
+          <li class="separator">partialBlur</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#parameter">Parameter</a>
+          </li>
+          <li>
+            <a href="#return">Return</a>
+          </li>
+          <li>
+            <a href="#throws">Throws</a>
+          </li>
+          <li>
+            <a href="../../source/Filelink.php.xhtml#line709">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Filestack\Filelink::</small>partialBlur</h1>
+        <h4>Set this Filelink's transform_url to include the partial_blur task</h4>
+        <p/>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function partialBlur([integer
+        $amount = 10,
+            [integer
+        $blur = 4,
+            [array
+        $objects = ,
+            [string
+        $type = 'rect']]]] )
+            </code>
+        </div>
+        <h2 id="parameterlist">Parameters</h2>
+        <dl class="styled">
+          <dt><code>$amount</code>
+                —
+                integer</dt>
+          <dd>The amount to blur the image. Range is 1 to 20</dd>
+          <dt><code>$blur</code>
+                —
+                integer</dt>
+          <dd>The amount to blur the image. Range is 0 to 20.</dd>
+          <dt><code>$objects</code>
+                —
+                array</dt>
+          <dd>The area(s) of the image to blur. This variable<br/>is an array of arrays. Each array input for<br/>this parameter defines a different section of<br/>the image and must have exactly 4 integers:<br/>'x coordinate,y coordinate,width,height' - e.g.<br/>[[10,20,200,250]] selects a 200x250px rectangle<br/>starting 10 pixels from the left edge of the<br/>image and 20 pixels from the top edge of the<br/>image. The values for these arrays can be any<br/>                             integer from 0 to 10000.</dd>
+          <dt><code>$type</code>
+                —
+                string</dt>
+          <dd>The shape of the blur area. The options are rect<br/>(for a rectangle shape) or oval (for an oval shape).</dd>
+        </dl>
+        <h2 id="return">Returns</h2>
+        <dl class="styled">
+          <dt>Filestack/Filelink</dt>
+          <dd><br/>
+        </dd>
+        </dl>
+        <h2 id="throws">Errors/Exceptions</h2>
+        <dl class="styled">
+          <dt>
+            <code>
+              <a title="Filestack\FilestackException" href="../../classes/Filestack_FilestackException.xhtml">FilestackException</a>
+            </code>
+          </dt>
+          <dd>if API call fails, e.g 404 file not found</dd>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.10.1 - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>
