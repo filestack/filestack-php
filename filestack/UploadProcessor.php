@@ -114,7 +114,7 @@ class UploadProcessor
         $accepted_code = HttpStatusCodes::HTTP_ACCEPTED;
 
         $completed_status_code = $accepted_code;
-        $completed_result = ['status_code' => 0, 'json' => []];
+        $completed_result = ['status_code' => 0, 'filelink' => []];
 
         while ($completed_status_code == $accepted_code &&
           $wait_attempts > 0) {
@@ -449,12 +449,12 @@ class UploadProcessor
         $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
         $status_code = $response->getStatusCode();
 
-        $json = [];
+        $filelink = null;
         if ($status_code == 200) {
-            $json = $this->handleResponseCreateFilelink($response);
+            $filelink = $this->handleResponseCreateFilelink($response);
         }
 
-        return ['status_code' => $status_code, 'json' => $json];
+        return ['status_code' => $status_code, 'filelink' => $filelink];
     }
 
     /**

@@ -705,7 +705,9 @@ class FilestackClient
                                                $metadata,
                                                $upload_data);
 
-        return $result;
+        $filelink = $result['filelink'];
+
+        return $filelink;
     }
 
     /**
