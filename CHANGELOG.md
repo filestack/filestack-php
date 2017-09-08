@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 1.1.10 (Sep 8, 2017)
+- Updated client->upload() function to return filelink instead of array of status and json
+
 ## 1.1.9 (Aug 8, 2017)
 - Added option param in upload() call for Intelligent Ingestion
 
