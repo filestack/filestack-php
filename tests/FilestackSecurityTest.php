@@ -13,6 +13,7 @@ class FilestackSecurityTest extends BaseTest
     public function testSecurityInitSuccess()
     {
         $options =  [
+            'expiry'    => 11235813,
             'call'      => ['read', 'write', 'store'],
             'container' => 'some-container',
             'handle'    => 'some-file-handle',

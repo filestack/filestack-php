@@ -55,7 +55,7 @@ class FilestackSecurity
         $this->options = $options;
 
         // set expiry time if one wasn't passed in
-        if (!in_array('expiry', $options)) {
+        if (!array_key_exists('expiry', $options)) {
             $expiry_timestamp = time() + self::DEFAULT_EXPIRY;
             $options['expiry'] = $expiry_timestamp;
         }
