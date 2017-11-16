@@ -24,7 +24,7 @@ Install ``filestack`` with composer, either run
 or add
 
 ```
-"filestack/filestack-php": ">=1.1.9"
+"filestack/filestack-php": ">=1.1.11"
 ```
 
 or download from GitHub
