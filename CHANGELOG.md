@@ -1,5 +1,9 @@
 # Filestack-php Changelog
 
+## 1.1.11 (Nov 15, 2017)
+- Fixed a bug with security that always use default expiration of one hour
+no matter what was passed in
+
 ## 1.1.10 (Sep 8, 2017)
 - Updated client->upload() function to return filelink instead of array of status and json
 
