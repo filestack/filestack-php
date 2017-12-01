@@ -95,7 +95,7 @@ First method was shown above, the second method is also very easy and will creat
 ```php
 use Filestack\filelink;
 
-$file = new Filelink('some-file-handle', 'YOUR_API_KEY');
+$filelink = new Filelink('some-file-handle', 'YOUR_API_KEY');
 
 # transforming an image
 $transformed_filelink = $filelink
