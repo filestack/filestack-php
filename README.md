@@ -21,15 +21,32 @@ Install ``filestack`` with composer, either run
 
     $ composer require --prefer-dist filestack/filestack-php
 
-or add
+### Note on Installation
+
+You should use composer to install this package to your project, as it'll download all the needed dependencies.  Technically, you can manually include the Filestack library using the spl_autoload_register function like so:
 
 ```
-"filestack/filestack-php": ">=1.1.11"
+<?php
+function my_autoloader($class) {
+    include 'ext-lib\' . $class . '.php';
+}
+
+spl_autoload_register('my_autoloader');
+
+use Filestack\FilestackClient;
+$client = new FilestackClient($test_api_key);
 ```
 
-or download from GitHub
+But, even though this will resolve all your Filestack paths, it'll still not work because the Filestack SDK has a dependency on GuzzleHttp, so you'll have to manually install that as well. Unfortunately, there is no easy way to manually install GuzzleHttp.
 
-    https://github.com/filestack/filestack-php.git
+If you really can't use composer, Below is an example project with all the vendor dependencies downloaded. Just make sure you include the vendor/autoload.php file wherever you need to call Filestack objects.
+
+```
+<?php
+require __DIR__ . '/vendor/autoload.php';
+```
+
+https://www.dropbox.com/s/7iwritw0pcstwjb/filestack-phptest.zip
 
 ## Usage
 
@@ -95,7 +112,7 @@ First method was shown above, the second method is also very easy and will creat
 ```php
 use Filestack\filelink;
 
-$file = new Filelink('some-file-handle', 'YOUR_API_KEY');
+$filelink = new Filelink('some-file-handle', 'YOUR_API_KEY');
 
 # transforming an image
 $transformed_filelink = $filelink
