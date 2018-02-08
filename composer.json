@@ -11,7 +11,8 @@
         "mockery/mockery": "dev-master",
         "phpmd/phpmd" : "@stable",
         "satooshi/php-coveralls": "^1.0",
-        "theseer/phpdox": "^0.10.1"
+        "theseer/phpdox": "^0.10.1",
+        "phploc/phploc": "^4.0"
     },
     "autoload": {
         "psr-4" : {

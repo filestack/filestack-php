@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackSecurity::__construct</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../../classes.html">Classes</a>
+        </li>
+        <li>
+          <a href="../../traits.html">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../../source/index.html">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../../classes.html#Filestack">Filestack</a>
+          </li>
+          <li class="separator">
+            <a title="Filestack\FilestackSecurity" href="../../classes/Filestack_FilestackSecurity.html">FilestackSecurity</a>
+          </li>
+          <li class="separator">__construct</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#parameter">Parameter</a>
+          </li>
+          <li>
+            <a href="../../source/FilestackSecurity.php.html#line47">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1><small>Filestack\FilestackSecurity::</small>__construct</h1>
+        <h4>Filestack Security constructor</h4>
+        <p/>
+        <ul/>
+        <h2 id="signature">Signature</h2>
+        <div class="styled synopsis">
+          <code>public function __construct(string
+        $secret,
+            [array
+        $options = ] )
+            </code>
+        </div>
+        <h2 id="parameterlist">Parameters</h2>
+        <dl class="styled">
+          <dt><code>$secret</code>
+                —
+                string</dt>
+          <dd>security secret, set this in<br/>your dev portal</dd>
+          <dt><code>$options</code>
+                —
+                array</dt>
+          <dd>additional options you can send such as:<br/>call: The calls that you allow this policy to<br/>make, e.g: convert, exif, pick, read, remove,<br/>stat, store, write, writeUrl<br/>container: (regex) store must match container<br/>that the files will be stored under<br/>expiry: (timestamp) epoch_timestamp expire,<br/>defaults to 1hr<br/>handle: specific file this policy can access<br/>maxSize: (number) maximum file size in bytes<br/>that can be stored by requests with policy<br/>minSize: (number) minimum file size in bytes<br/>that can be stored by requests with policy<br/>path: (regex) store must match the path that<br/>the files will be stored under.<br/>url: (regex) subset of external URL domains<br/>that are allowed to be image/document<br/>                                 sources for processing</dd>
+        </dl>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

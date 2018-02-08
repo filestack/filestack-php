@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 1.1.12 (Feb 8, 2018)
+- Updated license and fixed composer.json issues
+
 ## 1.1.11 (Nov 15, 2017)
 - Fixed a bug with security that always use default expiration of one hour
 no matter what was passed in
