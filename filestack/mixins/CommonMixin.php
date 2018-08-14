@@ -127,6 +127,16 @@ trait CommonMixin
     }
 
     /**
+     * Append the download flag to a url that may or may not have existing query string flags
+     */
+    public function addDownloadFlagToUrl($url)
+    {
+        $main_url = (string) explode('?', $url)[0];
+        $query_string = parse_url($url, PHP_URL_QUERY);
+        return $main_url.'?dl=true'.($query_string ? '&'.$query_string : '');
+    }
+
+    /**
      * Get the content of a file.
      *
      * @param string            $url        Filestack file url
