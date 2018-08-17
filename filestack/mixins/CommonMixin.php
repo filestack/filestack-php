@@ -114,7 +114,9 @@ trait CommonMixin
         # send request
         $options = ['sink' => $destination];
 
-        $url .= '&dl=true';
+        // add download flag to url
+        $url = $this->addDownloadFlagToUrl($url);
+
         $response = $this->sendRequest('GET', $url, $options);
         $status_code = $response->getStatusCode();
 
