@@ -18,6 +18,19 @@ class FilelinkTest extends BaseTest
     }
 
     /**
+     * Test initializing Filelink intialized with handle and API Key
+     */
+    public function testFilelinkInitializedWithCustomCname()
+    {
+        $filelink = new Filelink($this->test_file_handle, $this->test_api_key, null, null, $this->test_cname);
+        $this->assertEquals($filelink->handle, $this->test_file_handle);
+        $this->assertEquals($filelink->api_key, $this->test_api_key);
+        $this->assertEquals($filelink->cname, $this->test_cname);
+
+        return $filelink;
+    }
+
+    /**
      * Test Filelink get Signed Url
      */
     public function testFilelinkSignedUrl()
@@ -25,6 +38,22 @@ class FilelinkTest extends BaseTest
         $filelink = new Filelink($this->test_file_handle,
             $this->test_api_key);
 
+        $expected_url = sprintf('%s?policy=%s&signature=%s',
+            $filelink->url(),
+            $this->test_security->policy,
+            $this->test_security->signature
+        );
+
+        $signed_url = $filelink->signedUrl($this->test_security);
+        $this->assertEquals($expected_url, $signed_url);
+    }
+
+    /**
+     * Test Filelink get Signed Url with custom CNAME
+     * @depends testFilelinkInitializedWithCustomCname
+     */
+    public function testFilelinkSignedUrlWithCustomCname($filelink)
+    {
         $expected_url = sprintf('%s?policy=%s&signature=%s',
             $filelink->url(),
             $this->test_security->policy,

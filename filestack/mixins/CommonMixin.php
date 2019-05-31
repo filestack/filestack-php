@@ -23,6 +23,8 @@ trait CommonMixin
     protected $user_agent_header;
     protected $source_header;
 
+    public $cname;
+
     /**
      * Check if a string is a valid url.
      *
@@ -318,7 +320,12 @@ trait CommonMixin
         $url = $json_response['url'];
         $file_handle = substr($url, strrpos($url, '/') + 1);
 
-        $filelink = new Filelink($file_handle, $this->api_key, $this->security);
+        $filelink = new Filelink(
+            $file_handle,
+            $this->api_key,
+            $this->security,
+            $this->cname
+        );
         $filelink->metadata['filename'] = $json_response['filename'];
         $filelink->metadata['size'] = $json_response['size'];
         $filelink->metadata['mimetype'] = 'unknown';

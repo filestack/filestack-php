@@ -27,9 +27,16 @@ class FilestackClient
      * @param GuzzleHttp\Client $http_client    DI http client, will instantiate
      *                                          one if not passed in
      * @param UploadProcessor   $upload_processor DI upload_processor object
+     * @param string            $cname          Domain to use for all URLs.
+     *                                          __Requires the custom CNAME
+     *                                          addon__. If this is enabled then
+     *                                          you must also set up your own
+     *                                          OAuth applications for each
+     *                                          cloud source you wish to use in
+     *                                          the picker.
      */
     public function __construct($api_key, $security = null, $http_client = null,
-        $upload_processor = null)
+        $upload_processor = null, $cname = null)
     {
         $this->api_key = $api_key;
         $this->security = $security;
@@ -43,6 +50,9 @@ class FilestackClient
             $upload_processor = new UploadProcessor($api_key, $security, $http_client);
         }
         $this->upload_processor = $upload_processor;
+
+        $cname = filter_var($cname, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME);
+        $this->cname = $cname ? $cname : null;
     }
 
     /**
