@@ -50,9 +50,7 @@ class FilestackClient
             $upload_processor = new UploadProcessor($api_key, $security, $http_client);
         }
         $this->upload_processor = $upload_processor;
-
-        $cname = filter_var($cname, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME);
-        $this->cname = $cname ? $cname : null;
+        $this->cname = $cname;
     }
 
     /**

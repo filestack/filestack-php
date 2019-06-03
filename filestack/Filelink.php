@@ -49,9 +49,7 @@ class Filelink
         }
 
         $this->http_client = $http_client; // CommonMixin
-
-        $cname = filter_var($cname, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME);
-        $this->cname = $cname ? $cname : null;
+        $this->cname = $cname;
     }
 
     /**
