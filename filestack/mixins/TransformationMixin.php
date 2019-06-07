@@ -80,8 +80,8 @@ trait TransformationMixin
      */
     public function sendDebug($transform_url, $api_key, $security = null)
     {
-        $transform_str = str_replace(FilestackConfig::CDN_URL . '/', '', $transform_url);
-        $debug_url = sprintf('%s/%s/debug/%s', FilestackConfig::CDN_URL,
+        $transform_str = str_replace($this->getCustomUrl(FilestackConfig::CDN_URL) . '/', '', $transform_url);
+        $debug_url = sprintf('%s/%s/debug/%s', $this->getCustomUrl(FilestackConfig::CDN_URL),
             $api_key, $transform_str);
 
         if ($security) {
@@ -249,7 +249,8 @@ trait TransformationMixin
                                           $tasks_str, $security = null)
     {
         $api_host = $type == 'image' ?
-            FilestackConfig::CDN_URL : FilestackConfig::PROCESS_URL;
+          $this->getCustomUrl(FilestackConfig::CDN_URL) :
+          $this->getCustomUrl(FilestackConfig::PROCESS_URL);
 
         $base_url = sprintf('%s/%s',
             $api_host,

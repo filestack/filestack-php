@@ -1378,7 +1378,7 @@ class Filelink
      *
      */
     private function hostname() {
-        return (!is_null($this->cname)) ? 'https://' . $this->cname : FilestackConfig::CDN_URL;
+        return $this->getCustomUrl(FilestackConfig::CDN_URL);
     }
 
     /**

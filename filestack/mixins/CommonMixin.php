@@ -26,6 +26,37 @@ trait CommonMixin
     public $cname;
 
     /**
+     * If CNAME is set, return custom CNAME URL, else, noop.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    protected function getCustomUrl($url) {
+      if (!is_null($this->cname)) {
+        switch ($url) {
+        case FilestackConfig::API_URL:
+          $url = "https://www.{$this->cname}/api";
+          break;
+
+        case FilestackConfig::PROCESS_URL:
+          $url = "https://process.{$this->cname}";
+          break;
+
+        case FilestackConfig::CDN_URL:
+          $url = "https://cdn.{$this->cname}";
+          break;
+
+        case FilestackConfig::UPLOAD_URL:
+          $url = "https://upload.{$this->cname}";
+          break;
+
+        }
+      }
+      return $url;
+    }
+
+    /**
      * Check if a string is a valid url.
      *
      * @param   string  $url    url string to check
@@ -69,7 +100,7 @@ trait CommonMixin
     public function sendDelete($handle, $api_key, $security)
     {
         $url = sprintf('%s/file/%s?key=%s',
-            FilestackConfig::API_URL, $handle, $api_key);
+            $this->getCustomUrl(FilestackConfig::API_URL), $handle, $api_key);
 
         if ($security) {
             $url = $security->signUrl($url);
@@ -214,7 +245,7 @@ trait CommonMixin
     protected function sendGetSafeForWork($handle, $security)
     {
         $url = sprintf('%s/sfw/security=policy:%s,signature:%s/%s',
-            FilestackConfig::CDN_URL,
+            $this->getCustomUrl(FilestackConfig::CDN_URL),
             $security->policy,
             $security->signature,
             $handle);
@@ -245,7 +276,7 @@ trait CommonMixin
     protected function sendGetTags($handle, $security)
     {
         $url = sprintf('%s/tags/security=policy:%s,signature:%s/%s',
-            FilestackConfig::CDN_URL,
+            $this->getCustomUrl(FilestackConfig::CDN_URL),
             $security->policy,
             $security->signature,
             $handle);
@@ -278,7 +309,7 @@ trait CommonMixin
     public function sendOverwrite($resource, $handle, $api_key, $security)
     {
         $url = sprintf('%s/file/%s?key=%s',
-            FilestackConfig::API_URL, $handle, $api_key);
+            $this->getCustomURL(FilestackConfig::API_URL), $handle, $api_key);
 
         if ($security) {
             $url = $security->signUrl($url);

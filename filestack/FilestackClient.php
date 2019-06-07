@@ -70,7 +70,7 @@ class FilestackClient
      */
     public function getCdnUrl($handle)
     {
-        $url = sprintf('%s/%s', FilestackConfig::CDN_URL, $handle);
+        $url = sprintf('%s/%s', $this->getCustomUrl(FilestackConfig::CDN_URL), $handle);
         return $url;
     }
 
@@ -756,7 +756,7 @@ class FilestackClient
 
         // build endpoint url
         $url = sprintf('%s/store/%s?key=%s',
-            FilestackConfig::API_URL,
+            $this->getCustomUrl(FilestackConfig::API_URL),
             $location,
             $this->api_key);
 
