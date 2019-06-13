@@ -34,24 +34,11 @@ trait CommonMixin
      */
     protected function getCustomUrl($url) {
       if (!is_null($this->cname)) {
-        switch ($url) {
-        case FilestackConfig::API_URL:
-          $url = "https://www.{$this->cname}/api";
-          break;
-
-        case FilestackConfig::PROCESS_URL:
-          $url = "https://process.{$this->cname}";
-          break;
-
-        case FilestackConfig::CDN_URL:
-          $url = "https://cdn.{$this->cname}";
-          break;
-
-        case FilestackConfig::UPLOAD_URL:
-          $url = "https://upload.{$this->cname}";
-          break;
-
-        }
+        $url = str_replace(
+          FilestackConfig::CNAME_NEEDLE,
+          $this->cname,
+          FilestackConfig::CNAME_TEMPLATE[$url]
+        );
       }
       return $url;
     }
