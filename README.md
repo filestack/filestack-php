@@ -1,14 +1,21 @@
-[![Travis_ci Status](https://api.travis-ci.org/filestack/filestack-php.svg?branch=master)](https://travis-ci.org/filestack/filestack-php)
-[![Coverage Status](https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master)](https://coveralls.io/github/filestack/filestack-php?branch=master)
-[![CodeClimate Status](https://codeclimate.com/github/filestack/filestack-php/badges/gpa.svg)](https://codeclimate.com/github/filestack/filestack-php)
-
-# Filestack PHP SDK
-<a href="https://www.filestack.com"><img src="https://filestack.com/themes/filestack/assets/images/press-articles/color.svg" align="left" hspace="10" vspace="6"></a>
+<p align="center"><img src="logo.svg" align="center" width="100"/></p>
+<h1 align="center">Filestack PHP</h1>
+<p align="center">
+  <a href="http://travis-ci.org/filestack/filestack-php">
+    <img src="https://img.shields.io/travis/filestack/filestack-php.svg">
+  </a>
+  <a href="https://coveralls.io/github/filestack/filestack-php?branch=master">
+    <img src="https://coveralls.io/repos/github/filestack/filestack-php/badge.svg?branch=master">
+  </a>
+   <a href="https://codeclimate.com/github/filestack/filestack-php">
+    <img src="https://codeclimate.com/github/filestack/filestack-php/badges/gpa.svg">
+  </a>
+</p>
 This is the official PHP SDK for Filestack - API and content management system that makes it easy to add powerful file uploading and transformation capabilities to any web or mobile application.
 
 ## Requirements
 
-* PHP 5.6+
+* PHP 7.3+
 
 ## Resources
 
