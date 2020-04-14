@@ -114,7 +114,9 @@ trait CommonMixin
         # send request
         $options = ['sink' => $destination];
 
-        $url .= '&dl=true';
+        // add download flag to url
+        $url = $this->addDownloadFlagToUrl($url);
+
         $response = $this->sendRequest('GET', $url, $options);
         $status_code = $response->getStatusCode();
 
@@ -124,6 +126,16 @@ trait CommonMixin
         }
 
         return true;
+    }
+
+    /**
+     * Append the download flag to a url that may or may not have existing query string flags
+     */
+    public function addDownloadFlagToUrl($url)
+    {
+        $main_url = (string) explode('?', $url)[0];
+        $query_string = parse_url($url, PHP_URL_QUERY);
+        return $main_url.'?dl=true'.($query_string ? '&'.$query_string : '');
     }
 
     /**
