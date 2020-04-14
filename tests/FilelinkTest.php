@@ -423,7 +423,12 @@ class FilelinkTest extends BaseTest
     {
         $mock_response = new MockHttpResponse(
             200,
-            '{url: "https://cdn.filestack.com/somefilehandle"}'
+            json_encode([
+                'filename'  => 'somefilename.jpg',
+                'size'      => '1000',
+                'type'      => 'image/jpg',
+                'url'       => 'https://cdn.filestack.com/somefilehandle',
+            ]),
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
