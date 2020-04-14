@@ -4,7 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackConfig;
 use Filestack\FilestackSecurity;
 
-class BaseTest extends \PHPUnit_Framework_TestCase
+class BaseTest extends \PHPUnit\Framework\TestCase
 {
     protected $test_api_key;
     protected $test_secret;
@@ -15,7 +15,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
 
     protected $mock_response_json;
 
-    public function __construct()
+    protected function setUp(): void
     {
         $this->test_api_key = 'YOUR_FILESTACK_API_KEY';
         $this->test_file_handle = 'zOHgdRG4S5WikRbZNBEn';

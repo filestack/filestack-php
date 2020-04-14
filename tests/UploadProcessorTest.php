@@ -10,7 +10,7 @@ class UploadProcessorTest extends BaseTest
     private $file_metadata;
     private $upload_data;
 
-    public function __construct()
+    protected function setUp(): void
     {
         $this->test_filepath = __DIR__ . '/testfiles/landscape_24mb_img.jpg';
         $this->file_metadata = [
