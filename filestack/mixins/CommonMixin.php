@@ -23,6 +23,26 @@ trait CommonMixin
     protected $user_agent_header;
     protected $source_header;
 
+    public $cname;
+
+    /**
+     * If CNAME is set, return custom CNAME URL, else, noop.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    protected function getCustomUrl($url) {
+      if (!is_null($this->cname)) {
+        $url = str_replace(
+          FilestackConfig::CNAME_NEEDLE,
+          $this->cname,
+          FilestackConfig::CNAME_TEMPLATE[$url]
+        );
+      }
+      return $url;
+    }
+
     /**
      * Check if a string is a valid url.
      *
@@ -67,7 +87,7 @@ trait CommonMixin
     public function sendDelete($handle, $api_key, $security)
     {
         $url = sprintf('%s/file/%s?key=%s',
-            FilestackConfig::API_URL, $handle, $api_key);
+            $this->getCustomUrl(FilestackConfig::API_URL), $handle, $api_key);
 
         if ($security) {
             $url = $security->signUrl($url);
@@ -224,7 +244,7 @@ trait CommonMixin
     protected function sendGetSafeForWork($handle, $security)
     {
         $url = sprintf('%s/sfw/security=policy:%s,signature:%s/%s',
-            FilestackConfig::CDN_URL,
+            $this->getCustomUrl(FilestackConfig::CDN_URL),
             $security->policy,
             $security->signature,
             $handle);
@@ -255,7 +275,7 @@ trait CommonMixin
     protected function sendGetTags($handle, $security)
     {
         $url = sprintf('%s/tags/security=policy:%s,signature:%s/%s',
-            FilestackConfig::CDN_URL,
+            $this->getCustomUrl(FilestackConfig::CDN_URL),
             $security->policy,
             $security->signature,
             $handle);
@@ -288,7 +308,7 @@ trait CommonMixin
     public function sendOverwrite($resource, $handle, $api_key, $security)
     {
         $url = sprintf('%s/file/%s?key=%s',
-            FilestackConfig::API_URL, $handle, $api_key);
+            $this->getCustomURL(FilestackConfig::API_URL), $handle, $api_key);
 
         if ($security) {
             $url = $security->signUrl($url);
@@ -330,7 +350,12 @@ trait CommonMixin
         $url = $json_response['url'];
         $file_handle = substr($url, strrpos($url, '/') + 1);
 
-        $filelink = new Filelink($file_handle, $this->api_key, $this->security);
+        $filelink = new Filelink(
+            $file_handle,
+            $this->api_key,
+            $this->security,
+            $this->cname
+        );
         $filelink->metadata['filename'] = $json_response['filename'];
         $filelink->metadata['size'] = $json_response['size'];
         $filelink->metadata['mimetype'] = 'unknown';

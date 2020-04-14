@@ -21,11 +21,22 @@ class Filelink
     /**
      * Filelink constructor
      *
-     * @param string    $handle     Filestack file handle
-     * @param string    $api_key    Filestack API Key
+     * @param string            $handle       Filestack file handle
+     * @param string            $api_key      Filestack API Key
+     * @param FilestackSecurity $security     Filestack security object if
+     *                                        security settings is turned on
+     * @param GuzzleHttp\Client $http_client  DI http client, will instantiate
+     *                                        one if not passed in
+     * @param string            $cname        Domain to use for all URLs.
+     *                                        __Requires the custom CNAME
+     *                                        addon__. If this is enabled then
+     *                                        you must also set up your own
+     *                                        OAuth applications for each cloud
+     *                                        source you wish to use in the
+     *                                        picker.
      */
     public function __construct($handle, $api_key = '', $security = null,
-                                $http_client = null)
+                                $http_client = null, $cname = null)
     {
         $this->handle = $handle;
         $this->api_key = $api_key;
@@ -38,6 +49,7 @@ class Filelink
         }
 
         $this->http_client = $http_client; // CommonMixin
+        $this->cname = $cname;
     }
 
     /**
@@ -1360,13 +1372,23 @@ class Filelink
     }
 
     /**
+     * return the protocol and hostname for the URL, depending on custom CNAME.
+     *
+     * @return string
+     *
+     */
+    private function hostname() {
+        return $this->getCustomUrl(FilestackConfig::CDN_URL);
+    }
+
+    /**
      * return the URL (cdn) of this filelink
      *
      * @return string
      */
     public function url()
     {
-        return sprintf('%s/%s', FilestackConfig::CDN_URL, $this->handle);
+        return sprintf('%s/%s', $this->hostname(), $this->handle);
     }
 
     /**
@@ -1397,7 +1419,7 @@ class Filelink
                     $this->security->signature
                 ) : '';
 
-            $this->transform_url = sprintf(FilestackConfig::CDN_URL . '%s/%s',
+            $this->transform_url = sprintf($this->hostname() . '%s/%s',
                 $security_str,
                 $this->handle);
         }

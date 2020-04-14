@@ -11,6 +11,15 @@ class FilestackConfig
     const CDN_URL = 'https://cdn.filestackcontent.com';
     const UPLOAD_URL = 'https://upload.filestackapi.com';
 
+    // Custom CNAME templates. Replace __CNAME__.
+    const CNAME_NEEDLE = '__CNAME__';
+    const CNAME_TEMPLATE = array(
+      self::API_URL => 'https://www.__CNAME__/api',
+      self::PROCESS_URL => 'https://process.__CNAME__',
+      self::CDN_URL => 'https://cdn.__CNAME__',
+      self::UPLOAD_URL => 'https://upload.__CNAME__',
+    );
+
     const UPLOAD_PART_SIZE = 1024 * 1024 * 8; // last_digit=MB
     const UPLOAD_CHUNK_SIZE = 1024 * 1024 * 1; // last_digit=MB
     const UPLOAD_MIN_CHUNK_SIZE = 1024 * 32; // last_digit=KB

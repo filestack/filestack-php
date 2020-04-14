@@ -80,7 +80,7 @@ class UploadProcessor
 
         $this->appendSecurity($data);
 
-        $url = FilestackConfig::UPLOAD_URL . '/multipart/start';
+        $url = $this->getCustomUrl(FilestackConfig::UPLOAD_URL) . '/multipart/start';
         $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
         $json = $this->handleResponseDecodeJson($response);
 
@@ -283,7 +283,7 @@ class UploadProcessor
      */
     protected function processChunks($part, $chunks)
     {
-        $upload_url = FilestackConfig::UPLOAD_URL . '/multipart/upload';
+        $upload_url = $this->getCustomUrl(FilestackConfig::UPLOAD_URL) . '/multipart/upload';
         $max_retries = FilestackConfig::MAX_RETRIES;
 
         $num_retries = 0;
@@ -353,7 +353,7 @@ class UploadProcessor
      */
     protected function commitPart($part)
     {
-        $commit_url = FilestackConfig::UPLOAD_URL . '/multipart/commit';
+        $commit_url = $this->getCustomUrl(FilestackConfig::UPLOAD_URL) . '/multipart/commit';
         $commit_data = $this->buildCommitData($part);
 
         $response = $this->sendRequest('POST', $commit_url,
@@ -445,7 +445,7 @@ class UploadProcessor
 
         $this->appendSecurity($data);
 
-        $url = FilestackConfig::UPLOAD_URL . '/multipart/complete';
+        $url = $this->getCustomUrl(FilestackConfig::UPLOAD_URL) . '/multipart/complete';
         $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
         $status_code = $response->getStatusCode();
 
