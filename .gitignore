@@ -5,3 +5,4 @@ coverage/
 build/*
 tests/testfiles/*
 logs/
+.idea/
