@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - Filestack\FilestackConfig</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.html">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.html">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.html">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html#Filestack">Filestack</a>
+          </li>
+          <li class="separator">FilestackConfig</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#constants">Constants</a>
+          </li>
+          <li>
+            <a href="#history">History</a>
+          </li>
+          <li>
+            <a href="../source/FilestackConfig.php.html#line7">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Filestack\</small>FilestackConfig</h1>
+        <h4>Filestack config constants, such as base URLs</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class FilestackConfig
+            {<br/><ul class="none"><li>// constants</li><li>const API_URL = 'https://www.filestackapi.com/api';</li><li>const PROCESS_URL = 'https://process.filestackapi.com';</li><li>const CDN_URL = 'https://cdn.filestackcontent.com';</li><li>const UPLOAD_URL = 'https://upload.filestackapi.com';</li><li>const CNAME_NEEDLE = '__CNAME__';</li><li>const CNAME_TEMPLATE = ;</li><li>const UPLOAD_PART_SIZE = 1024 * 1024 * ;</li><li>const UPLOAD_CHUNK_SIZE = 1024 * 1024 * ;</li><li>const UPLOAD_MIN_CHUNK_SIZE = 1024 * 3;</li><li>const UPLOAD_WAIT_ATTEMPTS = 300;</li><li>const UPLOAD_WAIT_SECONDS = 2;</li><li>const UPLOAD_TIMEOUT_SECONDS = 30;</li><li>const MAX_RETRIES = 5;</li></ul>
+
+            }<br/></div>
+        <h2 id="constants">Constants</h2>
+        <table class="styled">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="API_URL">API_URL</td>
+              <td>'https://www.filestackapi.com/api'</td>
+            </tr>
+            <tr>
+              <td id="PROCESS_URL">PROCESS_URL</td>
+              <td>'https://process.filestackapi.com'</td>
+            </tr>
+            <tr>
+              <td id="CDN_URL">CDN_URL</td>
+              <td>'https://cdn.filestackcontent.com'</td>
+            </tr>
+            <tr>
+              <td id="UPLOAD_URL">UPLOAD_URL</td>
+              <td>'https://upload.filestackapi.com'</td>
+            </tr>
+            <tr>
+              <td id="CNAME_NEEDLE">CNAME_NEEDLE</td>
+              <td>'__CNAME__'</td>
+            </tr>
+            <tr>
+              <td id="CNAME_TEMPLATE">CNAME_TEMPLATE</td>
+              <td/>
+            </tr>
+            <tr>
+              <td id="UPLOAD_PART_SIZE">UPLOAD_PART_SIZE</td>
+              <td>1024 * 1024 * </td>
+            </tr>
+            <tr>
+              <td id="UPLOAD_CHUNK_SIZE">UPLOAD_CHUNK_SIZE</td>
+              <td>1024 * 1024 * </td>
+            </tr>
+            <tr>
+              <td id="UPLOAD_MIN_CHUNK_SIZE">UPLOAD_MIN_CHUNK_SIZE</td>
+              <td>1024 * 3</td>
+            </tr>
+            <tr>
+              <td id="UPLOAD_WAIT_ATTEMPTS">UPLOAD_WAIT_ATTEMPTS</td>
+              <td>300</td>
+            </tr>
+            <tr>
+              <td id="UPLOAD_WAIT_SECONDS">UPLOAD_WAIT_SECONDS</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td id="UPLOAD_TIMEOUT_SECONDS">UPLOAD_TIMEOUT_SECONDS</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td id="MAX_RETRIES">MAX_RETRIES</td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="history">History</h2>
+        <ul class="styled history">
+          <li>
+            <h3>2019-06-13T19:33:41+00:00 (commit #<span title="8d9b375955f43cd0c63e64d7f8779f2604b71303">8d9b375</span>)</h3>
+            <div>
+              <p>
+                        Author: Colin Sheaff (colin-sheaff@northwestern.edu) /
+                        Commiter: Colin Sheaff (colin-sheaff@northwestern.edu)
+                    </p>
+              <pre class="wrapped">Refactor custom CNAME URL function to improve testing coverage.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-09T01:13:18+00:00 (commit #<span title="b2e400715de724a1cb294638d7b7a42f4a59be7d">b2e4007</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">partnum in etag bug fixed</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-06T19:50:58+00:00 (commit #<span title="a854feeaba053dce85e58dc09ab3a4bfdd6c5f7c">a854fee</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">error handling strategy for intelligent flow</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-07-31T20:16:42+00:00 (commit #<span title="68bcf404296e9a14339d0bf09afcc9fc031a8053">68bcf40</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">UploadProcessor 100% coverage passing tests</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-07-28T19:46:31+00:00 (commit #<span title="1e77dd61ad542ebcad4fb31fc55e6a24c72d4a96">1e77dd6</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added UploadProcessor with intelligent ingestion logic</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-26T15:52:48+00:00 (commit #<span title="1273bba6dbb9eb90d617dacc255b49aad2c8547c">1273bba</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added getConvertTaskInfo function to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-24T21:58:41+00:00 (commit #<span title="35258983a2cbbd7ea1901dc55df1b9692539079d">3525898</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">use async requests and concurrent calls for multipart uploads</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-22T22:55:04+00:00 (commit #<span title="915421e936a119be023d1b7867d6cd9385eb2150">915421e</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">implemented multiparts upload</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T21:54:39+00:00 (commit #<span title="74f4ec3c7285949d0d41a30d4f38bb724cf6b262">74f4ec3</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">switched to use phpmd for codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-18T21:25:18+00:00 (commit #<span title="39bb65bb9d9b97559a92f55332cab8f27a43872d">39bb65b</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setup codeclimate</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-15T21:12:54+00:00 (commit #<span title="2fea6a0c2e7d456cee774a0908e4bab6a32cfcb0">2fea6a0</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added convertAudio() and convertVideo() to client and filelink objects</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-15T18:56:10+00:00 (commit #<span title="4be442de6e428a51e38ad95129cab04a4f30a61b">4be442d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added convertFile() functionality to client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-12T00:42:34+00:00 (commit #<span title="373ee050271a954f68d05d49f8b58912f5354709">373ee05</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added debug() call for transformations</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-11T21:27:19+00:00 (commit #<span title="ca5159d915991d78f5e9489e2d03ce47b3ba87b7">ca5159d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added collage() function to client and filelink.  Modified transform calls to return filelink object instead of content.  changed store() to save() on filelink calls.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-10T22:19:18+00:00 (commit #<span title="b389934e59efb2c2e9b5f61e1ebad77fd3588aff">b389934</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added screenshot() function</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-10T21:17:45+00:00 (commit #<span title="515bb43900aeb469319e4942d59a8f5708a6d338">515bb43</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">got rid of PROCESSING_URL and updated all occurrences to use CDN_URL</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-10T20:24:40+00:00 (commit #<span title="5c8f7791a144c33b3ae75f494bd1820a3da903a0">5c8f779</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added zip and compress functionalities</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-10T18:52:15+00:00 (commit #<span title="367f859335f5ec9607d64c07681da64118574e51">367f859</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added tests for transformation functions</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-09T23:11:20+00:00 (commit #<span title="73a63c6df0c8d276c9cccde816d85a8e9248331b">73a63c6</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">separated out transformation tasks into individual functions instead of catchall</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-08T22:30:51+00:00 (commit #<span title="a96f32db8a1ddaefbd4c34d50b5ee2c73ba88ef1">a96f32d</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added Transformations chaining and catchal to Filelink obj
+added transform func to client for external urls</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-05T17:39:21+00:00 (commit #<span title="942180a407a9f1f8957581a7d8db984ed3cde16c">942180a</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">moved security to constructor and removed as parameters for client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-05T14:08:10+00:00 (commit #<span title="4b837ac36bb83804cfa135b8597c9f6f76e479f2">4b837ac</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">preliminary design of mixin</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T20:33:57+00:00 (commit #<span title="2b25400f5c9b6a3412a91027689fdf2cb118900d">2b25400</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">installed and ran php-cs-fixer.  updated examples, added real tests but marked as skipped</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T18:20:21+00:00 (commit #<span title="fb1b6fda6492dd1d0e76c942cbb31f7e3811e970">fb1b6fd</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added overwrite method to client and filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T17:16:49+00:00 (commit #<span title="809b3d41ef268e0425096d069fb335033b20bdd3">809b3d4</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added delete function to filelink and client</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-04T16:22:33+00:00 (commit #<span title="e5e1cad92711668d21f970a35be251ae32b62851">e5e1cad</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added security class</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T22:26:18+00:00 (commit #<span title="00533b72439ae6091e6cbe8d88c2b07cd73717be">00533b7</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added User-Agent header to http request</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T21:50:52+00:00 (commit #<span title="bf2ef12206a3b934a971aa4cb997ebb507b70e2a">bf2ef12</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added options to store function.  added store functio to Filelink</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-02T17:11:33+00:00 (commit #<span title="5b565df0c7c118ced08385041461389e8f9c2e3b">5b565df</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added empty line at end of files.  removed test method in filepickerclient</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-05-01T01:21:36+00:00 (commit #<span title="8a961cd7e61ede95e6c38d999fb17dc0bd971e21">8a961cd</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">setting up project file structure</pre>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

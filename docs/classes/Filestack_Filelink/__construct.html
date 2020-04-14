@@ -59,7 +59,10 @@
             <a href="#parameter">Parameter</a>
           </li>
           <li>
-            <a href="../../source/Filelink.php.html#line27">Source</a>
+            <a href="#tests">Tests</a>
+          </li>
+          <li>
+            <a href="../../source/Filelink.php.html#line38">Source</a>
           </li>
         </ul>
       </nav>
@@ -74,10 +77,12 @@
         $handle,
             [string
         $api_key = '',
-            [
+            [<a title="Filestack\FilestackSecurity" href="../../classes/Filestack_FilestackSecurity.html">FilestackSecurity</a>
         $security = NULL,
-            [
-        $http_client = NULL]]] )
+            [<a title="Filestack\GuzzleHttp\Client" href="../../classes/Filestack_GuzzleHttp_Client.html">Client</a>
+        $http_client = NULL,
+            [string
+        $cname = NULL]]]] )
             </code>
         </div>
         <h2 id="parameterlist">Parameters</h2>
@@ -92,17 +97,30 @@
           <dd>Filestack API Key</dd>
           <dt><code>$security</code>
                 —
-                </dt>
-          <dd/>
+                object</dt>
+          <dd>Filestack security object if<br/>security settings is turned on</dd>
           <dt><code>$http_client</code>
                 —
-                </dt>
-          <dd/>
+                object</dt>
+          <dd>DI http client, will instantiate<br/>one if not passed in</dd>
+          <dt><code>$cname</code>
+                —
+                string</dt>
+          <dd>Domain to use for all URLs.<br/>__Requires the custom CNAME<br/>addon__. If this is enabled then<br/>you must also set up your own<br/>OAuth applications for each cloud<br/>source you wish to use in the<br/>                                       picker.</dd>
         </dl>
+        <h2 id="tests">Test Coverage</h2>
+        <div class="styled">
+          <h3>Information</h3>
+          <ul class="styled">
+            <li>Coverage: / Lines (%)</li>
+            <li>Tests: 0</li>
+            <li>Passed: 0 (0%)</li>
+          </ul>
+        </div>
       </section>
     </div>
     <footer>
-      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
     </footer>
   </body>
 </html>

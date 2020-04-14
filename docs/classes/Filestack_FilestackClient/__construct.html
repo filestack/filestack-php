@@ -59,7 +59,10 @@
             <a href="#parameter">Parameter</a>
           </li>
           <li>
-            <a href="../../source/FilestackClient.php.html#line31">Source</a>
+            <a href="#tests">Tests</a>
+          </li>
+          <li>
+            <a href="../../source/FilestackClient.php.html#line38">Source</a>
           </li>
         </ul>
       </nav>
@@ -77,7 +80,9 @@
             [<a title="Filestack\GuzzleHttp\Client" href="../../classes/Filestack_GuzzleHttp_Client.html">Client</a>
         $http_client = NULL,
             [<a title="Filestack\UploadProcessor" href="../../classes/Filestack_UploadProcessor.html">UploadProcessor</a>
-        $upload_processor = NULL]]] )
+        $upload_processor = NULL,
+            [string
+        $cname = NULL]]]] )
             </code>
         </div>
         <h2 id="parameterlist">Parameters</h2>
@@ -98,11 +103,24 @@
                 —
                 object</dt>
           <dd>DI upload_processor object<br/><br/><br/>      </dd>
+          <dt><code>$cname</code>
+                —
+                string</dt>
+          <dd>Domain to use for all URLs.<br/>__Requires the custom CNAME<br/>addon__. If this is enabled then<br/>you must also set up your own<br/>OAuth applications for each<br/>cloud source you wish to use in<br/>                                         the picker.</dd>
         </dl>
+        <h2 id="tests">Test Coverage</h2>
+        <div class="styled">
+          <h3>Information</h3>
+          <ul class="styled">
+            <li>Coverage: / Lines (%)</li>
+            <li>Tests: 0</li>
+            <li>Passed: 0 (0%)</li>
+          </ul>
+        </div>
       </section>
     </div>
     <footer>
-      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
     </footer>
   </body>
 </html>

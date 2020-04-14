@@ -56,6 +56,9 @@
             <a href="#hierarchy">Hierarchy</a>
           </li>
           <li>
+            <a href="#coverage">Coverage</a>
+          </li>
+          <li>
             <a href="#members">Members</a>
           </li>
           <li>
@@ -129,13 +132,16 @@
                     </li><li>public json <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/getTags.html">getTags</a>()
                     </li><li>public Filelink <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/transform.html">transform</a>()
                     </li><li>public Filestack/Filelink <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/zip.html">zip</a>()
+                    </li><li>private string <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/hostname.html">hostname</a>()
                     </li><li>public string <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/url.html">url</a>()
                     </li><li>public string <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/signedUrl.html">signedUrl</a>()
                     </li><li>protected void <a title="Filestack\Filelink" href="../classes/Filestack_Filelink/initTransformUrl.html">initTransformUrl</a>()
-                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getCustomUrl.html">getCustomUrl</a>()
+                        </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl</a>()
                         </li><li>public int <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds</a>()
                         </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.html">sendDelete</a>()
                         </li><li>protected bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.html">sendDownload</a>()
+                        </li><li>public void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addDownloadFlagToUrl.html">addDownloadFlagToUrl</a>()
                         </li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.html">sendGetContent</a>()
                         </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.html">sendGetMetaData</a>()
                         </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.html">sendGetSafeForWork</a>()
@@ -172,6 +178,19 @@
             </li>
           </ul>
         </div>
+        <h2 id="coverage">Coverage</h2>
+        <table class="styled">
+          <tr>
+            <td>Methods</td>
+            <td class="percent">0%</td>
+            <td class="nummeric">0 / 52</td>
+          </tr>
+          <tr>
+            <td>Lines</td>
+            <td class="percent">0%</td>
+            <td class="nummeric"> / </td>
+          </tr>
+        </table>
         <h2 id="members">Members</h2>
         <div class="styled members">
           <h4>protected</h4>
@@ -194,6 +213,9 @@
             <li id="api_key">
               <strong>$api_key</strong>
             </li>
+            <li id="cname">
+              <strong>$cname</strong>
+            </li>
             <li id="handle">
               <strong>$handle</strong>
             </li>
@@ -210,6 +232,11 @@
         </div>
         <h2 id="methods">Methods</h2>
         <div class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="hostname"><a title="Filestack\Filelink" href="../classes/Filestack_Filelink/hostname.html">hostname()</a>
+                — return the protocol and hostname for the URL, depending on custom CNAME.</li>
+          </ul>
           <h4>protected</h4>
           <ul>
             <li id="initTransformUrl"><a title="Filestack\Filelink" href="../classes/Filestack_Filelink/initTransformUrl.html">initTransformUrl()</a>
@@ -328,6 +355,8 @@
             <li id="appendPromise">
               <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.html">appendPromise()</a>
             </li>
+            <li id="getCustomUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getCustomUrl.html">getCustomUrl()</a>
+                — If CNAME is set, return custom CNAME URL, else, noop.</li>
             <li id="getSourceHeaders"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.html">getSourceHeaders()</a>
                 — Get source header</li>
             <li id="handleResponseCreateFilelink"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.html">handleResponseCreateFilelink()</a>
@@ -352,6 +381,8 @@
           </ul>
           <h4>public</h4>
           <ul>
+            <li id="addDownloadFlagToUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addDownloadFlagToUrl.html">addDownloadFlagToUrl()</a>
+                — Append the download flag to a url that may or may not have existing query string flags</li>
             <li id="get_retry_miliseconds"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds()</a>
                 — Get the miliseconds of exponential backoff retry strategy</li>
             <li id="isUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl()</a>
@@ -388,7 +419,59 @@
         <h2 id="history">History</h2>
         <ul class="styled history">
           <li>
-            <h3>2017-08-16T18:39:59+02:00 (commit #<span title="674be058284f44bdb4f422162acf49a0b51d6106">674be05</span>)</h3>
+            <h3>2019-06-07T17:01:05+00:00 (commit #<span title="ba607959b68a9b9cbec55da5a2669ed606ec041a">ba60795</span>)</h3>
+            <div>
+              <p>
+                        Author: Colin Sheaff (colin-sheaff@northwestern.edu) /
+                        Commiter: Colin Sheaff (colin-sheaff@northwestern.edu)
+                    </p>
+              <pre class="wrapped">Improved custom CNAME implementation and coverage.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2019-06-03T17:52:39+00:00 (commit #<span title="67e2815b9f5617bbca1626cfebbdef208afc8c68">67e2815</span>)</h3>
+            <div>
+              <p>
+                        Author: Colin Sheaff (colin-sheaff@northwestern.edu) /
+                        Commiter: Colin Sheaff (colin-sheaff@northwestern.edu)
+                    </p>
+              <pre class="wrapped">Remove CNAME validation.
+
+Domain name validation using built-in PHP `filter_var($domain,
+FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)` is not compatible with
+PHP 5.x. As the Javascript API Client library doesn't do any validation,
+it's assumed that library users do not need this feature.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2019-05-31T22:14:51+00:00 (commit #<span title="4058b58aa97827810b3bc66b760c2c5885ab7fd7">4058b58</span>)</h3>
+            <div>
+              <p>
+                        Author: Colin Sheaff (colin-sheaff@northwestern.edu) /
+                        Commiter: Colin Sheaff (colin-sheaff@northwestern.edu)
+                    </p>
+              <pre class="wrapped">fix #40 : Add support for custom CNAME
+
+This patch primarily addresses the lack of custom CNAME support for urls
+that might get used in HTML templates populated by a server, so that
+client browsers will request resources via the custom CNAME.
+
+This patch DOES NOT try convert all server-side requests to use the</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-16T17:41:07+00:00 (commit #<span title="4e283635c2f7604fcb4ecbc59e37c040c8c5ac00">4e28363</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added phpdox for documentation generation
+generated docs using phpdox</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-16T16:39:59+00:00 (commit #<span title="674be058284f44bdb4f422162acf49a0b51d6106">674be05</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -398,7 +481,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-06-09T21:54:00+02:00 (commit #<span title="30564327d11d659697238145f47985a5bfe293d3">3056432</span>)</h3>
+            <h3>2017-06-09T19:54:00+00:00 (commit #<span title="30564327d11d659697238145f47985a5bfe293d3">3056432</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -408,7 +491,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-26T17:52:48+02:00 (commit #<span title="1273bba6dbb9eb90d617dacc255b49aad2c8547c">1273bba</span>)</h3>
+            <h3>2017-05-26T15:52:48+00:00 (commit #<span title="1273bba6dbb9eb90d617dacc255b49aad2c8547c">1273bba</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -418,7 +501,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-25T23:37:44+02:00 (commit #<span title="9b61464e70037dcbcae1bc449afff595bbf6f59e">9b61464</span>)</h3>
+            <h3>2017-05-25T21:37:44+00:00 (commit #<span title="9b61464e70037dcbcae1bc449afff595bbf6f59e">9b61464</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -428,7 +511,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-23T00:55:04+02:00 (commit #<span title="915421e936a119be023d1b7867d6cd9385eb2150">915421e</span>)</h3>
+            <h3>2017-05-22T22:55:04+00:00 (commit #<span title="915421e936a119be023d1b7867d6cd9385eb2150">915421e</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -438,7 +521,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-18T23:54:39+02:00 (commit #<span title="74f4ec3c7285949d0d41a30d4f38bb724cf6b262">74f4ec3</span>)</h3>
+            <h3>2017-05-18T21:54:39+00:00 (commit #<span title="74f4ec3c7285949d0d41a30d4f38bb724cf6b262">74f4ec3</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -448,7 +531,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-18T23:25:18+02:00 (commit #<span title="39bb65bb9d9b97559a92f55332cab8f27a43872d">39bb65b</span>)</h3>
+            <h3>2017-05-18T21:25:18+00:00 (commit #<span title="39bb65bb9d9b97559a92f55332cab8f27a43872d">39bb65b</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -458,7 +541,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-15T23:12:54+02:00 (commit #<span title="2fea6a0c2e7d456cee774a0908e4bab6a32cfcb0">2fea6a0</span>)</h3>
+            <h3>2017-05-15T21:12:54+00:00 (commit #<span title="2fea6a0c2e7d456cee774a0908e4bab6a32cfcb0">2fea6a0</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -468,7 +551,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-15T20:56:10+02:00 (commit #<span title="4be442de6e428a51e38ad95129cab04a4f30a61b">4be442d</span>)</h3>
+            <h3>2017-05-15T18:56:10+00:00 (commit #<span title="4be442de6e428a51e38ad95129cab04a4f30a61b">4be442d</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -478,7 +561,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-12T02:42:34+02:00 (commit #<span title="373ee050271a954f68d05d49f8b58912f5354709">373ee05</span>)</h3>
+            <h3>2017-05-12T00:42:34+00:00 (commit #<span title="373ee050271a954f68d05d49f8b58912f5354709">373ee05</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -488,7 +571,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-11T23:27:19+02:00 (commit #<span title="ca5159d915991d78f5e9489e2d03ce47b3ba87b7">ca5159d</span>)</h3>
+            <h3>2017-05-11T21:27:19+00:00 (commit #<span title="ca5159d915991d78f5e9489e2d03ce47b3ba87b7">ca5159d</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -498,7 +581,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-10T23:17:45+02:00 (commit #<span title="515bb43900aeb469319e4942d59a8f5708a6d338">515bb43</span>)</h3>
+            <h3>2017-05-10T21:17:45+00:00 (commit #<span title="515bb43900aeb469319e4942d59a8f5708a6d338">515bb43</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -508,7 +591,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-10T22:24:40+02:00 (commit #<span title="5c8f7791a144c33b3ae75f494bd1820a3da903a0">5c8f779</span>)</h3>
+            <h3>2017-05-10T20:24:40+00:00 (commit #<span title="5c8f7791a144c33b3ae75f494bd1820a3da903a0">5c8f779</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -518,7 +601,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-10T20:52:15+02:00 (commit #<span title="367f859335f5ec9607d64c07681da64118574e51">367f859</span>)</h3>
+            <h3>2017-05-10T18:52:15+00:00 (commit #<span title="367f859335f5ec9607d64c07681da64118574e51">367f859</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -528,7 +611,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-10T01:11:20+02:00 (commit #<span title="73a63c6df0c8d276c9cccde816d85a8e9248331b">73a63c6</span>)</h3>
+            <h3>2017-05-09T23:11:20+00:00 (commit #<span title="73a63c6df0c8d276c9cccde816d85a8e9248331b">73a63c6</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -538,7 +621,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-09T19:26:32+02:00 (commit #<span title="9f3fdba930c03b4d7f858a47ceb71e71221a69d8">9f3fdba</span>)</h3>
+            <h3>2017-05-09T17:26:32+00:00 (commit #<span title="9f3fdba930c03b4d7f858a47ceb71e71221a69d8">9f3fdba</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -548,7 +631,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-05-09T00:30:51+02:00 (commit #<span title="a96f32db8a1ddaefbd4c34d50b5ee2c73ba88ef1">a96f32d</span>)</h3>
+            <h3>2017-05-08T22:30:51+00:00 (commit #<span title="a96f32db8a1ddaefbd4c34d50b5ee2c73ba88ef1">a96f32d</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -559,7 +642,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-05T19:39:21+02:00 (commit #<span title="942180a407a9f1f8957581a7d8db984ed3cde16c">942180a</span>)</h3>
+            <h3>2017-05-05T17:39:21+00:00 (commit #<span title="942180a407a9f1f8957581a7d8db984ed3cde16c">942180a</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -569,7 +652,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-05T16:08:10+02:00 (commit #<span title="4b837ac36bb83804cfa135b8597c9f6f76e479f2">4b837ac</span>)</h3>
+            <h3>2017-05-05T14:08:10+00:00 (commit #<span title="4b837ac36bb83804cfa135b8597c9f6f76e479f2">4b837ac</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -579,7 +662,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-04T22:33:57+02:00 (commit #<span title="2b25400f5c9b6a3412a91027689fdf2cb118900d">2b25400</span>)</h3>
+            <h3>2017-05-04T20:33:57+00:00 (commit #<span title="2b25400f5c9b6a3412a91027689fdf2cb118900d">2b25400</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -589,7 +672,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-04T20:20:21+02:00 (commit #<span title="fb1b6fda6492dd1d0e76c942cbb31f7e3811e970">fb1b6fd</span>)</h3>
+            <h3>2017-05-04T18:20:21+00:00 (commit #<span title="fb1b6fda6492dd1d0e76c942cbb31f7e3811e970">fb1b6fd</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -599,7 +682,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-04T19:16:49+02:00 (commit #<span title="809b3d41ef268e0425096d069fb335033b20bdd3">809b3d4</span>)</h3>
+            <h3>2017-05-04T17:16:49+00:00 (commit #<span title="809b3d41ef268e0425096d069fb335033b20bdd3">809b3d4</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -609,7 +692,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-04T18:22:33+02:00 (commit #<span title="e5e1cad92711668d21f970a35be251ae32b62851">e5e1cad</span>)</h3>
+            <h3>2017-05-04T16:22:33+00:00 (commit #<span title="e5e1cad92711668d21f970a35be251ae32b62851">e5e1cad</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -619,7 +702,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-03T23:20:04+02:00 (commit #<span title="1337a7fa090a40e2250b4f8a59fdf1729f857d43">1337a7f</span>)</h3>
+            <h3>2017-05-03T21:20:04+00:00 (commit #<span title="1337a7fa090a40e2250b4f8a59fdf1729f857d43">1337a7f</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -629,7 +712,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-03T00:26:18+02:00 (commit #<span title="00533b72439ae6091e6cbe8d88c2b07cd73717be">00533b7</span>)</h3>
+            <h3>2017-05-02T22:26:18+00:00 (commit #<span title="00533b72439ae6091e6cbe8d88c2b07cd73717be">00533b7</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -639,7 +722,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-02T23:50:52+02:00 (commit #<span title="bf2ef12206a3b934a971aa4cb997ebb507b70e2a">bf2ef12</span>)</h3>
+            <h3>2017-05-02T21:50:52+00:00 (commit #<span title="bf2ef12206a3b934a971aa4cb997ebb507b70e2a">bf2ef12</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -649,7 +732,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-02T19:11:33+02:00 (commit #<span title="5b565df0c7c118ced08385041461389e8f9c2e3b">5b565df</span>)</h3>
+            <h3>2017-05-02T17:11:33+00:00 (commit #<span title="5b565df0c7c118ced08385041461389e8f9c2e3b">5b565df</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -659,7 +742,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-02T00:13:47+02:00 (commit #<span title="61c4278e687f5ca0ca3938a05c67ae2c12e54ca1">61c4278</span>)</h3>
+            <h3>2017-05-01T22:13:47+00:00 (commit #<span title="61c4278e687f5ca0ca3938a05c67ae2c12e54ca1">61c4278</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -669,7 +752,7 @@ added transform func to client for external urls</pre>
             </div>
           </li>
           <li>
-            <h3>2017-05-01T03:21:36+02:00 (commit #<span title="8a961cd7e61ede95e6c38d999fb17dc0bd971e21">8a961cd</span>)</h3>
+            <h3>2017-05-01T01:21:36+00:00 (commit #<span title="8a961cd7e61ede95e6c38d999fb17dc0bd971e21">8a961cd</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -682,7 +765,7 @@ added transform func to client for external urls</pre>
       </section>
     </div>
     <footer>
-      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
     </footer>
   </body>
 </html>

@@ -56,6 +56,9 @@
             <a href="#hierarchy">Hierarchy</a>
           </li>
           <li>
+            <a href="#coverage">Coverage</a>
+          </li>
+          <li>
             <a href="#members">Members</a>
           </li>
           <li>
@@ -96,10 +99,12 @@
                     </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/appendSecurity.html">appendSecurity</a>()
                     </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/multipartGetTags.html">multipartGetTags</a>()
                     </li><li>protected void <a title="Filestack\UploadProcessor" href="../classes/Filestack_UploadProcessor/handleS3PromisesResult.html">handleS3PromisesResult</a>()
-                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="Filestack\Mixins\CommonMixin">CommonMixin</span></li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getCustomUrl.html">getCustomUrl</a>()
+                        </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl</a>()
                         </li><li>public int <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds</a>()
                         </li><li>public bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDelete.html">sendDelete</a>()
                         </li><li>protected bool <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendDownload.html">sendDownload</a>()
+                        </li><li>public void <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addDownloadFlagToUrl.html">addDownloadFlagToUrl</a>()
                         </li><li>protected string <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetContent.html">sendGetContent</a>()
                         </li><li>protected array <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetMetaData.html">sendGetMetaData</a>()
                         </li><li>protected json <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/sendGetSafeForWork.html">sendGetSafeForWork</a>()
@@ -125,6 +130,19 @@
             </li>
           </ul>
         </div>
+        <h2 id="coverage">Coverage</h2>
+        <table class="styled">
+          <tr>
+            <td>Methods</td>
+            <td class="percent">0%</td>
+            <td class="nummeric">0 / 17</td>
+          </tr>
+          <tr>
+            <td>Lines</td>
+            <td class="percent">0%</td>
+            <td class="nummeric"> / </td>
+          </tr>
+        </table>
         <h2 id="members">Members</h2>
         <div class="styled members">
           <h4>protected</h4>
@@ -152,6 +170,9 @@
           <ul class="members">
             <li id="api_key">
               <strong>$api_key</strong>
+            </li>
+            <li id="cname">
+              <strong>$cname</strong>
             </li>
           </ul>
         </div>
@@ -210,6 +231,8 @@
             <li id="appendPromise">
               <a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/appendPromise.html">appendPromise()</a>
             </li>
+            <li id="getCustomUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getCustomUrl.html">getCustomUrl()</a>
+                — If CNAME is set, return custom CNAME URL, else, noop.</li>
             <li id="getSourceHeaders"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/getSourceHeaders.html">getSourceHeaders()</a>
                 — Get source header</li>
             <li id="handleResponseCreateFilelink"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/handleResponseCreateFilelink.html">handleResponseCreateFilelink()</a>
@@ -234,6 +257,8 @@
           </ul>
           <h4>public</h4>
           <ul>
+            <li id="addDownloadFlagToUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/addDownloadFlagToUrl.html">addDownloadFlagToUrl()</a>
+                — Append the download flag to a url that may or may not have existing query string flags</li>
             <li id="get_retry_miliseconds"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/get_retry_miliseconds.html">get_retry_miliseconds()</a>
                 — Get the miliseconds of exponential backoff retry strategy</li>
             <li id="isUrl"><a title="Filestack\Mixins\CommonMixin" href="../traits/Filestack_Mixins_CommonMixin/isUrl.html">isUrl()</a>
@@ -247,7 +272,38 @@
         <h2 id="history">History</h2>
         <ul class="styled history">
           <li>
-            <h3>2017-08-16T18:39:59+02:00 (commit #<span title="674be058284f44bdb4f422162acf49a0b51d6106">674be05</span>)</h3>
+            <h3>2019-06-07T17:01:05+00:00 (commit #<span title="ba607959b68a9b9cbec55da5a2669ed606ec041a">ba60795</span>)</h3>
+            <div>
+              <p>
+                        Author: Colin Sheaff (colin-sheaff@northwestern.edu) /
+                        Commiter: Colin Sheaff (colin-sheaff@northwestern.edu)
+                    </p>
+              <pre class="wrapped">Improved custom CNAME implementation and coverage.</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-09-08T18:59:02+00:00 (commit #<span title="ecf343e132151d46f42db3a269db401b49159e07">ecf343e</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">upload() should return filelink not json</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-16T17:41:07+00:00 (commit #<span title="4e283635c2f7604fcb4ecbc59e37c040c8c5ac00">4e28363</span>)</h3>
+            <div>
+              <p>
+                        Author: Huey Ly (huey@webmail.us) /
+                        Commiter: Huey Ly (huey@webmail.us)
+                    </p>
+              <pre class="wrapped">added phpdox for documentation generation
+generated docs using phpdox</pre>
+            </div>
+          </li>
+          <li>
+            <h3>2017-08-16T16:39:59+00:00 (commit #<span title="674be058284f44bdb4f422162acf49a0b51d6106">674be05</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -257,7 +313,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-08-10T23:26:53+02:00 (commit #<span title="5c048b4b97492e38d83a3c309e80eb1998e866e5">5c048b4</span>)</h3>
+            <h3>2017-08-10T21:26:53+00:00 (commit #<span title="5c048b4b97492e38d83a3c309e80eb1998e866e5">5c048b4</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -267,7 +323,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-08-09T03:13:18+02:00 (commit #<span title="b2e400715de724a1cb294638d7b7a42f4a59be7d">b2e4007</span>)</h3>
+            <h3>2017-08-09T01:13:18+00:00 (commit #<span title="b2e400715de724a1cb294638d7b7a42f4a59be7d">b2e4007</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -277,7 +333,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-08-06T21:50:58+02:00 (commit #<span title="a854feeaba053dce85e58dc09ab3a4bfdd6c5f7c">a854fee</span>)</h3>
+            <h3>2017-08-06T19:50:58+00:00 (commit #<span title="a854feeaba053dce85e58dc09ab3a4bfdd6c5f7c">a854fee</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -287,7 +343,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-07-31T22:16:42+02:00 (commit #<span title="68bcf404296e9a14339d0bf09afcc9fc031a8053">68bcf40</span>)</h3>
+            <h3>2017-07-31T20:16:42+00:00 (commit #<span title="68bcf404296e9a14339d0bf09afcc9fc031a8053">68bcf40</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -297,7 +353,7 @@
             </div>
           </li>
           <li>
-            <h3>2017-07-28T21:46:31+02:00 (commit #<span title="1e77dd61ad542ebcad4fb31fc55e6a24c72d4a96">1e77dd6</span>)</h3>
+            <h3>2017-07-28T19:46:31+00:00 (commit #<span title="1e77dd61ad542ebcad4fb31fc55e6a24c72d4a96">1e77dd6</span>)</h3>
             <div>
               <p>
                         Author: Huey Ly (huey@webmail.us) /
@@ -310,7 +366,7 @@
       </section>
     </div>
     <footer>
-      <span>Generated using phpDox 0.11.0-dev - Copyright (C) 2010 - 2017 by Arne Blankerts and Contributors</span>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
     </footer>
   </body>
 </html>
