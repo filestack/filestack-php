@@ -192,7 +192,17 @@ vendor/bin/phpmd tests xml phpmd-rules.xml > logs/phpmd-report-tests.xml
 
 ## Generating documentation
 
-Use phar file from https://github.com/theseer/phpdox/releases/tag/0.12.0 and run it on this repository.
+To get project metrics use phar file for https://github.com/sebastianbergmann/phploc
+
+```
+./phploc.phar --log-xml=phploc.xml .
+```
+
+To generate documentation use phar file from https://github.com/theseer/phpdox
+
+```
+./phpdox.phar
+```
 
 ## Issues
 
