@@ -4,7 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackConfig;
 use Filestack\Mixins\CommonMixin;
 
-class CommonMixinTest extends \PHPUnit_Framework_TestCase
+class CommonMixinTest extends \PHPUnit\Framework\TestCase
 {
 
     function testAddDownloadFlagToUrl()
