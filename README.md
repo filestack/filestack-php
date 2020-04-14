@@ -77,7 +77,7 @@ $filelink = $client->upload('/path/to/file');
 Amazon S3 is used to store your files by default. If you wish to use a different one, you can pass in additional parameter 'location' when making upload() and store calls
 
 ```php
-$client = FilestackClient('YOUR_API_KEY');
+$client = new FilestackClient('YOUR_API_KEY');
 $extras = [
     'Location' => 'dropbox',
     'Filename' => 'somefilename.jpg',
