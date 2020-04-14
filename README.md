@@ -21,33 +21,6 @@ Install ``filestack`` with composer, either run
 
     $ composer require --prefer-dist filestack/filestack-php
 
-### Note on Installation
-
-You should use composer to install this package to your project, as it'll download all the needed dependencies.  Technically, you can manually include the Filestack library using the spl_autoload_register function like so:
-
-```
-<?php
-function my_autoloader($class) {
-    include 'ext-lib\' . $class . '.php';
-}
-
-spl_autoload_register('my_autoloader');
-
-use Filestack\FilestackClient;
-$client = new FilestackClient($test_api_key);
-```
-
-But, even though this will resolve all your Filestack paths, it'll still not work because the Filestack SDK has a dependency on GuzzleHttp, so you'll have to manually install that as well. Unfortunately, there is no easy way to manually install GuzzleHttp.
-
-If you really can't use composer, Below is an example project with all the vendor dependencies downloaded. Just make sure you include the vendor/autoload.php file wherever you need to call Filestack objects.
-
-```
-<?php
-require __DIR__ . '/vendor/autoload.php';
-```
-
-https://www.dropbox.com/s/7iwritw0pcstwjb/filestack-phptest.zip
-
 ## Usage
 
 Filestack library gives you access to three useful classes:
@@ -74,6 +47,7 @@ $filelink = $client->upload('/path/to/file');
 ```
 
 ### Storage
+
 Amazon S3 is used to store your files by default. If you wish to use a different one, you can pass in additional parameter 'location' when making upload() and store calls
 
 ```php
@@ -104,7 +78,7 @@ $filelink2 = $client->overwrite('/path/to/file', $filelink->handle);
 
 Filelink objects can be created in two ways:
 
- - by uploading a file with using FilestackClient
+ - by uploading a file using FilestackClient
  - by initializing Filelink with file handle and api_key
 
 First method was shown above, the second method is also very easy and will create objects representing files that were already uploaded.
@@ -207,7 +181,7 @@ vendor/bin/phpunit
 - To generate coverage report, run following command (will generage html files under
 directory coverage/)
 ```
-vendor/bin/phpunit --coverage-html=coverage
+vendor/bin/phpunit --coverage-xml=coverage
 ```
 
 - To run PHPMD for CodeClimate checks
@@ -218,8 +192,7 @@ vendor/bin/phpmd tests xml phpmd-rules.xml > logs/phpmd-report-tests.xml
 
 ## Generating documentation
 
-vendor/bin/phploc --log-xml=phploc.xml filestack
-vendor/bin/phpdox
+Use phar file from https://github.com/theseer/phpdox/releases/tag/0.12.0 and run it on this repository.
 
 ## Issues
 
