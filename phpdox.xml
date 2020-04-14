@@ -66,7 +66,6 @@
                 <source type="build" />
                 <source type="git" />
                 <source type="phploc" />
-                <source type="checkstyle" />
                 <source type="phpunit" />
             </enrich>
 
