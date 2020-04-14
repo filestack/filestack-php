@@ -10,8 +10,7 @@
         "phpunit/phpunit": "^9.0",
         "mockery/mockery": "dev-master",
         "phpmd/phpmd" : "@stable",
-        "php-coveralls/php-coveralls": "^2.2",
-        "phploc/phploc": "^6.0.2"
+        "php-coveralls/php-coveralls": "^2.2"
     },
     "autoload": {
         "psr-4" : {
