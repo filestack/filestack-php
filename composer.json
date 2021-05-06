@@ -3,19 +3,19 @@
     "description": "A Filestack library for PHP",
     "license": "Apache-2.0",
     "require": {
-        "php" : ">=7.3",
-        "guzzlehttp/guzzle": "~6.5"
+        "php": "^7.3|^8.0",
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.3.3",
         "mockery/mockery": "dev-master",
-        "phpmd/phpmd" : "@stable",
+        "phpmd/phpmd": "@stable",
         "php-coveralls/php-coveralls": "^2.2"
     },
     "autoload": {
-        "psr-4" : {
-            "Filestack\\" : "filestack",
-            "Filestack\\Mixins\\" : "filestack/mixins"
+        "psr-4": {
+            "Filestack\\": "filestack",
+            "Filestack\\Mixins\\": "filestack/mixins"
         }
     }
 }
