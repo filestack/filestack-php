@@ -4,6 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
+use GuzzleHttp\Promise\Create;
 
 class FilestackClientTest extends BaseTest
 {
@@ -668,6 +669,8 @@ class FilestackClientTest extends BaseTest
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
              ->willReturn($mock_response);
+        $stub_http_client->method('requestAsync')
+            ->willReturn(Create::promiseFor($mock_response));
 
         $client = new FilestackClient(
             $this->test_api_key,
@@ -703,6 +706,8 @@ class FilestackClientTest extends BaseTest
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
              ->willReturn($mock_response);
+        $stub_http_client->method('requestAsync')
+            ->willReturn(Create::promiseFor($mock_response));
 
         $client = new FilestackClient(
             $this->test_api_key,
@@ -749,6 +754,8 @@ class FilestackClientTest extends BaseTest
                 $mock_response_202,
                 $mock_response,
                 $mock_response);
+        $stub_http_client->method('requestAsync')
+            ->willReturn(Create::promiseFor($mock_response));
 
         $client = new FilestackClient(
             $this->test_api_key,

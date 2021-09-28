@@ -4,7 +4,7 @@
     "license": "Apache-2.0",
     "require": {
         "php" : ">=7.3",
-        "guzzlehttp/guzzle": "~6.5"
+        "guzzlehttp/guzzle": "~6.5 || ~7.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
@@ -16,6 +16,11 @@
         "psr-4" : {
             "Filestack\\" : "filestack",
             "Filestack\\Mixins\\" : "filestack/mixins"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "Filestack\\Tests\\": "tests"
         }
     }
 }

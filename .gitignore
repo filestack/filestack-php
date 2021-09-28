@@ -6,3 +6,4 @@ build/*
 tests/testfiles/*
 logs/
 .idea/
+.phpunit.result.cache
