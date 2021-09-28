@@ -4,6 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackConfig;
 use Filestack\UploadProcessor;
 use Filestack\FilestackException;
+use GuzzleHttp\Promise\Create;
 
 class UploadProcessorTest extends BaseTest
 {
@@ -193,6 +194,8 @@ class UploadProcessorTest extends BaseTest
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
              ->willReturn($mock_response);
+        $stub_http_client->method('requestAsync')
+            ->willReturn(Create::promiseFor($mock_response));
 
         $upload_processor = new MockUploadProcessor(
             $this->test_api_key,
@@ -232,6 +235,8 @@ class UploadProcessorTest extends BaseTest
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
              ->willReturn($mock_response);
+        $stub_http_client->method('requestAsync')
+            ->willReturn(Create::promiseFor($mock_response));
 
         $upload_processor = new MockUploadProcessor(
             $this->test_api_key,
