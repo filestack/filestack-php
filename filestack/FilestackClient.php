@@ -47,7 +47,7 @@ class FilestackClient
         $this->http_client = $http_client; // CommonMixin
 
         if (is_null($upload_processor)) {
-            $upload_processor = new UploadProcessor($api_key, $security, $http_client);
+            $upload_processor = new UploadProcessor($api_key, $security, $http_client, false, $cname);
         }
         $this->upload_processor = $upload_processor;
         $this->cname = $cname;
@@ -179,7 +179,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink or contents
+     * @return Filestack\Filelink or contents
      */
     public function collage($sources, $width, $height, $store_options = [],
         $color = 'white', $fit = 'auto', $margin = 10, $auto_rotate = false)
@@ -361,7 +361,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function convertFile($resource, $filetype, $options = [])
     {
@@ -606,7 +606,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function screenshot($url, $store_options = [],
         $agent = 'desktop', $mode = 'all', $width = 1024, $height = 768, $delay = 0)
@@ -671,6 +671,11 @@ class FilestackClient
      */
     public function upload($filepath, $options = [])
     {
+        // If url type is not absolute path, Then pass to uploadUrl function
+        if (!realpath($filepath)) {
+            return $this->uploadUrl($filepath, $options);
+        }
+
         if (!file_exists($filepath)) {
             throw new FilestackException("File not found", 400);
         }
@@ -787,7 +792,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink or file content
+     * @return Filestack\Filelink or file content
      */
     public function zip($sources, $store_options = [])
     {
