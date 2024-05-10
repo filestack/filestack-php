@@ -28,9 +28,18 @@ class UploadProcessor
      *                                          security settings is turned on
      * @param GuzzleHttp\Client $http_client    DI http client, will instantiate
      *                                          one if not passed in
+     * @param boolean           $intelligent    set to true to use the Intelligent
+     *                                          Ingestion flow
+     * @param string            $cname          Domain to use for all URLs.
+     *                                          __Requires the custom CNAME
+     *                                          addon__. If this is enabled then
+     *                                          you must also set up your own
+     *                                          OAuth applications for each
+     *                                          cloud source you wish to use in
+     *                                          the picker.
      */
     public function __construct($api_key, $security = null,
-        $http_client = null, $intelligent = false)
+        $http_client = null, $intelligent = false, $cname = null)
     {
         $this->api_key = $api_key;
         $this->security = $security;
@@ -40,6 +49,7 @@ class UploadProcessor
             $http_client = new Client();
         }
         $this->http_client = $http_client; // CommonMixin
+        $this->cname = $cname; // CommonMixin
     }
 
     public function intelligenceEnabled($upload_data) {
@@ -142,7 +152,7 @@ class UploadProcessor
      * @param array     $upload_data    filestack upload data from register
      *                                  call: uri, region, upload_id
      *
-     * @return Filestack/Filelink or file content
+     * @return Filestack\Filelink or file content
      */
     protected function createParts($api_key, $metadata, $upload_data)
     {

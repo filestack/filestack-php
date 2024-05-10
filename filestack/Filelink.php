@@ -77,7 +77,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function ascii($background = 'white', $colored = false,
         $foreground='red', $reverse = false, $size = 100)
@@ -106,7 +106,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function blackWhite($threshold = 50)
     {
@@ -124,7 +124,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function blur($amount = 2)
     {
@@ -149,7 +149,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function border($background = 'white', $color = 'black', $width=2)
     {
@@ -174,7 +174,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function circle($background = 'black')
     {
@@ -210,7 +210,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function collage($files, $width, $height,
         $color = 'white', $fit = 'auto', $margin = 10, $auto_rotate = false)
@@ -242,7 +242,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function compress($metadata = false)
     {
@@ -396,7 +396,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function convertFile($filetype, $options = [])
     {
@@ -545,7 +545,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function crop($x_coordinate, $y_coordinate, $width, $height)
     {
@@ -586,7 +586,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function detectFaces($color='dimgray', $export = false,
                                 $min_size = 0.35, $max_size = 0.35)
@@ -609,7 +609,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function enhance()
     {
@@ -632,7 +632,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function modulate($brightness = 100, $hue = 0, $saturation = 100)
     {
@@ -653,7 +653,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function monochrome()
     {
@@ -668,7 +668,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function negative()
     {
@@ -686,7 +686,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function oilPaint($amount = 2)
     {
@@ -716,7 +716,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function partialBlur($amount = 10, $blur = 4, $objects = [], $type = 'rect')
     {
@@ -753,7 +753,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function partialPixelate($amount = 10, $blur = 4, $objects = [], $type = 'rect')
     {
@@ -772,7 +772,7 @@ class Filelink
      *                              filter. The value range is 2 to 100.
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function pixelate($amount = 2)
     {
@@ -795,7 +795,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function polaroid($background = 'white', $color = 'snow', $rotate = 45)
     {
@@ -826,7 +826,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function quality($value)
     {
@@ -841,7 +841,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function redEye()
     {
@@ -882,7 +882,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function resize($width, $height, $fit = 'clip', $align = 'center')
     {
@@ -912,7 +912,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function roundedCorners($background = 'white', $blur = 0.3, $radius = 10)
     {
@@ -949,7 +949,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function rotate($background = 'white', $deg = 0, $exif = false)
     {
@@ -973,7 +973,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function sepia($tone = 80)
     {
@@ -991,7 +991,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function sharpen($amount = 2)
     {
@@ -1019,7 +1019,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function shadow($background = 'white', $blur = 4,
                            $opacity = 60, $vector = [4,4])
@@ -1049,7 +1049,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function tornEdges($background = 'white', $spread = [1,10])
     {
@@ -1087,7 +1087,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function upscale($noise = 'none', $style = 'photo', $upscale = true)
     {
@@ -1121,7 +1121,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function vignette($amount = 20, $background = 'white', $blurmode = 'gaussian')
     {
@@ -1153,7 +1153,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function watermark($file_handle, $position = 'center', $size = 100)
     {
@@ -1361,7 +1361,7 @@ class Filelink
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function zip()
     {
