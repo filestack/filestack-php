@@ -81,6 +81,7 @@ class UploadProcessor
         $this->appendData($data, 'mimetype',       $metadata['mimetype']);
         $this->appendData($data, 'size',           $metadata['filesize']);
         $this->appendData($data, 'store_location', $metadata['location']);
+        $this->appendData($data, 'store_path',     $metadata['path']);
         $this->appendData($data, 'multipart',      true);
 
         array_push($data, ['name' => 'files',
