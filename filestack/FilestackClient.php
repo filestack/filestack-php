@@ -814,13 +814,19 @@ class FilestackClient
             throw new FilestackException($response->getBody(), $status_code);
         }
 
-        if ($json_response = json_decode($response->getBody(), true)) {
-            return $json_response;
+        $json_response = json_decode($response->getBody(), true);
+
+        if (array_key_exists('coords', $json_response)) {
+            return [
+                'data' => $json_response
+            ];
+        } else {
+            return [
+                'url' => $json_response['url'],
+                'mimetype' => $json_response['type'],
+                'size' => $json_response['size']
+            ];
         }
-
-        $filelink = $this->handleResponseCreateFilelink($response);
-
-        return $filelink;
     }
 
     /**
