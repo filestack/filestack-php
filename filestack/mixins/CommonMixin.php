@@ -44,6 +44,28 @@ trait CommonMixin
     }
 
     /**
+     * Has Http Or Https is used for validate external url 
+     *
+     * @param string                $url    pass string value
+     *
+     * @return boolean
+     */
+    public function hasHttpOrHttps($url = '') {
+        // Parse the URL
+        $urlParts = parse_url($url);
+    
+        // Check if the URL has a scheme (protocol)
+        if (isset($urlParts['scheme'])) {
+            // Check if the scheme is either http or https
+            if ($urlParts['scheme'] === 'http' || $urlParts['scheme'] === 'https' || $urlParts['scheme'] === 'src') {
+                return true; // URL has http:// or https:// protocol
+            }
+        }
+    
+        return false; // URL doesn't have http:// or https:// protocol
+    }
+
+    /**
      * Check if a string is a valid url.
      *
      * @param   string  $url    url string to check

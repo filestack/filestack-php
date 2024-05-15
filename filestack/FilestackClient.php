@@ -685,6 +685,11 @@ class FilestackClient
             $location = $options['location'];
         }
 
+        $path = '';
+        if (array_key_exists('path', $options)) {
+            $path = $options['path'];
+        }
+
         $filename = basename($filepath);
         if (array_key_exists('filename', $options)) {
             $filename = $options['filename'];
@@ -701,6 +706,7 @@ class FilestackClient
             'filesize' => filesize($filepath),
             'mimetype' => $mimetype,
             'location' => $location,
+            'path'     => $path,
         ];
 
         // register job
@@ -780,6 +786,90 @@ class FilestackClient
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
+    }
+
+    /**
+     * Get Doc Detection is used for get coords or process image filelink
+     *
+     * @param string                $resource    URL or Handle or Storage path
+     *                                  pass into this function
+     * @param array                 $options     extra optional params. e.g.
+     *                                  coords (bool, true|false),
+     *                                  preprocess (bool, true|false)
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return Filestack\Filelink
+     */
+    public function getDocDetection($resource, $options = [])
+    {
+        // generate url
+        $url = $this->getDocDetectionUrl($resource, $options);
+
+        // send get request
+        $response = $this->sendRequest('POST', $url);
+        $status_code = $response->getStatusCode();
+
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        $json_response = json_decode($response->getBody(), true);
+
+        if (array_key_exists('coords', $json_response)) {
+            return [
+                'data' => $json_response
+            ];
+        } else {
+            return [
+                'url' => $json_response['url'],
+                'mimetype' => $json_response['type'],
+                'size' => $json_response['size']
+            ];
+        }
+    }
+
+    /**
+     * Get Doc Detection Url is used for generate full request url 
+     *
+     * @param string                $resource    URL or Handle or Storage 
+     *                                  pass into this function
+     * @param array                 $options     extra optional params. e.g.
+     *                                  coords (bool, true|false),
+     *                                  preprocess (bool, true|false)
+     *
+     * @return string it will return generated url
+     */
+    public function getDocDetectionUrl($sources, $options = [])
+    {
+        if (!array_key_exists('coords', $options)) {
+            $options['coords'] = 'false';
+        } else {
+            $options['coords'] = filter_var($options['coords'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+        }
+
+        if (!array_key_exists('preprocess', $options)) {
+            $options['preprocess'] = 'true';
+        } else {
+            $options['preprocess'] = filter_var($options['preprocess'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+        }
+
+        $url = sprintf('%s/API_KEY/security=p:%s,s:%s/doc_detection=coords:%s,preprocess:%s/%s',
+            $this->getCustomUrl(FilestackConfig::CDN_URL),
+            $this->security->policy,
+            $this->security->signature,
+            $options['coords'],
+            $options['preprocess'],
+            $sources
+        );
+
+        if ($this->hasHttpOrHttps($sources)) {
+            $url = str_replace("/API_KEY", "/{$this->api_key}", $url);
+        } else {
+            $url = str_replace("/API_KEY", "", $url);
+        }
+        
+        return $url;
     }
 
     /**
