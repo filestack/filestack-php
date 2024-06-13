@@ -82,7 +82,13 @@ class UploadProcessor
         $this->appendData($data, 'size',           $metadata['filesize']);
         $this->appendData($data, 'store_location', $metadata['location']);
         $this->appendData($data, 'store_path',     $metadata['path']);
-        $this->appendData($data, 'multipart',      true);
+        
+        $max_part_size = FilestackConfig::UPLOAD_PART_SIZE;
+        $num_parts = ceil($metadata['filesize'] / $max_part_size);
+
+        if ($num_parts > 1) {
+            $this->appendData($data, 'multipart', true);
+        }
 
         array_push($data, ['name' => 'files',
             'contents' => '',
