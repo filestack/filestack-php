@@ -47,7 +47,7 @@ class FilestackClient
         $this->http_client = $http_client; // CommonMixin
 
         if (is_null($upload_processor)) {
-            $upload_processor = new UploadProcessor($api_key, $security, $http_client);
+            $upload_processor = new UploadProcessor($api_key, $security, $http_client, false, $cname);
         }
         $this->upload_processor = $upload_processor;
         $this->cname = $cname;
@@ -179,7 +179,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink or contents
+     * @return Filestack\Filelink or contents
      */
     public function collage($sources, $width, $height, $store_options = [],
         $color = 'white', $fit = 'auto', $margin = 10, $auto_rotate = false)
@@ -361,7 +361,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function convertFile($resource, $filetype, $options = [])
     {
@@ -606,7 +606,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink
+     * @return Filestack\Filelink
      */
     public function screenshot($url, $store_options = [],
         $agent = 'desktop', $mode = 'all', $width = 1024, $height = 768, $delay = 0)
@@ -671,6 +671,11 @@ class FilestackClient
      */
     public function upload($filepath, $options = [])
     {
+        // If url type is not absolute path, Then pass to uploadUrl function
+        if (!realpath($filepath)) {
+            return $this->uploadUrl($filepath, $options);
+        }
+
         if (!file_exists($filepath)) {
             throw new FilestackException("File not found", 400);
         }
@@ -678,6 +683,11 @@ class FilestackClient
         $location = 's3';
         if (array_key_exists('location', $options)) {
             $location = $options['location'];
+        }
+
+        $path = '';
+        if (array_key_exists('path', $options)) {
+            $path = $options['path'];
         }
 
         $filename = basename($filepath);
@@ -696,6 +706,7 @@ class FilestackClient
             'filesize' => filesize($filepath),
             'mimetype' => $mimetype,
             'location' => $location,
+            'path'     => $path,
         ];
 
         // register job
@@ -778,6 +789,90 @@ class FilestackClient
     }
 
     /**
+     * Get Doc Detection is used for get coords or process image filelink
+     *
+     * @param string                $resource    URL or Handle or Storage path
+     *                                  pass into this function
+     * @param array                 $options     extra optional params. e.g.
+     *                                  coords (bool, true|false),
+     *                                  preprocess (bool, true|false)
+     *
+     * @throws FilestackException   if API call fails
+     *
+     * @return Filestack\Filelink
+     */
+    public function getDocDetection($resource, $options = [])
+    {
+        // generate url
+        $url = $this->getDocDetectionUrl($resource, $options);
+
+        // send get request
+        $response = $this->sendRequest('POST', $url);
+        $status_code = $response->getStatusCode();
+
+        if ($status_code !== 200) {
+            throw new FilestackException($response->getBody(), $status_code);
+        }
+
+        $json_response = json_decode($response->getBody(), true);
+
+        if (array_key_exists('coords', $json_response)) {
+            return [
+                'data' => $json_response
+            ];
+        } else {
+            return [
+                'url' => $json_response['url'],
+                'mimetype' => $json_response['type'],
+                'size' => $json_response['size']
+            ];
+        }
+    }
+
+    /**
+     * Get Doc Detection Url is used for generate full request url 
+     *
+     * @param string                $resource    URL or Handle or Storage 
+     *                                  pass into this function
+     * @param array                 $options     extra optional params. e.g.
+     *                                  coords (bool, true|false),
+     *                                  preprocess (bool, true|false)
+     *
+     * @return string it will return generated url
+     */
+    public function getDocDetectionUrl($sources, $options = [])
+    {
+        if (!array_key_exists('coords', $options)) {
+            $options['coords'] = 'false';
+        } else {
+            $options['coords'] = filter_var($options['coords'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+        }
+
+        if (!array_key_exists('preprocess', $options)) {
+            $options['preprocess'] = 'true';
+        } else {
+            $options['preprocess'] = filter_var($options['preprocess'], FILTER_VALIDATE_BOOLEAN) ? 'true' : 'false';
+        }
+
+        $url = sprintf('%s/API_KEY/security=p:%s,s:%s/doc_detection=coords:%s,preprocess:%s/%s',
+            $this->getCustomUrl(FilestackConfig::CDN_URL),
+            $this->security->policy,
+            $this->security->signature,
+            $options['coords'],
+            $options['preprocess'],
+            $sources
+        );
+
+        if ($this->hasHttpOrHttps($sources)) {
+            $url = str_replace("/API_KEY", "/{$this->api_key}", $url);
+        } else {
+            $url = str_replace("/API_KEY", "", $url);
+        }
+        
+        return $url;
+    }
+
+    /**
      * Bundle an array of files into a zip file.  This task takes the file or files
      * that are passed in the array and compresses them into a zip file.  Sources can
      * be handles, urls, or a mix of both
@@ -787,7 +882,7 @@ class FilestackClient
      *
      * @throws FilestackException   if API call fails, e.g 404 file not found
      *
-     * @return Filestack/Filelink or file content
+     * @return Filestack\Filelink or file content
      */
     public function zip($sources, $store_options = [])
     {

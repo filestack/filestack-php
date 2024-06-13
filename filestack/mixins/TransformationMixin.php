@@ -132,6 +132,11 @@ trait TransformationMixin
 
         // call CommonMixin function
         $response = $this->sendRequest('GET', $transform_url);
+
+        if ($json_response = json_decode($response->getBody(), true)) {
+            return $json_response;
+        }
+
         $filelink = $this->handleResponseCreateFilelink($response);
 
         return $filelink;
