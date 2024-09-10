@@ -8,6 +8,8 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 
+use Filestack\Mixins\LoggingTrait;
+
 /**
  * Object used by the Filestack client to process an
  * upload task.
@@ -15,6 +17,7 @@ use GuzzleHttp\Psr7\Request;
 class UploadProcessor
 {
     use Mixins\CommonMixin;
+    use LoggingTrait;
 
     public $api_key;
     protected $security;
@@ -98,8 +101,15 @@ class UploadProcessor
         $this->appendSecurity($data);
 
         $url = $this->getCustomUrl(FilestackConfig::UPLOAD_URL) . '/multipart/start';
+
+        $this->log("Method: POST");
+        $this->log("URL: " . $url);
+        $this->log("Input Data: " . json_encode($data, JSON_PRETTY_PRINT));
+
         $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
+
         $json = $this->handleResponseDecodeJson($response);
+        $this->log("Output Data: " . json_encode($json, JSON_PRETTY_PRINT));
 
         return $json;
     }
@@ -322,7 +332,15 @@ class UploadProcessor
             $part['part_size'] += $current_chunk['size'];
 
             $data = $this->buildChunkData($part, $current_chunk);
+
+            $this->log("Method: POST");
+            $this->log("URL: " . $upload_url);
+            $this->log("Input Data: " . json_encode($data, JSON_PRETTY_PRINT));
+
             $response = $this->sendRequest('POST', $upload_url, ['multipart' => $data]);
+
+            $json = $this->handleResponseDecodeJson($response);
+            $this->log("Output Data: " . json_encode($json, JSON_PRETTY_PRINT));
 
             try {
                 $json = $this->handleResponseDecodeJson($response);
@@ -463,8 +481,16 @@ class UploadProcessor
         $this->appendSecurity($data);
 
         $url = $this->getCustomUrl(FilestackConfig::UPLOAD_URL) . '/multipart/complete';
+
+        $this->log("Method: POST");
+        $this->log("URL: " . $url);
+        $this->log("Input Data: " . json_encode($data, JSON_PRETTY_PRINT));
+
         $response = $this->sendRequest('POST', $url, ['multipart' => $data]);
         $status_code = $response->getStatusCode();
+
+        $json = $this->handleResponseDecodeJson($response);
+        $this->log("Output Data: " . json_encode($json, JSON_PRETTY_PRINT));
 
         $filelink = null;
         if ($status_code == 200) {
