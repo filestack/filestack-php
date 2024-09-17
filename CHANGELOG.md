@@ -1,5 +1,9 @@
 # Filestack-php Changelog
 
+## 2.0.0 (Sep 17, 2024)
+- Added support for php 8.3
+- Bug fixes
+
 ## 1.1.12 (Feb 8, 2018)
 - Updated license and fixed composer.json issues
 
