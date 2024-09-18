@@ -4,6 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
+use GuzzleHttp\Psr7\Response;
 
 class FilestackClientTest extends BaseTest
 {
@@ -66,9 +67,10 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetContentSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody('some content')
+            [],
+            'some content'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -90,9 +92,10 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetContentSuccessWithCustomCname()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody('some content')
+            [],
+            'some content'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -116,8 +119,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetContentNotFound()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             'File not found'
         );
 
@@ -140,8 +144,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetMetaDataSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"filename": "somefilename.jpg"}'
         );
 
@@ -163,8 +168,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetSfwSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"sfw": true}'
         );
 
@@ -186,7 +192,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetSfwException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -208,8 +214,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetTagsSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"tags": "sometags"}'
         );
 
@@ -232,7 +239,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetTagsException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -254,8 +261,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testGetMetadataException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'Bad Request'
         );
 
@@ -279,8 +287,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testCollageSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"url": "http://cdn.filestackcontent.com/somehandle",'.
             '"filename": "somefile.jpg",'.
             '"size": "1000",'.
@@ -323,8 +332,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testconvertFileSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -360,8 +370,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testconvertAudioSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"uuid" : "some_uuid"}'
         );
 
@@ -396,8 +407,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testconvertVideoSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"uuid" : "some_uuid", "conversion_url": "http://someurl.com/handle"}'
         );
 
@@ -437,8 +449,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testconvertVideoThrowsException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             'file not found'
         );
 
@@ -465,7 +478,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testDeleteSuccess()
     {
-        $mock_response = new MockHttpResponse(200);
+        $mock_response = new Response(200);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -488,7 +501,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testDeleteException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -512,8 +525,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testDownloadSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -549,8 +563,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testDownloadNotFound()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             'file not found'
         );
 
@@ -576,8 +591,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testScreenshotSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -603,8 +619,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testScreenshotWithDest()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -629,7 +646,7 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadInvalidKey()
     {
-        $mock_response = new MockHttpResponse(403);
+        $mock_response = new Response(403);
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
             ->willReturn($mock_response);
@@ -651,7 +668,8 @@ class FilestackClientTest extends BaseTest
     public function testUploadSuccess()
     {
         $test_headers = ['ETag' =>['some-etag']];
-        $mock_response = new MockHttpResponse(200,
+        $mock_response = new Response(200,
+        $test_headers,
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -661,8 +679,7 @@ class FilestackClientTest extends BaseTest
                 'region'    => 'us-east-1',
                 'upload_id' => 'test-upload-id',
                 'headers'   => []
-            ]),
-            $test_headers
+            ])
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -686,7 +703,8 @@ class FilestackClientTest extends BaseTest
     public function testUploadSuccessWithOptions()
     {
         $test_headers = ['ETag' =>['some-etag']];
-        $mock_response = new MockHttpResponse(200,
+        $mock_response = new Response(200,
+        $test_headers,
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -696,8 +714,7 @@ class FilestackClientTest extends BaseTest
                 'region'    => 'us-east-1',
                 'upload_id' => 'test-upload-id',
                 'headers'   => []
-            ]),
-            $test_headers
+            ])
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -725,8 +742,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadIntelligentSuccess()
     {
-        $mock_response_202 = new MockHttpResponse(202,  '{accepted: true}');
-        $mock_response = new MockHttpResponse(200,
+        $mock_response_202 = new Response(202, [], '{accepted: true}');
+        $mock_response = new Response(200,
+        [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -782,8 +800,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testUploadUrlSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -815,8 +834,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testOverwriteSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -843,8 +863,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testOverwriteException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             'file not found');
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -871,8 +892,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testOverwriteUrlSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -900,8 +922,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testTransformSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -932,8 +955,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testDebuggingTransformCalls()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"apikey": "someapikey", "errors": "some errors"}'
         );
 
@@ -962,8 +986,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testDebuggingThrowsException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'invalid attr value'
         );
 
@@ -1006,8 +1031,9 @@ class FilestackClientTest extends BaseTest
      */
     public function testZipSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -1039,8 +1065,9 @@ class FilestackClientTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(404);
 
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             'File not found'
         );
 

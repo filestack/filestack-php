@@ -4,6 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackConfig;
 use Filestack\UploadProcessor;
 use Filestack\FilestackException;
+use GuzzleHttp\Psr7\Response;
 
 class UploadProcessorTest extends BaseTest
 {
@@ -18,7 +19,8 @@ class UploadProcessorTest extends BaseTest
             'filename' => basename($this->test_filepath),
             'filesize' => filesize($this->test_filepath),
             'mimetype' => 'text',
-            'location' => 's3'
+            'location' => 's3',
+            'path' => $this->test_filepath,
         ];
 
         $this->upload_data = [
@@ -46,8 +48,9 @@ class UploadProcessorTest extends BaseTest
     public function testRegisterUploadTaskSuccess()
     {
         $expected_upload_id = 'some_upload_id';
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"upload_id": "' . $expected_upload_id . '"}'
         );
 
@@ -75,8 +78,9 @@ class UploadProcessorTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'bad data format'
         );
 
@@ -100,8 +104,9 @@ class UploadProcessorTest extends BaseTest
     public function testCreatePartsSuccess()
     {
         $expected_upload_id = 'some_upload_id';
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"upload_id": "' . $expected_upload_id . '"}'
         );
 
@@ -133,7 +138,8 @@ class UploadProcessorTest extends BaseTest
      */
     public function testCreatePartsIntelligentSuccess()
     {
-        $mock_response = new MockHttpResponse(200,
+        $mock_response = new Response(200,
+        [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -176,7 +182,8 @@ class UploadProcessorTest extends BaseTest
     public function testProcessPartsSuccess()
     {
         $test_headers = ['ETag' =>['some-etag']];
-        $mock_response = new MockHttpResponse(200,
+        $mock_response = new Response(200,
+        $test_headers,
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -186,8 +193,7 @@ class UploadProcessorTest extends BaseTest
                 'region'    => 'us-east-1',
                 'upload_id' => 'test-upload-id',
                 'headers'    => []
-            ]),
-            $test_headers
+            ])
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -215,7 +221,8 @@ class UploadProcessorTest extends BaseTest
     public function testProcessPartsIntelligentSuccess()
     {
         $test_headers = ['ETag' =>['some-etag']];
-        $mock_response = new MockHttpResponse(200,
+        $mock_response = new Response(200,
+        $test_headers,
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -225,8 +232,7 @@ class UploadProcessorTest extends BaseTest
                 'region'    => 'us-east-1',
                 'upload_id' => 'test-upload-id',
                 'headers'    => []
-            ]),
-            $test_headers
+            ])
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -260,8 +266,9 @@ class UploadProcessorTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'bad data format'
         );
 
@@ -283,9 +290,10 @@ class UploadProcessorTest extends BaseTest
 
     public function testProcessChunks()
     {
-        $mock_response1 = new MockHttpResponse(408,  '{"error": "timed out"}');
-        $mock_response2 = new MockHttpResponse(504,  '{"error": "Gateway timed out"}');
-        $mock_response3 = new MockHttpResponse(200,
+        $mock_response1 = new Response(408, [],  '{"error": "timed out"}');
+        $mock_response2 = new Response(504, [], '{"error": "Gateway timed out"}');
+        $mock_response3 = new Response(200,
+        [],
             json_encode([
                 'url'       => 'https://some-s3-url/somedata',
                 'part_size' => 1024,
@@ -331,9 +339,10 @@ class UploadProcessorTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(500);
 
-        $mock_s3_response = new MockHttpResponse(
+        $mock_s3_response = new Response(
             500,
-            new MockHttpResponseBody('{"error": "some-error"}')
+            [],
+            '{"error": "some-error"}',
         );
 
         $s3_results = [
@@ -368,8 +377,9 @@ class UploadProcessorTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'bad data format'
         );
 
@@ -401,7 +411,8 @@ class UploadProcessorTest extends BaseTest
      */
     public function testUploadChunkToS3()
     {
-        $mock_response = new MockHttpResponse(200,
+        $mock_response = new Response(200,
+        [],
             json_encode([
                 'some-field' => 'some-value'
             ])
@@ -436,8 +447,9 @@ class UploadProcessorTest extends BaseTest
         $this->expectException(FilestackException::class);
         $this->expectExceptionCode(400);
 
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'bad data format'
         );
 
@@ -462,10 +474,10 @@ class UploadProcessorTest extends BaseTest
      */
     public function testMultipartGetTags()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody('some content'),
-            ['ETag' => ['tag1']]
+            ['ETag' => ['tag1']],
+            'some content'
         );
 
         $s3_results = [
@@ -487,8 +499,9 @@ class UploadProcessorTest extends BaseTest
      */
     public function testRegisterComplete()
     {
-        $mock_response1 = new MockHttpResponse(202,  '{accepted: true}');
-        $mock_response2 = new MockHttpResponse(200,
+        $mock_response1 = new Response(202, [],  '{accepted: true}');
+        $mock_response2 = new Response(200,
+        [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',

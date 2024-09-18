@@ -4,6 +4,7 @@ namespace Filestack\Tests;
 use Filestack\Filelink;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
+use GuzzleHttp\Psr7\Response;
 
 class FilelinkTest extends BaseTest
 {
@@ -69,9 +70,10 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetContentSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody("some content")
+            [],
+            "some content"
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -91,8 +93,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetContentNotFound()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             "File not found"
         );
 
@@ -114,8 +117,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkConvertFileSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -146,8 +150,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkConvertAudioSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"uuid" : "some_uuid"}'
         );
 
@@ -176,8 +181,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkConvertVideoSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"uuid" : "some_uuid"}'
         );
 
@@ -211,8 +217,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkDownloadSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             'some file content'
         );
 
@@ -233,8 +240,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkDownloadNotFound()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             404,
+            [],
             'file not found'
         );
 
@@ -257,8 +265,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetMetadataSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"filename": "somefile.jpg"}'
         );
 
@@ -278,8 +287,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetSfwSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"sfw": true}'
         );
 
@@ -299,7 +309,7 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetSfwException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -319,8 +329,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetTagsSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"tags": "some-tags"}'
         );
 
@@ -340,7 +351,7 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetTagsException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -360,8 +371,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkGetMetadataException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'Bad Request'
         );
 
@@ -383,7 +395,7 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkDeleteSuccess()
     {
-        $mock_response = new MockHttpResponse(200);
+        $mock_response = new Response(200);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -401,7 +413,7 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkDeleteException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -421,8 +433,9 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkOverwriteSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
@@ -448,7 +461,7 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkOverwriteException()
     {
-        $mock_response = new MockHttpResponse(404);
+        $mock_response = new Response(404);
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
         $stub_http_client->method('request')
@@ -472,7 +485,8 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkSaveException()
     {
-        $mock_response = new MockHttpResponse(400,
+        $mock_response = new Response(400,
+        [],
             'Invalid parameters');
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -495,9 +509,10 @@ class FilelinkTest extends BaseTest
      */
     public function testFilelinkZipSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody('some content')
+            [],
+            'some content'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
