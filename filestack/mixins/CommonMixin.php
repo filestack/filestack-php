@@ -486,7 +486,7 @@ trait CommonMixin
 
     protected function settlePromises($promises)
     {
-        $api_results = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
+        $api_results = \GuzzleHttp\Promise\Utils::settle($promises);
         return $api_results;
     }
 }
