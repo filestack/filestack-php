@@ -9,6 +9,7 @@ use Filestack\FilestackException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Promise\Promise;
 
 
 /**
@@ -486,7 +487,15 @@ trait CommonMixin
 
     protected function settlePromises($promises)
     {
-        $api_results = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
-        return $api_results;
+        $results = [];
+        foreach ($promises as $request => $payload) {
+            (function() use ($request, $payload, &$promises) {
+                $promise = new Promise(function () use (&$promise, $request, $payload) {
+                    $promise->resolve(true);
+                });
+                $results[] = $promise;
+            })();
+        }
+        return  \GuzzleHttp\Promise\Utils::settle($results)->wait();
     }
 }
