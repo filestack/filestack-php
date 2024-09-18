@@ -1,5 +1,8 @@
 # Filestack-php Changelog
 
+## 2.0.1 (Sep 18, 2024)
+- Updated test cases
+
 ## 2.0.0 (Sep 17, 2024)
 - Added support for php 8.3
 - Bug fixes

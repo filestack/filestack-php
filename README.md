@@ -15,7 +15,7 @@ This is the official PHP SDK for Filestack - API and content management system t
 
 ## Requirements
 
-* PHP 7.3+
+* PHP 8.3+
 
 ## Resources
 
