@@ -20,7 +20,7 @@ class UploadProcessorTest extends BaseTest
             'filesize' => filesize($this->test_filepath),
             'mimetype' => 'text',
             'location' => 's3',
-            'path' => 'test-path'
+            'path' => $this->test_filepath,
         ];
 
         $this->upload_data = [

@@ -478,7 +478,7 @@ trait CommonMixin
     /**
      *
      */
-    protected function appendPromise(&$promises, $method, $url, $to_send)
+    protected function appendPromise($promises, $method, $url, $to_send)
     {
         $promises[] = $this->http_client->requestAsync($method,
                 $url, $to_send);
@@ -486,7 +486,7 @@ trait CommonMixin
 
     protected function settlePromises($promises)
     {
-        $api_results = \GuzzleHttp\Promise\Utils::settle($promises);
+        $api_results = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
         return $api_results;
     }
 }
