@@ -4,6 +4,7 @@ namespace Filestack\Tests;
 use Filestack\FilestackClient;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
+use GuzzleHttp\Psr7\Response;
 
 class FilestackSecurityTest extends BaseTest
 {
@@ -46,9 +47,10 @@ class FilestackSecurityTest extends BaseTest
      */
     public function testSecurityDownload()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody('some content')
+            [],
+            'some content'
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -79,8 +81,9 @@ class FilestackSecurityTest extends BaseTest
      */
     public function testDownloadFailedNoCreds()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             403,
+            [],
             'policy error: proper credentials were not provided'
         );
 
@@ -106,8 +109,9 @@ class FilestackSecurityTest extends BaseTest
      */
     public function testDownloadFailedInvalidCreds()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             403,
+            [],
             'policy error: proper credentials were not provided'
         );
 

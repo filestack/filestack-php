@@ -5,6 +5,7 @@ use Filestack\FilestackConfig;
 use Filestack\Filelink;
 use Filestack\FilestackSecurity;
 use Filestack\FilestackException;
+use GuzzleHttp\Psr7\Response;
 
 class FilestackTransformTest extends BaseTest
 {
@@ -13,8 +14,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testDebuggingTransformCalls()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             '{"apikey": "someapikey", "errors": "some errors"}'
         );
 
@@ -37,8 +39,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformationSuccess()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -64,8 +67,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformationWithDest()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             $this->mock_response_json
         );
 
@@ -90,8 +94,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformationFailed()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             403,
+            [],
             'Forbidden, Missing credentials'
         );
 
@@ -116,8 +121,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformInvalidTaskThrowsException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'Invalid transformation task'
         );
 
@@ -142,8 +148,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformInvalidAttrThrowsException()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             400,
+            [],
             'Invalid transformation attribute'
         );
 
@@ -207,9 +214,10 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformChainDownload()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
-            new MockHttpResponseBody("some content")
+            [],
+            "some content"
         );
 
         $stub_http_client = $this->createMock(\GuzzleHttp\Client::class);
@@ -236,8 +244,9 @@ class FilestackTransformTest extends BaseTest
      */
     public function testTransformChainStore()
     {
-        $mock_response = new MockHttpResponse(
+        $mock_response = new Response(
             200,
+            [],
             json_encode([
                 'filename'  => 'somefilename.jpg',
                 'size'      => '1000',
