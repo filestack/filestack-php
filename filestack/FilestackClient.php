@@ -671,13 +671,13 @@ class FilestackClient
      */
     public function upload($filepath, $options = [])
     {
+        if (!file_exists($filepath)) {
+            throw new FilestackException("File not found", 400);
+        }
+
         // If url type is not absolute path, Then pass to uploadUrl function
         if (!realpath($filepath)) {
             return $this->uploadUrl($filepath, $options);
-        }
-
-        if (!file_exists($filepath)) {
-            throw new FilestackException("File not found", 400);
         }
 
         $location = 's3';
